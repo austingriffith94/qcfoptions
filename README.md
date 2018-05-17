@@ -1,0 +1,2 @@
+# qcfoptions
+Option calculator
