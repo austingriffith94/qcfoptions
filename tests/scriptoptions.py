@@ -1,9 +1,7 @@
-import barriers, bsoptions
+from qcfoptions import barriers, bsoptions
 import numpy as np
 import pandas as pd
 import time
-import matplotlib.pyplot as plt
-from sklearn.linear_model import LinearRegression
 
 #%%
 T = 2

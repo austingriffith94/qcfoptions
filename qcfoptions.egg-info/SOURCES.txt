@@ -3,8 +3,9 @@ MANIFEST.in
 README.md
 setup.cfg
 setup.py
-barriers/__init__.py
-bsoptions/__init__.py
+qcfoptions/__init__.py
+qcfoptions/barriers.py
+qcfoptions/bsoptions.py
 qcfoptions.egg-info/PKG-INFO
 qcfoptions.egg-info/SOURCES.txt
 qcfoptions.egg-info/dependency_links.txt

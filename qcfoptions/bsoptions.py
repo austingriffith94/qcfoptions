@@ -48,7 +48,7 @@ def Euro(s,k,r,T,vol,q):
 
     Examples
     --------
-    >>> from bsoptions import Euro
+    >>> from qcfoptions.bsoptions import Euro
     >>> s = 1
         k = 1
         r = 0.015
@@ -118,7 +118,7 @@ def AsianGeometric(s,k,r,T,vol,q):
 
     Examples
     --------
-    >>> from bsoptions import AsianGeometric
+    >>> from qcfoptions.bsoptions import AsianGeometric
     >>> s = 1
         k = 1
         r = 0.015
@@ -194,7 +194,7 @@ def AsianArithmetic(s,k,r,T,vol,q):
 
     Examples
     --------
-    >>> from bsoptions import AsianArithmetic
+    >>> from qcfoptions.bsoptions import AsianArithmetic
     >>> s = 1
         k = 1
         r = 0.01
@@ -272,7 +272,7 @@ def Power(s,k,r,T,vol,q,n):
 
     Examples
     --------
-    >>> from bsoptions import Power
+    >>> from qcfoptions.bsoptions import Power
     >>> s = 1
         k = 1
         r = 0.01
@@ -345,7 +345,7 @@ def Margrabe(s,s2,T,vol,vol2,q,q2,corr):
 
     Examples
     --------
-    >>> from bsoptions import Margrabe
+    >>> from qcfoptions.bsoptions import Margrabe
     >>> s1 = 1
         s2 = 1.2
         T = 2
@@ -420,7 +420,7 @@ def Lookback(s,M,r,T,vol,q):
 
     Examples
     --------
-    >>> from bsoptions import Lookback
+    >>> from qcfoptions.bsoptions import Lookback
     >>> s = 1
         k = 1
         r = 0.015

@@ -70,7 +70,7 @@ def DownOutPutLow(s,k,r,Z,T,vol,q):
 
     Examples
     --------
-    >>> from barriers import DownOutPutLow
+    >>> from qcfoptions.barriers import DownOutPutLow
     >>> s = 1
         k = 1
         r = 0.015
@@ -122,7 +122,7 @@ def DownOutCall(s,k,r,Z,T,vol,q):
 
     Examples
     --------
-    >>> from barriers import DownOutCall
+    >>> from qcfoptions.barriers import DownOutCall
     >>> s = 1
         k = 1
         r = 0.015
@@ -177,7 +177,7 @@ def UpOutCallHigh(s,k,r,Z,T,vol,q):
 
     Examples
     --------
-    >>> from barriers import UpOutCallHigh
+    >>> from qcfoptions.barriers import UpOutCallHigh
     >>> s = 1
         k = 1
         r = 0.015
@@ -229,7 +229,7 @@ def UpOutPut(s,k,r,Z,T,vol,q):
 
     Examples
     --------
-    >>> from barriers import UpOutPut
+    >>> from qcfoptions.barriers import UpOutPut
     >>> s = 1
         k = 1
         r = 0.015
@@ -283,7 +283,7 @@ def DownInCall(s,k,r,Z,T,vol,q):
 
     Examples
     --------
-    >>> from barriers import DownInCall
+    >>> from qcfoptions.barriers import DownInCall
     >>> s = 1
         k = 1
         r = 0.015
@@ -337,7 +337,7 @@ def DownInPut(s,k,r,Z,T,vol,q):
 
     Examples
     --------
-    >>> from barriers import DownInPut
+    >>> from qcfoptions.barriers import DownInPut
     >>> s = 1
         k = 1
         r = 0.015
@@ -391,7 +391,7 @@ def UpInCall(s,k,r,Z,T,vol,q):
 
     Examples
     --------
-    >>> from barriers import UpInCall
+    >>> from qcfoptions.barriers import UpInCall
     >>> s = 1
         k = 1
         r = 0.015
@@ -445,7 +445,7 @@ def UpInPut(s,k,r,Z,T,vol,q):
 
     Examples
     --------
-    >>> from barriers import UpInCall
+    >>> from qcfoptions.barriers import UpInCall
     >>> s = 1
         k = 1
         r = 0.015
