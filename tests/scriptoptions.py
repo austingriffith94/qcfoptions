@@ -1,13 +1,10 @@
-import bsoptions
-import barriers
+import barriers, bsoptions
 import numpy as np
 import pandas as pd
 import time
 import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
 
-import statsmodels.api as sm
-from pandas_datareader import data as pdr
 #%%
 T = 2
 s = 1

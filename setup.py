@@ -36,7 +36,7 @@ setup(
     ],
 
     python_requires='~=3.5',
-    packages = ['bsoptions','barriers'],
+    packages = ['qcfoptions','bsoptions','barriers'],
     install_requires = ['numpy','scipy'],
     zip_safe = False
     )
