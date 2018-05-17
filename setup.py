@@ -8,7 +8,7 @@ from os import path
 here = path.abspath(path.dirname(__file__))
 
 with open(path.join(here, 'README.md'), encoding='utf-8') as f:
-    long_d = f.read()
+    long_description = f.read()
 
 
 setup(
@@ -17,23 +17,26 @@ setup(
     # $ pip install 'name'
     name = 'qcfoptions',
 
-    version = '0.1',
+    version = '0.1a',
     description = 'Option calculator',
 
     # uses readme file to give long description
-    long_description = long_d,
+    long_description = long_description,
     long_description_content_type = 'text/markdown',
 
     url = 'https://github.com/austingriffith94/qcfoptions',
     author = 'Austin Griffith',
+    license = 'MIT',
 
     classifiers = [
         'Development Status :: 2 - Pre-Alpha',
-        'Intended Audience :: QCF Students',
+        'License :: OSI Approved :: MIT License',
         # began with python 3.6.5
-        'Programming Language :: Python :: 3.6.5',
+        'Programming Language :: Python :: 3.6',
     ],
 
+    python_requires='~=3.5',
     packages = ['bsoptions','barriers'],
     install_requires = ['numpy','scipy'],
+    zip_safe = False
     )

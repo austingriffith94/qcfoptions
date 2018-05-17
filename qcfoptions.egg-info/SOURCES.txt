@@ -1,0 +1,13 @@
+LICENSE.txt
+MANIFEST.in
+README.md
+setup.cfg
+setup.py
+barriers/__init__.py
+bsoptions/__init__.py
+qcfoptions.egg-info/PKG-INFO
+qcfoptions.egg-info/SOURCES.txt
+qcfoptions.egg-info/dependency_links.txt
+qcfoptions.egg-info/not-zip-safe
+qcfoptions.egg-info/requires.txt
+qcfoptions.egg-info/top_level.txt
