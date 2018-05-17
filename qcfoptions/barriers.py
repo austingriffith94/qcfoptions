@@ -1,6 +1,5 @@
 # Austin Griffith
 # Barriers
-# Python 3.6.5
 
 import numpy as np
 from scipy.stats import norm

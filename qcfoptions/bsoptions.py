@@ -1,6 +1,5 @@
 # Austin Griffith
 # Options, Black Scholes
-# Python 3.6.5
 
 import numpy as np
 from scipy.stats import norm
@@ -227,8 +226,8 @@ def AsianArithmetic(s,k,r,T,vol,q):
 
 def Power(s,k,r,T,vol,q,n):
     '''
-    Calculate the Black Scholes value of Power Call / Put option with a
-    fixed strike
+    Calculate the Black Scholes value of a traditional Power Call / Put option
+    with a fixed strike
     Payoffs are of the form :
     C = max(S**n - K, 0)
     P = max(K - S**n, 0)
@@ -295,6 +294,81 @@ def Power(s,k,r,T,vol,q,n):
 
     option = np.exp(T*(n-1)*(r + 0.5*n*vol*vol))*np.power(s,n)
     strike = k*np.exp(-r*T)
+
+    put = strike*norm.cdf(-d2) - option*norm.cdf(-d1)
+    call = option*norm.cdf(d1) - strike*norm.cdf(d2)
+    return([call,put])
+
+def PowerStrike(s,k,r,T,vol,q,n):
+    '''
+    Calculate the Black Scholes value of Power Call / Put option with a
+    fixed strike to the power n
+    Payoffs are of the form :
+    C = max(S**n - K**n, 0)
+    P = max(K**n - S**n, 0)
+
+    Parameters
+    ----------
+    s : number of any type (int, float8, float64 etc.), numpy array of any type
+        should the user wish to have a list of values output with varying s
+        Spot value of underlying asset at current time, t
+    k : number of any type (int, float8, float64 etc.), numpy array of any type
+        should the user wish to have a list of values output with varying k
+        Strike value of option, determined at initiation
+    r : number of any type (int, float8, float64 etc.), numpy array of any type
+        should the user wish to have a list of values output with varying r
+        Risk free interest rate, implied constant till expiration
+    T : number of any type (int, float8, float64 etc.), numpy array of any type
+        should the user wish to have a list of values output with varying T
+        Time till expiration for option, can be interpreted as 'T - t' should
+        the option already be initiated, and be 't' time from time = 0
+    vol : number of any type (int, float8, float64 etc.), numpy array of any type
+        should the user wish to have a list of values output with varying vol
+        Volatility of underlying, implied constant till expiration in Black
+        Scholes model
+    q : number of any type (int, float8, float64 etc.), numpy array of any type
+        should the user wish to have a list of values output with varying q
+        Continuous dividend payout, as a percentage
+    n : number of any type (int, float8, float64 etc.)
+        Power to which the underlying spot is raised at payoff
+
+    All parameters can be individual values.
+    Only one of these parameters can be a numpy.array (not including 'n'),
+    otherwise there will be a dimension mismatch.
+
+    Returns
+    -------
+    [call,put] : list of pair of float or numpy.array values
+        Power call and put values, type depends on input value.
+        If all input values are individual numbers, then output will be float.
+        If one input value, other than 'n', is numpy.array, then output
+        will be numpy.array.
+
+    Examples
+    --------
+    >>> from qcfoptions.bsoptions import PowerStrike
+    >>> s = 1
+        k = 1
+        r = 0.01
+        T = 2
+        vol = 0.25
+        q = 0.015
+        n = 2.5
+    >>> PowerStrike(s,k,r,T,vol,q,n)
+    [0.5888398346686554, 0.2369822536424761]
+    >>> import numpy as np
+    >>> s_array = np.array([0.5,1.0,1.5,2.0])
+    >>> PowerStrike(s_array,k,r,T,vol,q,n)
+    [array([0.00881893, 0.58883983, 2.7187886 , 6.51733355]),
+    array([0.74551209, 0.23698225, 0.04539523, 0.00770309])]
+
+    '''
+    d1 = (np.log(s/np.power(k,1/n)) +
+        (r - q + vol*vol*(n - 0.5))*T) / (vol*np.sqrt(T))
+    d2 = d1 - n*vol*np.sqrt(T)
+
+    option = np.exp(T*(n-1)*(r + 0.5*n*vol*vol))*np.power(s,n)
+    strike = np.power(k,n)*np.exp(-r*T)
 
     put = strike*norm.cdf(-d2) - option*norm.cdf(-d1)
     call = option*norm.cdf(d1) - strike*norm.cdf(d2)
@@ -375,13 +449,15 @@ def Margrabe(s,s2,T,vol,vol2,q,q2,corr):
 
 def Lookback(s,M,r,T,vol,q):
     '''
-    Calculate the Black Scholes value of continuously fixed
+    Calculate the Black Scholes value of floating strike
     Lookback Call / Put option
     Payoffs are of the form :
-    C = S_T - min(M,M_T)
-    C = min(M,M_T) - S_T
-    where M is the current minimum, or starting strike at initiation, and M_T
-    is the minimum over the remaining life of the option
+    C = S_T - min(m,m_T)
+    P = max(M,M_T) - S_T
+    where 'm' is the current minimum, or starting strike at initiation, and
+    'm_T' is the minimum over the remaining life of the option
+    similarly, 'M' is the current maximum, or starting strike at initiation, and
+    'M_T' is the maximum over the remaining life of the option
 
     Parameters
     ----------
@@ -454,3 +530,4 @@ def Lookback(s,M,r,T,vol,q):
         (s/B)*(left*norm.cdf(-y - B*vol*np.sqrt(T)) -
             right*norm.cdf(-y)))
     return([call,put])
+
