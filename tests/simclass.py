@@ -69,17 +69,70 @@ def _PowerStrikeSim(S,k,r,T,n):
     put = np.exp(-r*T)*np.average(putMotion)
     return([[call,put],[callMotion,putMotion]])
     
-def _AvgBarrier(S,Z,r,timeMatrix):
-    Z = 110
+def _AvgBarrierSim(S,Z,r,timeMatrix):
     s0 = S[0][0]
     if s0 < Z: # below
         hitBarrier = np.cumprod(S < Z,axis=0)
-    if s0 > Z: # above
+    elif s0 > Z: # above
         hitBarrier = np.cumprod(S > Z,axis=0)
+    else: # on barrier
+        price = s0
+        payoffMotion = S[0]
+        return([price,payoffMotion])
     
     paymentTime = np.array(np.max(np.multiply(timeMatrix,hitBarrier),axis=0))
     payoffMotion = np.sum(np.multiply(hitBarrier,S),axis=0) / np.sum(hitBarrier,axis=0)
     price = np.average(np.exp(-r*paymentTime)*payoffMotion)
+    
+def _NoTouchSingleSim(S,Z,r,T,payoutScale):
+    s0 = S[0][0]
+    if s0 < Z: # below
+        hitBarrier = np.cumprod(S < Z,axis=0)
+    elif s0 > Z: # above
+        hitBarrier = np.cumprod(S > Z,axis=0)
+    else: # on barrier
+        price = 0.0
+        payoffMotion = S[0]*0.0
+        return([price,payoffMotion])
+    
+    payoffMotion = (1+payoutScale)*hitBarrier[-1]
+    price = np.average(np.exp(-r*T)*payoffMotion)
+    return([price,payoffMotion])
+    
+def _NoTouchDoubleSim(S,Z1,Z2,r,T,payoutScale):
+    s0 = S[0][0]
+    if s0 < Z1 and s0 > Z2:
+        hitBarrier1 = np.cumprod(S < Z1,axis=0)
+        hitBarrier2 = np.cumprod(S > Z2,axis=0)
+    elif s0 > Z1 and s0 < Z2:
+        hitBarrier1 = np.cumprod(S > Z1,axis=0)
+        hitBarrier2 = np.cumprod(S < Z2,axis=0)
+    elif s0 == Z1 or s0 == Z2:
+        price = 0.0
+        payoffMotion = S[0]*0.0
+        return([price,payoffMotion])
+    else:
+        print('Error : s0 outside barriers, use NoTouchSingle instead')
+        return
+    
+    hitBarrier = np.multiply(hitBarrier1,hitBarrier2)
+    payoffMotion = (1+payoutScale)*hitBarrier[-1]
+    price = np.average(np.exp(-r*T)*payoffMotion)
+    return([price,payoffMotion])
+    
+def _CashOrNothingSim(S,Z,r,T,payout):
+    s0 = S[0][0]
+    if s0 < Z: # below
+        hitBarrier = np.cumprod(S < Z,axis=0)
+    elif s0 > Z: # above
+        hitBarrier = np.cumprod(S > Z,axis=0)
+    else: # on barrier
+        price = 0.0
+        payoffMotion = S[0]*0.0
+        return([price,payoffMotion])
+    
+    payoffMotion = hitBarrier[-1]*payout
+    price = np.average(np.exp(-r*T)*payoffMotion)
     return([price,payoffMotion])
     
 def simpleSim(s0,r,T,vol,dt,paths):

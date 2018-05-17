@@ -29,28 +29,28 @@ S = np.exp(np.matrix.cumsum(S,axis=0))
 print(time.time() - start)
 
 #%%
-corr = -0.4 # correlation of price to volatility
-kappa = 10 # speed of adjustment
-xi = 0.25**2 # volatility of volatility
-
-start = time.time()
-S = np.sqrt(dt)*(-1 + 2*(np.random.random([intervals+1,paths]) > 0.5))
-V = np.sqrt(dt)*(-1 + 2*(np.random.random([intervals+1,paths]) > 0.5))
-V = corr*S + np.sqrt(1 - corr*corr)*V
-
-
-volMotion = np.zeros([intervals+1,paths])
-volMotion[0] = vol*vol*np.ones(paths)
-
-for t in range(intervals):
-    vt = volMotion[t]
-    dvt = kappa*(vol*vol - vt)*dt + xi*np.sqrt(vt)*V[t]
-    volMotion[t+1] = vt + dvt
-
-S = (r - 0.5*volMotion)*dt + np.sqrt(volMotion)*S
-S[0] = np.ones(paths)*np.log(s0)
-S = np.exp(np.matrix.cumsum(S,axis=0))
-print(time.time() - start)
+#corr = -0.4 # correlation of price to volatility
+#kappa = 10 # speed of adjustment
+#xi = 0.25**2 # volatility of volatility
+#
+#start = time.time()
+#S = np.sqrt(dt)*(-1 + 2*(np.random.random([intervals+1,paths]) > 0.5))
+#V = np.sqrt(dt)*(-1 + 2*(np.random.random([intervals+1,paths]) > 0.5))
+#V = corr*S + np.sqrt(1 - corr*corr)*V
+#
+#
+#volMotion = np.zeros([intervals+1,paths])
+#volMotion[0] = vol*vol*np.ones(paths)
+#
+#for t in range(intervals):
+#    vt = volMotion[t]
+#    dvt = kappa*(vol*vol - vt)*dt + xi*np.sqrt(vt)*V[t]
+#    volMotion[t+1] = vt + dvt
+#
+#S = (r - 0.5*volMotion)*dt + np.sqrt(volMotion)*S
+#S[0] = np.ones(paths)*np.log(s0)
+#S = np.exp(np.matrix.cumsum(S,axis=0))
+#print(time.time() - start)
 
 #%%
 k = 100
@@ -138,12 +138,16 @@ call = np.exp(-r*T)*np.average(callMotion)
 put = np.exp(-r*T)*np.average(putMotion)
 
 #%%
-Z = 110
+Z = 100
+s0 = S[0][0]
 # average barrier
 if s0 < Z: # below
     hitBarrier = np.cumprod(S < Z,axis=0)
-if s0 > Z: # above
+elif s0 > Z: # above
     hitBarrier = np.cumprod(S > Z,axis=0)
+else: # on barrier
+    price = s0
+    payoffMotion = S[0]
 
 paymentTime = np.array(np.max(np.multiply(timeMatrix,hitBarrier),axis=0))
 payoff = np.sum(np.multiply(hitBarrier,S),axis=0) / np.sum(hitBarrier,axis=0)
@@ -151,3 +155,57 @@ price = np.average(np.exp(-r*paymentTime)*payoff)
 
 
 #%%
+# no touch binary, single barrier
+payoutScale = 0.5
+Z = 110
+s0 = S[0][0]
+if s0 < Z: # below
+    hitBarrier = np.cumprod(S < Z,axis=0)
+elif s0 > Z: # above
+    hitBarrier = np.cumprod(S > Z,axis=0)
+else: # on barrier
+    price = 0.0
+    payoffMotion = S[0]*0.0
+
+payoffMotion = (1+payoutScale)*hitBarrier[-1]
+price = np.average(np.exp(-r*T)*payoffMotion)
+
+#%%
+# double no touch
+payoutScale = 0.5
+Z1 = 80
+Z2 = 145
+s0 = S[0][0]
+
+if s0 < Z1 and s0 > Z2:
+    hitBarrier1 = np.cumprod(S < Z1,axis=0)
+    hitBarrier2 = np.cumprod(S > Z2,axis=0)
+elif s0 > Z1 and s0 < Z2:
+    hitBarrier1 = np.cumprod(S > Z1,axis=0)
+    hitBarrier2 = np.cumprod(S < Z2,axis=0)
+elif s0 == Z1 or s0 == Z2:
+    price = 0.0
+    payoffMotion = S[0]*0.0
+else:
+    print('Error : s0 outside barriers, use NoTouchSingle instead')
+
+hitBarrier = np.multiply(hitBarrier1,hitBarrier2)
+payoffMotion = (1+payoutScale)*hitBarrier[-1]
+price = np.average(np.exp(-r*T)*payoffMotion)
+
+#%%
+# cash or nothing binary
+payout = 100
+Z = 110
+s0 = S[0][0]
+
+if s0 < Z: # below
+    hitBarrier = np.cumprod(S < Z,axis=0)
+elif s0 > Z: # above
+    hitBarrier = np.cumprod(S > Z,axis=0)
+else: # on barrier
+    price = 0.0
+    payoffMotion = S[0]*0.0
+
+payoffMotion = hitBarrier[-1]*payout
+price = np.average(np.exp(-r*T)*payoffMotion)
