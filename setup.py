@@ -14,10 +14,10 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 setup(
     # name of package
     # setup using
-    # $ pip install 'name'
+    # $ pip install qcfoptions
     name = 'qcfoptions',
 
-    version = '0.1.1',
+    version = '0.1.2',
     description = 'Option calculator',
 
     # uses readme file to give long description

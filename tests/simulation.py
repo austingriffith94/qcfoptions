@@ -50,3 +50,17 @@ S = (r - 0.5*volMotion)*dt + np.sqrt(volMotion)*S
 S[0] = np.ones(paths)*np.log(s0)
 S = np.exp(np.matrix.cumsum(S,axis=0))
 print(time.time() - start)
+
+#%%
+
+
+
+
+
+
+
+
+
+
+
+
