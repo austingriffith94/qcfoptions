@@ -6,7 +6,7 @@ import scipy.stats as sctats
 import time
 
 # simulation payoffs
-def _EuroSim(S,k,r,T):
+def EuroSim(S,k,r,T):
     callMotion = (S[-1] - k).clip(0)
     putMotion = (k - S[-1]).clip(0)
 
@@ -14,7 +14,7 @@ def _EuroSim(S,k,r,T):
     put = np.exp(-r*T)*np.average(putMotion)
     return([[call,put],[callMotion,putMotion]])
 
-def _AsianGeoFixSim(S,k,r,T):
+def AsianGeoFixSim(S,k,r,T):
     avg = sctats.gmean(S,axis=0)
     callMotion = (avg - k).clip(0)
     putMotion = (k - avg).clip(0)
@@ -23,7 +23,7 @@ def _AsianGeoFixSim(S,k,r,T):
     put = np.exp(-r*T)*np.average(putMotion)
     return([[call,put],[callMotion,putMotion]])
 
-def _AsianGeoFloatSim(S,m,r,T):
+def AsianGeoFloatSim(S,m,r,T):
     avg = sctats.gmean(S,axis=0)
     callMotion = (S[-1] - m*avg).clip(0)
     putMotion = (m*avg - S[-1]).clip(0)
@@ -32,7 +32,7 @@ def _AsianGeoFloatSim(S,m,r,T):
     put = np.exp(-r*T)*np.average(putMotion)
     return([[call,put],[callMotion,putMotion]])
 
-def _AsianArithFixSim(S,k,r,T):
+def AsianArithFixSim(S,k,r,T):
     avg = np.average(S,axis=0)
     callMotion = (avg - k).clip(0)
     putMotion = (k - avg).clip(0)
@@ -41,7 +41,7 @@ def _AsianArithFixSim(S,k,r,T):
     put = np.exp(-r*T)*np.average(putMotion)
     return([[call,put],[callMotion,putMotion]])
 
-def _AsianArithFloatSim(S,m,r,T):
+def AsianArithFloatSim(S,m,r,T):
     avg = np.average(S,axis=0)
     callMotion = (S[-1] - m*avg).clip(0)
     putMotion = (m*avg - S[-1]).clip(0)
@@ -51,7 +51,7 @@ def _AsianArithFloatSim(S,m,r,T):
     put = np.exp(-r*T)*np.average(putMotion)
     return([[call,put],[callMotion,putMotion]])
 
-def _PowerSim(S,k,r,T,n):
+def PowerSim(S,k,r,T,n):
     power = np.power(S[-1],n)
     callMotion = (power - k).clip(0)
     putMotion = (k - power).clip(0)
@@ -60,7 +60,7 @@ def _PowerSim(S,k,r,T,n):
     put = np.exp(-r*T)*np.average(putMotion)
     return([[call,put],[callMotion,putMotion]])
 
-def _PowerStrikeSim(S,k,r,T,n):
+def PowerStrikeSim(S,k,r,T,n):
     powerS = np.power(S[-1],n)
     callMotion = (powerS - k**n).clip(0)
     putMotion = (k**n - powerS).clip(0)
@@ -69,7 +69,7 @@ def _PowerStrikeSim(S,k,r,T,n):
     put = np.exp(-r*T)*np.average(putMotion)
     return([[call,put],[callMotion,putMotion]])
 
-def _AvgBarrierSim(S,Z,r,timeMatrix):
+def AvgBarrierSim(S,Z,r,timeMatrix):
     s0 = S[0][0]
     if s0 < Z: # below
         hitBarrier = np.cumprod(S < Z,axis=0)
@@ -84,7 +84,7 @@ def _AvgBarrierSim(S,Z,r,timeMatrix):
     payoffMotion = np.sum(np.multiply(hitBarrier,S),axis=0) / np.sum(hitBarrier,axis=0)
     price = np.average(np.exp(-r*paymentTime)*payoffMotion)
 
-def _NoTouchSingleSim(S,Z,r,T,payoutScale):
+def NoTouchSingleSim(S,Z,r,T,payoutScale):
     s0 = S[0][0]
     if s0 < Z: # below
         hitBarrier = np.cumprod(S < Z,axis=0)
@@ -99,7 +99,7 @@ def _NoTouchSingleSim(S,Z,r,T,payoutScale):
     price = np.average(np.exp(-r*T)*payoffMotion)
     return([price,payoffMotion])
 
-def _NoTouchDoubleSim(S,Z1,Z2,r,T,payoutScale):
+def NoTouchDoubleSim(S,Z1,Z2,r,T,payoutScale):
     s0 = S[0][0]
     if s0 < Z1 and s0 > Z2:
         hitBarrier1 = np.cumprod(S < Z1,axis=0)
@@ -120,7 +120,7 @@ def _NoTouchDoubleSim(S,Z1,Z2,r,T,payoutScale):
     price = np.average(np.exp(-r*T)*payoffMotion)
     return([price,payoffMotion])
 
-def _CashOrNothingSim(S,Z,r,T,payout):
+def CashOrNothingSim(S,Z,r,T,payout):
     s0 = S[0][0]
     if s0 < Z: # below
         hitBarrier = np.cumprod(S < Z,axis=0)
@@ -135,7 +135,7 @@ def _CashOrNothingSim(S,Z,r,T,payout):
     price = np.average(np.exp(-r*T)*payoffMotion)
     return([price,payoffMotion])
 
-def simpleSim(s0,r,T,vol,dt,paths):
+def SimpleSim(s0,r,T,vol,dt,paths):
     '''
     Simulate the motion of an underlying stock that follows a
     standard Weiner process for T/dt steps over a specified number of paths
@@ -176,14 +176,14 @@ def simpleSim(s0,r,T,vol,dt,paths):
 
     Examples
     --------
-    >>> from qcfoptions.simulation import simpleSim
+    >>> from qcfoptions.simulation import SimpleSim
     >>> s0 = 1
         r = 0.015
         T = 2
         vol = 0.25
         dt = 0.001
         paths = 1000
-    >>> simpleSim(s0,r,T,vol,dt,paths)
+    >>> SimpleSim(s0,r,T,vol,dt,paths)
     array([[ 1.        ,  1.        ,  1.        , ...,  1.        ,
          1.        ,  1.        ],
        [ 1.00792065,  1.00792065,  1.00792065, ...,  1.00792065,
@@ -208,7 +208,7 @@ def simpleSim(s0,r,T,vol,dt,paths):
     S = np.exp(np.matrix.cumsum(S,axis=0))
     return(S)
 
-def hestonSim(s0,r,T,vol,phi,kappa,xi,dt,paths):
+def HestonSim(s0,r,T,vol,phi,kappa,xi,dt,paths):
     '''
     Simulate the motion of an underlying stock that follows a
     standard Weiner process for T/dt steps over a specified number
@@ -258,7 +258,7 @@ def hestonSim(s0,r,T,vol,phi,kappa,xi,dt,paths):
 
     Examples
     --------
-    >>> from qcfoptions.simulation import hestonSim
+    >>> from qcfoptions.simulation import HestonSim
     >>> s0 = 1
         r = 0.015
         T = 2
@@ -268,7 +268,7 @@ def hestonSim(s0,r,T,vol,phi,kappa,xi,dt,paths):
         kappa = 8
         dt = 0.001
         paths = 1000
-    >>> hestonSim(s0,r,T,vol,dt,paths)
+    >>> HestonSim(s0,r,T,vol,dt,paths)
     [array([[ 1.        ,  1.        ,  1.        , ...,  1.        ,
           1.        ,  1.        ],
         [ 0.99220026,  0.99220026,  0.99220026, ...,  1.00768681,
@@ -317,7 +317,7 @@ def hestonSim(s0,r,T,vol,phi,kappa,xi,dt,paths):
     return([S, volMotion])
 
 
-class simple:
+class Simple:
     '''
     Simulate the motion of an underlying stock that follows a standard
     Weiner process for T/dt steps over a specified number of paths.
@@ -377,10 +377,10 @@ class simple:
         self.timeMatrix = np.matmul(timeInt,np.matrix(np.ones(paths)))
 
         start = time.time()
-        self.S = simpleSim(s0,r,T,vol,dt,paths)
+        self.S = SimpleSim(s0,r,T,vol,dt,paths)
         self.simtime = time.time() - start
 
-class heston:
+class Heston:
     '''
     Simulate the motion of an underlying stock that follows a standard
     Weiner process for T/dt steps over a specified number of paths,
@@ -453,7 +453,7 @@ class heston:
         self.timeMatrix = np.matmul(timeInt,np.matrix(np.ones(paths)))
 
         start = time.time()
-        [self.S, self.volMotion] = hestonSim(s0,r,vol,phi,kappa,xi,dt,intervals,paths)
+        [self.S, self.volMotion] = HestonSim(s0,r,vol,phi,kappa,xi,dt,intervals,paths)
         self.simtime = time.time() - start
 
 
