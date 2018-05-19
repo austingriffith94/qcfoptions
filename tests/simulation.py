@@ -7,6 +7,66 @@ import time
 
 # simulation payoffs
 def EuroSim(S,k,r,T):
+    '''
+    Use simulated underlying to determine the price of a European
+    Call / Put option
+    Payoffs are of the form :
+    C = max(S - K, 0)
+    P = max(K - S, 0)
+
+    Parameters
+    ----------
+    S : numpy.array
+        Simulated stock price, want to be of the form such that the first row
+        is the initial stock price, with subsequent rows representing an
+        additional time step increase, and each column is a simulated path of
+        the asset
+    k : number of any type (int, float8, float64 etc.)
+        Strike value of option, determined at initiation
+    r : number of any type (int, float8, float64 etc.)
+        Risk free interest rate, implied constant till expiration
+    T : number of any type (int, float8, float64 etc.)
+        Time till expiration for option
+
+    Returns
+    -------
+    [[call,put],[callMotion,putMotion]] : list of pair of lists, first of
+        floats, second of one-dimensional numpy.array's
+        First list is the call and put price, determined by the average
+        of the simulated stock payoffs
+        Second list is the call and put simulated paths payoffs at expiration,
+        NOT discounted
+
+    * the accuracy of pricing is dependent on the number of time steps and
+    simulated paths chosen for the underlying stochastic motion
+
+    Examples
+    --------
+    >>> from simulation import EuroSim
+    >>> import numpy as np
+    >>> s0 = 1
+        r = 0.015
+        T = 0.5
+        vol = 0.25
+        dt = 0.1
+        paths = 5
+        k = 0.8
+
+    >>> S = np.array([[ 1.        ,  1.        ,  1.        ,  1.        ,  1.        ],
+               [ 0.92248705,  1.08050869,  0.92248705,  1.08050869,  0.92248705],
+               [ 0.85098236,  0.99675528,  0.85098236,  0.99675528,  0.99675528],
+               [ 0.91949383,  0.91949383,  0.91949383,  1.07700274,  0.91949383],
+               [ 0.99352108,  0.99352108,  0.84822115,  1.16371082,  0.99352108],
+               [ 0.91651033,  1.07350816,  0.78247303,  1.07350816,  1.07350816]])
+    >>> a = EuroSim(S,k,r,T)
+    >>> print(a[0])
+        print(a[1][0])
+        print(a[1][1])
+        [0.1860066674534242, 0.0034792018881946852]
+        [ 0.11651033  0.27350816  0.          0.27350816  0.27350816]
+        [ 0.          0.          0.01752697  0.          0.        ]
+
+    '''
     callMotion = (S[-1] - k).clip(0)
     putMotion = (k - S[-1]).clip(0)
 
@@ -15,6 +75,66 @@ def EuroSim(S,k,r,T):
     return([[call,put],[callMotion,putMotion]])
 
 def AsianGeoFixSim(S,k,r,T):
+    '''
+    Use simulated underlying to determine the price of an Asian Geometric
+    Average Call / Put option with a fixed strike price
+    Payoffs are of the form :
+    C = max(AVG_geo - K, 0)
+    P = max(K - AVG_geo, 0)
+
+    Parameters
+    ----------
+    S : numpy.array
+        Simulated stock price, want to be of the form such that the first row
+        is the initial stock price, with subsequent rows representing an
+        additional time step increase, and each column is a simulated path of
+        the asset
+    k : number of any type (int, float8, float64 etc.)
+        Strike value of option, determined at initiation
+    r : number of any type (int, float8, float64 etc.)
+        Risk free interest rate, implied constant till expiration
+    T : number of any type (int, float8, float64 etc.)
+        Time till expiration for option
+
+    Returns
+    -------
+    [[call,put],[callMotion,putMotion]] : list of pair of lists, first of
+        floats, second of one-dimensional numpy.array's
+        First list is the call and put price, determined by the average
+        of the simulated stock payoffs
+        Second list is the call and put simulated paths payoffs at expiration,
+        NOT discounted
+
+    * the accuracy of pricing is dependent on the number of time steps and
+    simulated paths chosen for the underlying stochastic motion
+
+    Examples
+    --------
+    >>> from simulation import AsianGeoFixSim
+    >>> import numpy as np
+    >>> s0 = 1
+        r = 0.015
+        T = 0.5
+        vol = 0.25
+        dt = 0.1
+        paths = 5
+        k = 0.8
+
+    >>> S = np.array([[ 1.        ,  1.        ,  1.        ,  1.        ,  1.        ],
+               [ 0.92248705,  1.08050869,  0.92248705,  1.08050869,  0.92248705],
+               [ 0.85098236,  0.99675528,  0.85098236,  0.99675528,  0.99675528],
+               [ 0.91949383,  0.91949383,  0.91949383,  1.07700274,  0.91949383],
+               [ 0.99352108,  0.99352108,  0.84822115,  1.16371082,  0.99352108],
+               [ 0.91651033,  1.07350816,  0.78247303,  1.07350816,  1.07350816]])
+    >>> a = AsianGeoFixSim(S,k,r,T)
+    >>> print(a[0])
+        print(a[1][0])
+        print(a[1][1])
+        [0.17326664943627884, 0.0]
+        [ 0.1324467   0.20915531  0.08457506  0.26376902  0.18290908]
+        [ 0.  0.  0.  0.  0.]
+
+    '''
     avg = sctats.gmean(S,axis=0)
     callMotion = (avg - k).clip(0)
     putMotion = (k - avg).clip(0)
@@ -24,6 +144,66 @@ def AsianGeoFixSim(S,k,r,T):
     return([[call,put],[callMotion,putMotion]])
 
 def AsianGeoFloatSim(S,m,r,T):
+    '''
+    Use simulated underlying to determine the price of an Asian Geometric
+    Average Call / Put option with a floating strike price
+    Payoffs are of the form :
+    C = max(S - m*AVG_geo, 0)
+    P = max(m*AVG_geo - S, 0)
+
+    Parameters
+    ----------
+    S : numpy.array
+        Simulated stock price, want to be of the form such that the first row
+        is the initial stock price, with subsequent rows representing an
+        additional time step increase, and each column is a simulated path of
+        the asset
+    m : number of any type (int, float8, float64 etc.)
+        Strike value scaler of option, determined at initiation
+    r : number of any type (int, float8, float64 etc.)
+        Risk free interest rate, implied constant till expiration
+    T : number of any type (int, float8, float64 etc.)
+        Time till expiration for option
+
+    Returns
+    -------
+    [[call,put],[callMotion,putMotion]] : list of pair of lists, first of
+        floats, second of one-dimensional numpy.array's
+        First list is the call and put price, determined by the average
+        of the simulated stock payoffs
+        Second list is the call and put simulated paths payoffs at expiration,
+        NOT discounted
+
+    * the accuracy of pricing is dependent on the number of time steps and
+    simulated paths chosen for the underlying stochastic motion
+
+    Examples
+    --------
+    >>> from simulation import AsianGeoFloatSim
+    >>> import numpy as np
+    >>> s0 = 1
+        r = 0.015
+        T = 0.5
+        vol = 0.25
+        dt = 0.1
+        paths = 5
+        m = 0.8
+
+    >>> S = np.array([[ 1.        ,  1.        ,  1.        ,  1.        ,  1.        ],
+               [ 0.92248705,  1.08050869,  0.92248705,  1.08050869,  0.92248705],
+               [ 0.85098236,  0.99675528,  0.85098236,  0.99675528,  0.99675528],
+               [ 0.91949383,  0.91949383,  0.91949383,  1.07700274,  0.91949383],
+               [ 0.99352108,  0.99352108,  0.84822115,  1.16371082,  0.99352108],
+               [ 0.91651033,  1.07350816,  0.78247303,  1.07350816,  1.07350816]])
+    >>> a = AsianGeoFloatSim(S,k,r,T)
+    >>> print(a[0])
+        print(a[1][0])
+        print(a[1][1])
+        [0.20271863478726854, 0.0]
+        [ 0.17055297  0.26618391  0.07481299  0.22249294  0.2871809 ]
+        [ 0.  0.  0.  0.  0.]
+
+    '''
     avg = sctats.gmean(S,axis=0)
     callMotion = (S[-1] - m*avg).clip(0)
     putMotion = (m*avg - S[-1]).clip(0)
@@ -33,6 +213,66 @@ def AsianGeoFloatSim(S,m,r,T):
     return([[call,put],[callMotion,putMotion]])
 
 def AsianArithFixSim(S,k,r,T):
+    '''
+    Use simulated underlying to determine the price of an Asian Arithmetic
+    Average Call / Put option with a fixed strike price
+    Payoffs are of the form :
+    C = max(AVG_arithmetic - K, 0)
+    P = max(K - AVG_arithmetic, 0)
+
+    Parameters
+    ----------
+    S : numpy.array
+        Simulated stock price, want to be of the form such that the first row
+        is the initial stock price, with subsequent rows representing an
+        additional time step increase, and each column is a simulated path of
+        the asset
+    k : number of any type (int, float8, float64 etc.)
+        Strike value of option, determined at initiation
+    r : number of any type (int, float8, float64 etc.)
+        Risk free interest rate, implied constant till expiration
+    T : number of any type (int, float8, float64 etc.)
+        Time till expiration for option
+
+    Returns
+    -------
+    [[call,put],[callMotion,putMotion]] : list of pair of lists, first of
+        floats, second of one-dimensional numpy.array's
+        First list is the call and put price, determined by the average
+        of the simulated stock payoffs
+        Second list is the call and put simulated paths payoffs at expiration,
+        NOT discounted
+
+    * the accuracy of pricing is dependent on the number of time steps and
+    simulated paths chosen for the underlying stochastic motion
+
+    Examples
+    --------
+    >>> from simulation import AsianArithFixSim
+    >>> import numpy as np
+    >>> s0 = 1
+        r = 0.015
+        T = 0.5
+        vol = 0.25
+        dt = 0.1
+        paths = 5
+        k = 0.8
+
+    >>> S = np.array([[ 1.        ,  1.        ,  1.        ,  1.        ,  1.        ],
+               [ 0.92248705,  1.08050869,  0.92248705,  1.08050869,  0.92248705],
+               [ 0.85098236,  0.99675528,  0.85098236,  0.99675528,  0.99675528],
+               [ 0.91949383,  0.91949383,  0.91949383,  1.07700274,  0.91949383],
+               [ 0.99352108,  0.99352108,  0.84822115,  1.16371082,  0.99352108],
+               [ 0.91651033,  1.07350816,  0.78247303,  1.07350816,  1.07350816]])
+    >>> a = AsianArithFixSim(S,k,r,T)
+    >>> print(a[0])
+        print(a[1][0])
+        print(a[1][1])
+        [0.17493936228974066, 0.0]
+        [ 0.13383244  0.21063117  0.08727624  0.26524762  0.18429423]
+        [ 0.  0.  0.  0.  0.]
+
+    '''
     avg = np.average(S,axis=0)
     callMotion = (avg - k).clip(0)
     putMotion = (k - avg).clip(0)
@@ -42,6 +282,66 @@ def AsianArithFixSim(S,k,r,T):
     return([[call,put],[callMotion,putMotion]])
 
 def AsianArithFloatSim(S,m,r,T):
+    '''
+    Use simulated underlying to determine the price of an Asian Arithmetic
+    Average Call / Put option with a floating strike price
+    Payoffs are of the form :
+    C = max(S - m*AVG_arithmetic, 0)
+    P = max(m*AVG_arithmetic - S, 0)
+
+    Parameters
+    ----------
+    S : numpy.array
+        Simulated stock price, want to be of the form such that the first row
+        is the initial stock price, with subsequent rows representing an
+        additional time step increase, and each column is a simulated path of
+        the asset
+    m : number of any type (int, float8, float64 etc.)
+        Strike value scaler of option, determined at initiation
+    r : number of any type (int, float8, float64 etc.)
+        Risk free interest rate, implied constant till expiration
+    T : number of any type (int, float8, float64 etc.)
+        Time till expiration for option
+
+    Returns
+    -------
+    [[call,put],[callMotion,putMotion]] : list of pair of lists, first of
+        floats, second of one-dimensional numpy.array's
+        First list is the call and put price, determined by the average
+        of the simulated stock payoffs
+        Second list is the call and put simulated paths payoffs at expiration,
+        NOT discounted
+
+    * the accuracy of pricing is dependent on the number of time steps and
+    simulated paths chosen for the underlying stochastic motion
+
+    Examples
+    --------
+    >>> from simulation import AsianArithFloatSim
+    >>> import numpy as np
+    >>> s0 = 1
+        r = 0.015
+        T = 0.5
+        vol = 0.25
+        dt = 0.1
+        paths = 5
+        m = 0.8
+
+    >>> S = np.array([[ 1.        ,  1.        ,  1.        ,  1.        ,  1.        ],
+               [ 0.92248705,  1.08050869,  0.92248705,  1.08050869,  0.92248705],
+               [ 0.85098236,  0.99675528,  0.85098236,  0.99675528,  0.99675528],
+               [ 0.91949383,  0.91949383,  0.91949383,  1.07700274,  0.91949383],
+               [ 0.99352108,  0.99352108,  0.84822115,  1.16371082,  0.99352108],
+               [ 0.91651033,  1.07350816,  0.78247303,  1.07350816,  1.07350816]])
+    >>> a = AsianArithFloatSim(S,k,r,T)
+    >>> print(a[0])
+        print(a[1][0])
+        print(a[1][1])
+        [0.20138046450449909, 0.0]
+        [ 0.16944438  0.26500322  0.07265204  0.22131007  0.28607277]
+        [ 0.  0.  0.  0.  0.]
+
+    '''
     avg = np.average(S,axis=0)
     callMotion = (S[-1] - m*avg).clip(0)
     putMotion = (m*avg - S[-1]).clip(0)
