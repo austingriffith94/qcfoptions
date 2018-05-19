@@ -24,8 +24,7 @@ def Euro(s,k,r,T,vol,q):
         Risk free interest rate, implied constant till expiration
     T : number of any type (int, float8, float64 etc.), numpy array of any type
         should the user wish to have a list of values output with varying T
-        Time till expiration for option, can be interpreted as 'T - t' should
-        the option already be initiated, and be 't' time from time = 0
+        Time till expiration for option
     vol : number of any type (int, float8, float64 etc.), numpy array of any type
         should the user wish to have a list of values output with varying vol
         Volatility of underlying, implied constant till expiration in Black
@@ -94,8 +93,7 @@ def AsianGeometric(s,k,r,T,vol,q):
         Risk free interest rate, implied constant till expiration
     T : number of any type (int, float8, float64 etc.), numpy array of any type
         should the user wish to have a list of values output with varying T
-        Time till expiration for option, can be interpreted as 'T - t' should
-        the option already be initiated, and be 't' time from time = 0
+        Time till expiration for option
     vol : number of any type (int, float8, float64 etc.), numpy array of any type
         should the user wish to have a list of values output with varying vol
         Volatility of underlying, implied constant till expiration in Black
@@ -167,8 +165,7 @@ def AsianArithmetic(s,k,r,T,vol,q):
         Risk free interest rate, implied constant till expiration
     T : number of any type (int, float8, float64 etc.), numpy array of any type
         should the user wish to have a list of values output with varying T
-        Time till expiration for option, can be interpreted as 'T - t' should
-        the option already be initiated, and be 't' time from time = 0
+        Time till expiration for option
     vol : number of any type (int, float8, float64 etc.), numpy array of any type
         should the user wish to have a list of values output with varying vol
         Volatility of underlying, implied constant till expiration in Black
@@ -245,8 +242,7 @@ def Power(s,k,r,T,vol,q,n):
         Risk free interest rate, implied constant till expiration
     T : number of any type (int, float8, float64 etc.), numpy array of any type
         should the user wish to have a list of values output with varying T
-        Time till expiration for option, can be interpreted as 'T - t' should
-        the option already be initiated, and be 't' time from time = 0
+        Time till expiration for option
     vol : number of any type (int, float8, float64 etc.), numpy array of any type
         should the user wish to have a list of values output with varying vol
         Volatility of underlying, implied constant till expiration in Black
@@ -320,8 +316,7 @@ def PowerStrike(s,k,r,T,vol,q,n):
         Risk free interest rate, implied constant till expiration
     T : number of any type (int, float8, float64 etc.), numpy array of any type
         should the user wish to have a list of values output with varying T
-        Time till expiration for option, can be interpreted as 'T - t' should
-        the option already be initiated, and be 't' time from time = 0
+        Time till expiration for option
     vol : number of any type (int, float8, float64 etc.), numpy array of any type
         should the user wish to have a list of values output with varying vol
         Volatility of underlying, implied constant till expiration in Black
@@ -388,8 +383,7 @@ def Margrabe(s,s2,T,vol,vol2,q,q2,corr):
         Spot value of underlying assets 1 and 2 at current time, t
     T : number of any type (int, float8, float64 etc.), numpy array of any type
         should the user wish to have a list of values output with varying T
-        Time till expiration for option, can be interpreted as 'T - t' should
-        the option already be initiated, and be 't' time from time = 0
+        Time till expiration for option
     vol1 and vol2 : number of any type (int, float8, float64 etc.), numpy array
         of any type should the user wish to have a list of values output with
         varying vol
@@ -473,8 +467,7 @@ def Lookback(s,M,r,T,vol,q):
         Risk free interest rate, implied constant till expiration
     T : number of any type (int, float8, float64 etc.), numpy array of any type
         should the user wish to have a list of values output with varying T
-        Time till expiration for option, can be interpreted as 'T - t' should
-        the option already be initiated, and be 't' time from time = 0
+        Time till expiration for option
     vol : number of any type (int, float8, float64 etc.), numpy array of any type
         should the user wish to have a list of values output with varying vol
         Volatility of underlying, implied constant till expiration in Black
