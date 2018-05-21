@@ -47,17 +47,13 @@ def EuroSim(S,k,r,T):
     >>> s0 = 1
         r = 0.015
         T = 0.5
-        vol = 0.25
-        dt = 0.1
-        paths = 5
         k = 0.8
-
     >>> S = np.array([[ 1.        ,  1.        ,  1.        ,  1.        ,  1.        ],
-               [ 0.92248705,  1.08050869,  0.92248705,  1.08050869,  0.92248705],
-               [ 0.85098236,  0.99675528,  0.85098236,  0.99675528,  0.99675528],
-               [ 0.91949383,  0.91949383,  0.91949383,  1.07700274,  0.91949383],
-               [ 0.99352108,  0.99352108,  0.84822115,  1.16371082,  0.99352108],
-               [ 0.91651033,  1.07350816,  0.78247303,  1.07350816,  1.07350816]])
+                   [ 0.92248705,  1.08050869,  0.92248705,  1.08050869,  0.92248705],
+                   [ 0.85098236,  0.99675528,  0.85098236,  0.99675528,  0.99675528],
+                   [ 0.91949383,  0.91949383,  0.91949383,  1.07700274,  0.91949383],
+                   [ 0.99352108,  0.99352108,  0.84822115,  1.16371082,  0.99352108],
+                   [ 0.91651033,  1.07350816,  0.78247303,  1.07350816,  1.07350816]])
     >>> a = EuroSim(S,k,r,T)
     >>> print(a[0])
         print(a[1][0])
@@ -115,17 +111,13 @@ def AsianGeoFixSim(S,k,r,T):
     >>> s0 = 1
         r = 0.015
         T = 0.5
-        vol = 0.25
-        dt = 0.1
-        paths = 5
         k = 0.8
-
     >>> S = np.array([[ 1.        ,  1.        ,  1.        ,  1.        ,  1.        ],
-               [ 0.92248705,  1.08050869,  0.92248705,  1.08050869,  0.92248705],
-               [ 0.85098236,  0.99675528,  0.85098236,  0.99675528,  0.99675528],
-               [ 0.91949383,  0.91949383,  0.91949383,  1.07700274,  0.91949383],
-               [ 0.99352108,  0.99352108,  0.84822115,  1.16371082,  0.99352108],
-               [ 0.91651033,  1.07350816,  0.78247303,  1.07350816,  1.07350816]])
+                   [ 0.92248705,  1.08050869,  0.92248705,  1.08050869,  0.92248705],
+                   [ 0.85098236,  0.99675528,  0.85098236,  0.99675528,  0.99675528],
+                   [ 0.91949383,  0.91949383,  0.91949383,  1.07700274,  0.91949383],
+                   [ 0.99352108,  0.99352108,  0.84822115,  1.16371082,  0.99352108],
+                   [ 0.91651033,  1.07350816,  0.78247303,  1.07350816,  1.07350816]])
     >>> a = AsianGeoFixSim(S,k,r,T)
     >>> print(a[0])
         print(a[1][0])
@@ -184,17 +176,13 @@ def AsianGeoFloatSim(S,m,r,T):
     >>> s0 = 1
         r = 0.015
         T = 0.5
-        vol = 0.25
-        dt = 0.1
-        paths = 5
         m = 0.8
-
     >>> S = np.array([[ 1.        ,  1.        ,  1.        ,  1.        ,  1.        ],
-               [ 0.92248705,  1.08050869,  0.92248705,  1.08050869,  0.92248705],
-               [ 0.85098236,  0.99675528,  0.85098236,  0.99675528,  0.99675528],
-               [ 0.91949383,  0.91949383,  0.91949383,  1.07700274,  0.91949383],
-               [ 0.99352108,  0.99352108,  0.84822115,  1.16371082,  0.99352108],
-               [ 0.91651033,  1.07350816,  0.78247303,  1.07350816,  1.07350816]])
+                   [ 0.92248705,  1.08050869,  0.92248705,  1.08050869,  0.92248705],
+                   [ 0.85098236,  0.99675528,  0.85098236,  0.99675528,  0.99675528],
+                   [ 0.91949383,  0.91949383,  0.91949383,  1.07700274,  0.91949383],
+                   [ 0.99352108,  0.99352108,  0.84822115,  1.16371082,  0.99352108],
+                   [ 0.91651033,  1.07350816,  0.78247303,  1.07350816,  1.07350816]])
     >>> a = AsianGeoFloatSim(S,k,r,T)
     >>> print(a[0])
         print(a[1][0])
@@ -253,17 +241,13 @@ def AsianArithFixSim(S,k,r,T):
     >>> s0 = 1
         r = 0.015
         T = 0.5
-        vol = 0.25
-        dt = 0.1
-        paths = 5
         k = 0.8
-
     >>> S = np.array([[ 1.        ,  1.        ,  1.        ,  1.        ,  1.        ],
-               [ 0.92248705,  1.08050869,  0.92248705,  1.08050869,  0.92248705],
-               [ 0.85098236,  0.99675528,  0.85098236,  0.99675528,  0.99675528],
-               [ 0.91949383,  0.91949383,  0.91949383,  1.07700274,  0.91949383],
-               [ 0.99352108,  0.99352108,  0.84822115,  1.16371082,  0.99352108],
-               [ 0.91651033,  1.07350816,  0.78247303,  1.07350816,  1.07350816]])
+                   [ 0.92248705,  1.08050869,  0.92248705,  1.08050869,  0.92248705],
+                   [ 0.85098236,  0.99675528,  0.85098236,  0.99675528,  0.99675528],
+                   [ 0.91949383,  0.91949383,  0.91949383,  1.07700274,  0.91949383],
+                   [ 0.99352108,  0.99352108,  0.84822115,  1.16371082,  0.99352108],
+                   [ 0.91651033,  1.07350816,  0.78247303,  1.07350816,  1.07350816]])
     >>> a = AsianArithFixSim(S,k,r,T)
     >>> print(a[0])
         print(a[1][0])
@@ -322,17 +306,13 @@ def AsianArithFloatSim(S,m,r,T):
     >>> s0 = 1
         r = 0.015
         T = 0.5
-        vol = 0.25
-        dt = 0.1
-        paths = 5
         m = 0.8
-
     >>> S = np.array([[ 1.        ,  1.        ,  1.        ,  1.        ,  1.        ],
-               [ 0.92248705,  1.08050869,  0.92248705,  1.08050869,  0.92248705],
-               [ 0.85098236,  0.99675528,  0.85098236,  0.99675528,  0.99675528],
-               [ 0.91949383,  0.91949383,  0.91949383,  1.07700274,  0.91949383],
-               [ 0.99352108,  0.99352108,  0.84822115,  1.16371082,  0.99352108],
-               [ 0.91651033,  1.07350816,  0.78247303,  1.07350816,  1.07350816]])
+                   [ 0.92248705,  1.08050869,  0.92248705,  1.08050869,  0.92248705],
+                   [ 0.85098236,  0.99675528,  0.85098236,  0.99675528,  0.99675528],
+                   [ 0.91949383,  0.91949383,  0.91949383,  1.07700274,  0.91949383],
+                   [ 0.99352108,  0.99352108,  0.84822115,  1.16371082,  0.99352108],
+                   [ 0.91651033,  1.07350816,  0.78247303,  1.07350816,  1.07350816]])
     >>> a = AsianArithFloatSim(S,k,r,T)
     >>> print(a[0])
         print(a[1][0])
@@ -352,6 +332,65 @@ def AsianArithFloatSim(S,m,r,T):
     return([[call,put],[callMotion,putMotion]])
 
 def PowerSim(S,k,r,T,n):
+    '''
+    Use simulated underlying to determine the price of a Power Call / Put
+    option with a fixed strike price
+    Payoffs are of the form :
+    C = max(S**n - K, 0)
+    P = max(K - S**n, 0)
+
+    Parameters
+    ----------
+    S : numpy.array
+        Simulated stock price, want to be of the form such that the first row
+        is the initial stock price, with subsequent rows representing an
+        additional time step increase, and each column is a simulated path of
+        the asset
+    k : number of any type (int, float8, float64 etc.)
+        Strike value of option, determined at initiation
+    r : number of any type (int, float8, float64 etc.)
+        Risk free interest rate, implied constant till expiration
+    T : number of any type (int, float8, float64 etc.)
+        Time till expiration for option
+    n : number of any type (int, float8, float64 etc.)
+        Power the underlying is raised to at expiration
+
+    Returns
+    -------
+    [[call,put],[callMotion,putMotion]] : list of pair of lists, first of
+        floats, second of one-dimensional numpy.array's
+        First list is the call and put price, determined by the average
+        of the simulated stock payoffs
+        Second list is the call and put simulated paths payoffs at expiration,
+        NOT discounted
+
+    * the accuracy of pricing is dependent on the number of time steps and
+    simulated paths chosen for the underlying stochastic motion
+
+    Examples
+    --------
+    >>> from simulation import PowerSim
+    >>> import numpy as np
+    >>> s0 = 1
+        r = 0.015
+        T = 0.5
+        k = 0.8
+        n = 2.5
+    >>> S = np.array([[ 1.        ,  1.        ,  1.        ,  1.        ,  1.        ],
+                   [ 0.92248705,  1.08050869,  0.92248705,  1.08050869,  0.92248705],
+                   [ 0.85098236,  0.99675528,  0.85098236,  0.99675528,  0.99675528],
+                   [ 0.91949383,  0.91949383,  0.91949383,  1.07700274,  0.91949383],
+                   [ 0.99352108,  0.99352108,  0.84822115,  1.16371082,  0.99352108],
+                   [ 0.91651033,  1.07350816,  0.78247303,  1.07350816,  1.07350816]])
+    >>> a = PowerSim(S,k,r,T)
+    >>> print(a[0])
+        print(a[1][0])
+        print(a[1][1])
+        [0.23547457653967713, 0.051295140170868392]
+        [ 0.00416175  0.39402488  0.          0.39402488  0.39402488]
+        [ 0.         0.         0.2584065  0.         0.       ]
+
+    '''
     power = np.power(S[-1],n)
     callMotion = (power - k).clip(0)
     putMotion = (k - power).clip(0)
@@ -361,6 +400,65 @@ def PowerSim(S,k,r,T,n):
     return([[call,put],[callMotion,putMotion]])
 
 def PowerStrikeSim(S,k,r,T,n):
+    '''
+    Use simulated underlying to determine the price of a Power Call / Put
+    option with a fixed strike price
+    Payoffs are of the form :
+    C = max(S**n - K**n, 0)
+    P = max(K**n - S**n, 0)
+
+    Parameters
+    ----------
+    S : numpy.array
+        Simulated stock price, want to be of the form such that the first row
+        is the initial stock price, with subsequent rows representing an
+        additional time step increase, and each column is a simulated path of
+        the asset
+    k : number of any type (int, float8, float64 etc.)
+        Strike value of option, determined at initiation
+    r : number of any type (int, float8, float64 etc.)
+        Risk free interest rate, implied constant till expiration
+    T : number of any type (int, float8, float64 etc.)
+        Time till expiration for option
+    n : number of any type (int, float8, float64 etc.)
+        Power the underlying and strike are raised to at expiration
+
+    Returns
+    -------
+    [[call,put],[callMotion,putMotion]] : list of pair of lists, first of
+        floats, second of one-dimensional numpy.array's
+        First list is the call and put price, determined by the average
+        of the simulated stock payoffs
+        Second list is the call and put simulated paths payoffs at expiration,
+        NOT discounted
+
+    * the accuracy of pricing is dependent on the number of time steps and
+    simulated paths chosen for the underlying stochastic motion
+
+    Examples
+    --------
+    >>> from simulation import PowerStrikeSim
+    >>> import numpy as np
+    >>> s0 = 1
+        r = 0.015
+        T = 0.5
+        k = 0.8
+        n = 2.5
+    >>> S = np.array([[ 1.        ,  1.        ,  1.        ,  1.        ,  1.        ],
+                   [ 0.92248705,  1.08050869,  0.92248705,  1.08050869,  0.92248705],
+                   [ 0.85098236,  0.99675528,  0.85098236,  0.99675528,  0.99675528],
+                   [ 0.91949383,  0.91949383,  0.91949383,  1.07700274,  0.91949383],
+                   [ 0.99352108,  0.99352108,  0.84822115,  1.16371082,  0.99352108],
+                   [ 0.91651033,  1.07350816,  0.78247303,  1.07350816,  1.07350816]])
+    >>> a = PowerStrikeSim(S,k,r,T)
+    >>> print(a[0])
+        print(a[1][0])
+        print(a[1][1])
+        [0.41616756263295357, 0.0061218936475492848]
+        [ 0.23172835  0.62159147  0.          0.62159147  0.62159147]
+        [ 0.         0.         0.0308399  0.         0.       ]
+
+    '''
     powerS = np.power(S[-1],n)
     callMotion = (powerS - k**n).clip(0)
     putMotion = (k**n - powerS).clip(0)
@@ -370,6 +468,72 @@ def PowerStrikeSim(S,k,r,T,n):
     return([[call,put],[callMotion,putMotion]])
 
 def AvgBarrierSim(S,Z,r,timeMatrix):
+    '''
+    Use simulated underlying to determine the price of an Average Barrier
+    option, where the payoff is the arithmetic average of the underlying over
+    the time t (t is time when the option hits the barrier), or
+    T (time to expiration) if the barrier is never hit
+    Payoff is of the form :
+    P = AVG_arithmetic_t
+
+    Parameters
+    ----------
+    S : numpy.array
+        Simulated stock price, want to be of the form such that the first row
+        is the initial stock price, with subsequent rows representing an
+        additional time step increase, and each column is a simulated path of
+        the asset
+    Z : number of any type (int, float8, float64 etc.)
+        Barrier value of option, determined at initiation
+    r : number of any type (int, float8, float64 etc.)
+        Risk free interest rate, implied constant till expiration
+    timeMatrix : numpy.matrix
+        Matrix of time intervals, of the same dimensions as the S matrix,
+        should have 'paths' number of columns, and rows that iterate between 0
+        and T by dt
+
+    Returns
+    -------
+    [price,payoffMotion] : list, first is float, second is
+        one-dimensional numpy.array
+        price, is estimated price of the option, determined by the average
+        of the simulated stock payoffs
+        payoffMotion is the simulated paths payoffs at expiration,
+        NOT discounted
+
+    * the accuracy of pricing is dependent on the number of time steps and
+    simulated paths chosen for the underlying stochastic motion
+    ** if the barrier is equal to the initial spot price, the price and
+    payoffMotion will both be equal to the spot price since underlying hits the
+    barrier at initiation
+
+    Examples
+    --------
+    >>> from simulation import AvgBarrierSim
+    >>> import numpy as np
+    >>> s0 = 1
+        r = 0.015
+        T = 0.5
+        z = 1.1
+    >>> S = np.array([[ 1.        ,  1.        ,  1.        ,  1.        ,  1.        ],
+                   [ 0.92248705,  1.08050869,  0.92248705,  1.08050869,  0.92248705],
+                   [ 0.85098236,  0.99675528,  0.85098236,  0.99675528,  0.99675528],
+                   [ 0.91949383,  0.91949383,  0.91949383,  1.07700274,  0.91949383],
+                   [ 0.99352108,  0.99352108,  0.84822115,  1.16371082,  0.99352108],
+                   [ 0.91651033,  1.07350816,  0.78247303,  1.07350816,  1.07350816]])
+    >>> timeMatrix = timeMatrix = np.matrix([[ 0. ,  0. ,  0. ,  0. ,  0. ],
+                                            [ 0.1,  0.1,  0.1,  0.1,  0.1],
+                                            [ 0.2,  0.2,  0.2,  0.2,  0.2],
+                                            [ 0.3,  0.3,  0.3,  0.3,  0.3],
+                                            [ 0.4,  0.4,  0.4,  0.4,  0.4],
+                                            [ 0.5,  0.5,  0.5,  0.5,  0.5]])
+    >>> a = AvgBarrierSim(S,z,r,timeMatrix)
+    >>> print(a[0])
+        print(a[1])
+        0.964284902938
+        [ 0.93383244  1.01063117  0.88727624  1.03856668  0.98429423]
+
+    '''
     s0 = S[0][0]
     if s0 < Z: # below
         hitBarrier = np.cumprod(S < Z,axis=0)
@@ -383,8 +547,70 @@ def AvgBarrierSim(S,Z,r,timeMatrix):
     paymentTime = np.array(np.max(np.multiply(timeMatrix,hitBarrier),axis=0))
     payoffMotion = np.sum(np.multiply(hitBarrier,S),axis=0) / np.sum(hitBarrier,axis=0)
     price = np.average(np.exp(-r*paymentTime)*payoffMotion)
+    return([price,payoffMotion])
 
 def NoTouchSingleSim(S,Z,r,T,payoutScale):
+    '''
+    Use simulated underlying to determine the price of a No Touch Binary
+    option, with a single direction having a barrier. If the barrier is hit
+    prior to expiration, their is no payoff. If it isn't, the payoff has a
+    scale prior to initiation.
+    Payoff is of the form :
+    P = (money down * payoffScale, 0)_Z
+
+    Parameters
+    ----------
+    S : numpy.array
+        Simulated stock price, want to be of the form such that the first row
+        is the initial stock price, with subsequent rows representing an
+        additional time step increase, and each column is a simulated path of
+        the asset
+    Z : number of any type (int, float8, float64 etc.)
+        Barrier value of option, determined at initiation
+    r : number of any type (int, float8, float64 etc.)
+        Risk free interest rate, implied constant till expiration
+    T : number of any type (int, float8, float64 etc.)
+        Time till expiration for option
+    payoffScale : number of any type (int, float8, float64 etc.)
+        Scale value of payoff, should be a percentage (e.g. 20% payoff should
+        be 0.2 when input)
+
+    Returns
+    -------
+    [price,payoffMotion] : list, first is float, second is
+        one-dimensional numpy.array
+        price, is estimated return on option per dollar put down,
+        determined by the average of the simulated stock payoffs
+        payoffMotion is the simulated paths payoffs at expiration,
+        NOT discounted
+
+    * the accuracy of pricing is dependent on the number of time steps and
+    simulated paths chosen for the underlying stochastic motion
+    ** if the barrier is equal to the initial spot price, the price and
+    payoffMotion will both be 0 since underlying hits the barrier at initiation
+
+    Examples
+    --------
+    >>> from simulation import NoTouchSingleSim
+    >>> import numpy as np
+    >>> s0 = 1
+        r = 0.015
+        T = 0.5
+        z = 1.1
+        payoffScale = 0.5
+    >>> S = np.array([[ 1.        ,  1.        ,  1.        ,  1.        ,  1.        ],
+                   [ 0.92248705,  1.08050869,  0.92248705,  1.08050869,  0.92248705],
+                   [ 0.85098236,  0.99675528,  0.85098236,  0.99675528,  0.99675528],
+                   [ 0.91949383,  0.91949383,  0.91949383,  1.07700274,  0.91949383],
+                   [ 0.99352108,  0.99352108,  0.84822115,  1.16371082,  0.99352108],
+                   [ 0.91651033,  1.07350816,  0.78247303,  1.07350816,  1.07350816]])
+    >>> a = NoTouchSingleSim(S,z,r,T,payoffScale)
+    >>> print(a[0])
+        print(a[1])
+        1.19103366578
+        [ 1.5  1.5  1.5  0.   1.5]
+
+    '''
     s0 = S[0][0]
     if s0 < Z: # below
         hitBarrier = np.cumprod(S < Z,axis=0)
@@ -400,6 +626,75 @@ def NoTouchSingleSim(S,Z,r,T,payoutScale):
     return([price,payoffMotion])
 
 def NoTouchDoubleSim(S,Z1,Z2,r,T,payoutScale):
+    '''
+    Use simulated underlying to determine the price of a No Touch Binary
+    option, with both directions having a barrier. If either barrier is hit
+    prior to expiration, their is no payoff. If they aren't hit, the payoff
+    has a scale prior to initiation.
+    Payoff is of the form :
+    P = (money down * payoffScale, 0)_Z1,Z2
+
+    Parameters
+    ----------
+    S : numpy.array
+        Simulated stock price, want to be of the form such that the first row
+        is the initial stock price, with subsequent rows representing an
+        additional time step increase, and each column is a simulated path of
+        the asset
+    Z1 : number of any type (int, float8, float64 etc.)
+        First barrier value of option, determined at initiation
+    Z2 : number of any type (int, float8, float64 etc.)
+        Second barrier value of option, determined at initiation
+    r : number of any type (int, float8, float64 etc.)
+        Risk free interest rate, implied constant till expiration
+    T : number of any type (int, float8, float64 etc.)
+        Time till expiration for option
+    payoffScale : number of any type (int, float8, float64 etc.)
+        Scale value of payoff, should be a percentage (e.g. 20% payoff should
+        be 0.2 when input)
+
+    Returns
+    -------
+    [price,payoffMotion] : list, first is float, second is
+        one-dimensional numpy.array
+        price, is estimated return on option per dollar put down,
+        determined by the average of the simulated stock payoffs
+        payoffMotion is the simulated paths payoffs at expiration,
+        NOT discounted
+
+    * the accuracy of pricing is dependent on the number of time steps and
+    simulated paths chosen for the underlying stochastic motion
+    ** if either barrier is equal to the initial spot price, the price and
+    payoffMotion will both be 0 since underlying hits the barrier at initiation
+    *** if spot is not between Z1 and Z2, then output error, since two
+    barriers will be redundant
+
+    Examples
+    --------
+    >>> from simulation import NoTouchDoubleSim
+    >>> import numpy as np
+    >>> s0 = 1
+        r = 0.015
+        T = 0.5
+        z1 = 1.1
+        z2 = 0.9
+        payoffScale = 0.5
+    >>> S = np.array([[ 1.        ,  1.        ,  1.        ,  1.        ,  1.        ],
+                   [ 0.92248705,  1.08050869,  0.92248705,  1.08050869,  0.92248705],
+                   [ 0.85098236,  0.99675528,  0.85098236,  0.99675528,  0.99675528],
+                   [ 0.91949383,  0.91949383,  0.91949383,  1.07700274,  0.91949383],
+                   [ 0.99352108,  0.99352108,  0.84822115,  1.16371082,  0.99352108],
+                   [ 0.91651033,  1.07350816,  0.78247303,  1.07350816,  1.07350816]])
+    >>> a = NoTouchDoubleSim(S,z,z2,r,T,payoffScale)
+    >>> print(a[0])
+        print(a[1])
+        0.595516832891
+        [ 0.   1.5  0.   0.   1.5]
+    >>> z2 = 1.5
+    >>> NoTouchDoubleSim(S,z,z2,r,T,payoffScale)
+        Error : s0 outside barriers, use NoTouchSingle instead
+
+    '''
     s0 = S[0][0]
     if s0 < Z1 and s0 > Z2:
         hitBarrier1 = np.cumprod(S < Z1,axis=0)
@@ -421,6 +716,67 @@ def NoTouchDoubleSim(S,Z1,Z2,r,T,payoutScale):
     return([price,payoffMotion])
 
 def CashOrNothingSim(S,Z,r,T,payout):
+    '''
+    Use simulated underlying to determine the price of a Cash-or-Nothing
+    option, with a single direction having a barrier. If the barrier is hit
+    prior to expiration, their is no payoff. If it isn't, the payoff is a
+    value determined prior to initiation.
+    Payoff is of the form :
+    P = (payout, 0)_Z
+
+    Parameters
+    ----------
+    S : numpy.array
+        Simulated stock price, want to be of the form such that the first row
+        is the initial stock price, with subsequent rows representing an
+        additional time step increase, and each column is a simulated path of
+        the asset
+    Z : number of any type (int, float8, float64 etc.)
+        Barrier value of option, determined at initiation
+    r : number of any type (int, float8, float64 etc.)
+        Risk free interest rate, implied constant till expiration
+    T : number of any type (int, float8, float64 etc.)
+        Time till expiration for option
+    payout : number of any type (int, float8, float64 etc.)
+        Payout of option, fixed value paid out if the barrier isn't hit by the
+        underlying over the life of the option
+
+    Returns
+    -------
+    [price,payoffMotion] : list, first is float, second is
+        one-dimensional numpy.array
+        price, is estimated price of the option, determined by the average
+        of the simulated stock payoffs
+        payoffMotion is the simulated paths payoffs at expiration,
+        NOT discounted
+
+    * the accuracy of pricing is dependent on the number of time steps and
+    simulated paths chosen for the underlying stochastic motion
+    ** if the barrier is equal to the initial spot price, the price and
+    payoffMotion will both be 0 since underlying hits the barrier at initiation
+
+    Examples
+    --------
+    >>> from simulation import CashOrNothingSim
+    >>> import numpy as np
+    >>> s0 = 1
+        r = 0.015
+        T = 0.5
+        z = 1.1
+        payout = 100
+    >>> S = np.array([[ 1.        ,  1.        ,  1.        ,  1.        ,  1.        ],
+                   [ 0.92248705,  1.08050869,  0.92248705,  1.08050869,  0.92248705],
+                   [ 0.85098236,  0.99675528,  0.85098236,  0.99675528,  0.99675528],
+                   [ 0.91949383,  0.91949383,  0.91949383,  1.07700274,  0.91949383],
+                   [ 0.99352108,  0.99352108,  0.84822115,  1.16371082,  0.99352108],
+                   [ 0.91651033,  1.07350816,  0.78247303,  1.07350816,  1.07350816]])
+    >>> a = CashOrNothingSim(S,z,r,T,payout)
+    >>> print(a[0])
+        print(a[1])
+        79.4022443855
+        [100 100 100   0 100]
+
+    '''
     s0 = S[0][0]
     if s0 < Z: # below
         hitBarrier = np.cumprod(S < Z,axis=0)
@@ -465,7 +821,7 @@ def SimpleSim(s0,r,T,vol,dt,paths):
     Returns
     -------
     S : numpy.array
-        A (T/dt)**paths array that holds the simulated
+        A (T/dt) x paths array that holds the simulated
         stock price values
 
         of the form:
@@ -545,9 +901,9 @@ def HestonSim(s0,r,T,vol,phi,kappa,xi,dt,paths):
     Returns
     -------
     [S, volMotion] : list of numpy.array's
-        A (T/dt)**paths array that holds the simulated
+        A (T/dt) x paths array that holds the simulated
         stock price values
-        A (T/dt)**paths array that holds the simulated
+        A (T/dt) x paths array that holds the simulated
         volatility motion
 
         both of the form:
@@ -622,8 +978,6 @@ class Simple:
     Simulate the motion of an underlying stock that follows a standard
     Weiner process for T/dt steps over a specified number of paths.
 
-    Plot the underlying motion.
-
     Determine the pricing of various options using the simulated stochastic
     motion of the underlying asset.
 
@@ -657,10 +1011,10 @@ class Simple:
         Self
         ----
         timeMatrix : numpy.array
-            A (T/dt)**paths array that holds all the time values, increasing
+            A (T/dt) x paths array that holds all the time values, increasing
             from zero to time T
         S : numpy.array
-            A (T/dt)**paths array that holds the simulated
+            A (T/dt) x paths array that holds the simulated
             stock price values
         simtime : the time to complete the simulation, useful
             in testing efficiency for variable paths and dt
@@ -680,13 +1034,55 @@ class Simple:
         self.S = SimpleSim(s0,r,T,vol,dt,paths)
         self.simtime = time.time() - start
 
+    def Euro(self,k):
+        out = EuroSim(self.S,k,self.r,self.T)
+        return(a)
+
+    def AsianGeoFix(self,k):
+        out = AsianGeoFixSim(self.S,k,self.r,self.T)
+        return(out)
+
+    def AsianArithFix(self,k):
+        out = AsianArithFixSim(self.S,k,self.r,self.T)
+        return(out)
+
+    def AsianGeoFloat(self,m):
+        out = AsianGeoFloatSim(self.S,m,self.r,self.T)
+        return(out)
+
+    def AsianArithFloat(self,m):
+        out = AsianArithFloatSim(self.S,m,self.r,self.T)
+        return(out)
+
+    def Power(self,k,n):
+        out = PowerSim(self.S,k,self.r,self.T,n)
+        return(out)
+
+    def PowerStrike(self,k,n):
+        out = PowerStrikeSim(self.S,k,self.r,self.T,n)
+        return(out)
+
+    def AvgBarrier(self,Z):
+        out = AvgBarrierSim(self.S,Z,self.r,self.timeMatrix)
+        return(out)
+
+    def NoTouchSingle(self,Z,payoutScale):
+        out = NoTouchSingleSim(self.S,Z,self.r,self.T,payoutScale)
+        return(out)
+
+    def NoTouchDouble(self,Z1,Z2,payoutScale):
+        out = NoTouchDoubleSim(self.S,Z1,Z1,self.r,self.T,payoutScale)
+        return(out)
+
+    def CashOrNothing(self,Z,payout):
+        out = CashOrNothingSim(self.S,Z,self.r,self.T,payout)
+        return(out)
+
 class Heston:
     '''
     Simulate the motion of an underlying stock that follows a standard
     Weiner process for T/dt steps over a specified number of paths,
     with stochastic volatility.
-
-    Plot the underlying motion and volatility.
 
     Determine the pricing of various options using the simulated stochastic
     motion of the underlying asset.
@@ -727,13 +1123,13 @@ class Heston:
         Self
         ----
         timeMatrix : numpy.array
-            A (T/dt)**paths array that holds all the time values, increasing
+            A (T/dt) x paths array that holds all the time values, increasing
             from zero to time T
         S : numpy.array
-            A (T/dt)**paths array that holds the simulated
+            A (T/dt) x paths array that holds the simulated
             stock price values
         volMotion : numpy.array
-            A (T/dt)**paths array that holds the simulated
+            A (T/dt) x paths array that holds the simulated
             volatility motion
         simtime : the time to complete the simulation, useful
             in testing efficiency for variable paths and dt
@@ -756,5 +1152,47 @@ class Heston:
         [self.S, self.volMotion] = HestonSim(s0,r,vol,phi,kappa,xi,dt,intervals,paths)
         self.simtime = time.time() - start
 
+    def Euro(self,k):
+        out = EuroSim(self.S,k,self.r,self.T)
+        return(a)
 
+    def AsianGeoFix(self,k):
+        out = AsianGeoFixSim(self.S,k,self.r,self.T)
+        return(out)
+
+    def AsianArithFix(self,k):
+        out = AsianArithFixSim(self.S,k,self.r,self.T)
+        return(out)
+
+    def AsianGeoFloat(self,m):
+        out = AsianGeoFloatSim(self.S,m,self.r,self.T)
+        return(out)
+
+    def AsianArithFloat(self,m):
+        out = AsianArithFloatSim(self.S,m,self.r,self.T)
+        return(out)
+
+    def Power(self,k,n):
+        out = PowerSim(self.S,k,self.r,self.T,n)
+        return(out)
+
+    def PowerStrike(self,k,n):
+        out = PowerStrikeSim(self.S,k,self.r,self.T,n)
+        return(out)
+
+    def AvgBarrier(self,Z):
+        out = AvgBarrierSim(self.S,Z,self.r,self.timeMatrix)
+        return(out)
+
+    def NoTouchSingle(self,Z,payoutScale):
+        out = NoTouchSingleSim(self.S,Z,self.r,self.T,payoutScale)
+        return(out)
+
+    def NoTouchDouble(self,Z1,Z2,payoutScale):
+        out = NoTouchDoubleSim(self.S,Z1,Z1,self.r,self.T,payoutScale)
+        return(out)
+
+    def CashOrNothing(self,Z,payout):
+        out = CashOrNothingSim(self.S,Z,self.r,self.T,payout)
+        return(out)
 
