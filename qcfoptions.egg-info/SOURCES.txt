@@ -6,9 +6,9 @@ setup.py
 qcfoptions/__init__.py
 qcfoptions/barriers.py
 qcfoptions/bsoptions.py
+qcfoptions/simulation.py
 qcfoptions.egg-info/PKG-INFO
 qcfoptions.egg-info/SOURCES.txt
 qcfoptions.egg-info/dependency_links.txt
-qcfoptions.egg-info/not-zip-safe
 qcfoptions.egg-info/requires.txt
 qcfoptions.egg-info/top_level.txt

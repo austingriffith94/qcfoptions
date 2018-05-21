@@ -17,7 +17,7 @@ setup(
     # $ pip install qcfoptions
     name = 'qcfoptions',
 
-    version = '0.1.2',
+    version = '0.1.2.1',
     description = 'Option calculator',
 
     # uses readme file to give long description
@@ -35,8 +35,7 @@ setup(
         'Programming Language :: Python :: 3.6',
     ],
 
-    python_requires='~=3.5',
+    python_requires = '~=3.6',
     packages = ['qcfoptions'],
     install_requires = ['numpy','scipy'],
-    zip_safe = False
     )

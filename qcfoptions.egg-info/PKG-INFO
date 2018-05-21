@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: qcfoptions
-Version: 0.1.2
+Version: 0.1.2.1
 Summary: Option calculator
 Home-page: https://github.com/austingriffith94/qcfoptions
 Author: Austin Griffith
@@ -12,5 +12,5 @@ Platform: UNKNOWN
 Classifier: Development Status :: 2 - Pre-Alpha
 Classifier: License :: OSI Approved :: MIT License
 Classifier: Programming Language :: Python :: 3.6
-Requires-Python: ~=3.5
+Requires-Python: ~=3.6
 Description-Content-Type: text/markdown
