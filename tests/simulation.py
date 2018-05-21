@@ -556,7 +556,7 @@ def NoTouchSingleSim(S,Z,r,T,payoutScale):
     prior to expiration, their is no payoff. If it isn't, the payoff has a
     scale prior to initiation.
     Payoff is of the form :
-    P = (money down * payoffScale, 0)_Z
+    P = (money down * payoutScale, 0)_Z
 
     Parameters
     ----------
@@ -571,7 +571,7 @@ def NoTouchSingleSim(S,Z,r,T,payoutScale):
         Risk free interest rate, implied constant till expiration
     T : number of any type (int, float8, float64 etc.)
         Time till expiration for option
-    payoffScale : number of any type (int, float8, float64 etc.)
+    payoutScale : number of any type (int, float8, float64 etc.)
         Scale value of payoff, should be a percentage (e.g. 20% payoff should
         be 0.2 when input)
 
@@ -597,14 +597,14 @@ def NoTouchSingleSim(S,Z,r,T,payoutScale):
         r = 0.015
         T = 0.5
         z = 1.1
-        payoffScale = 0.5
+        payoutScale = 0.5
     >>> S = np.array([[ 1.        ,  1.        ,  1.        ,  1.        ,  1.        ],
                    [ 0.92248705,  1.08050869,  0.92248705,  1.08050869,  0.92248705],
                    [ 0.85098236,  0.99675528,  0.85098236,  0.99675528,  0.99675528],
                    [ 0.91949383,  0.91949383,  0.91949383,  1.07700274,  0.91949383],
                    [ 0.99352108,  0.99352108,  0.84822115,  1.16371082,  0.99352108],
                    [ 0.91651033,  1.07350816,  0.78247303,  1.07350816,  1.07350816]])
-    >>> a = NoTouchSingleSim(S,z,r,T,payoffScale)
+    >>> a = NoTouchSingleSim(S,z,r,T,payoutScale)
     >>> print(a[0])
         print(a[1])
         1.19103366578
@@ -632,7 +632,7 @@ def NoTouchDoubleSim(S,Z1,Z2,r,T,payoutScale):
     prior to expiration, their is no payoff. If they aren't hit, the payoff
     has a scale prior to initiation.
     Payoff is of the form :
-    P = (money down * payoffScale, 0)_Z1,Z2
+    P = (money down * payoutScale, 0)_Z1,Z2
 
     Parameters
     ----------
@@ -649,7 +649,7 @@ def NoTouchDoubleSim(S,Z1,Z2,r,T,payoutScale):
         Risk free interest rate, implied constant till expiration
     T : number of any type (int, float8, float64 etc.)
         Time till expiration for option
-    payoffScale : number of any type (int, float8, float64 etc.)
+    payoutScale : number of any type (int, float8, float64 etc.)
         Scale value of payoff, should be a percentage (e.g. 20% payoff should
         be 0.2 when input)
 
@@ -678,20 +678,20 @@ def NoTouchDoubleSim(S,Z1,Z2,r,T,payoutScale):
         T = 0.5
         z1 = 1.1
         z2 = 0.9
-        payoffScale = 0.5
+        payoutScale = 0.5
     >>> S = np.array([[ 1.        ,  1.        ,  1.        ,  1.        ,  1.        ],
                    [ 0.92248705,  1.08050869,  0.92248705,  1.08050869,  0.92248705],
                    [ 0.85098236,  0.99675528,  0.85098236,  0.99675528,  0.99675528],
                    [ 0.91949383,  0.91949383,  0.91949383,  1.07700274,  0.91949383],
                    [ 0.99352108,  0.99352108,  0.84822115,  1.16371082,  0.99352108],
                    [ 0.91651033,  1.07350816,  0.78247303,  1.07350816,  1.07350816]])
-    >>> a = NoTouchDoubleSim(S,z,z2,r,T,payoffScale)
+    >>> a = NoTouchDoubleSim(S,z1,z2,r,T,payoutScale)
     >>> print(a[0])
         print(a[1])
         0.595516832891
         [ 0.   1.5  0.   0.   1.5]
     >>> z2 = 1.5
-    >>> NoTouchDoubleSim(S,z,z2,r,T,payoffScale)
+    >>> NoTouchDoubleSim(S,z1,z2,r,T,payoutScale)
         Error : s0 outside barriers, use NoTouchSingle instead
 
     '''
@@ -791,6 +791,7 @@ def CashOrNothingSim(S,Z,r,T,payout):
     price = np.average(np.exp(-r*T)*payoffMotion)
     return([price,payoffMotion])
 
+# simulation functions
 def SimpleSim(s0,r,T,vol,dt,paths):
     '''
     Simulate the motion of an underlying stock that follows a
@@ -972,9 +973,11 @@ def HestonSim(s0,r,T,vol,phi,kappa,xi,dt,paths):
     S = np.exp(np.matrix.cumsum(S,axis=0))
     return([S, volMotion])
 
-
+# classes utilizing the different simulation and payoff functions
 class Simple:
     '''
+    This is a simple risk neutral simulation class.
+
     Simulate the motion of an underlying stock that follows a standard
     Weiner process for T/dt steps over a specified number of paths.
 
@@ -1035,51 +1038,560 @@ class Simple:
         self.simtime = time.time() - start
 
     def Euro(self,k):
+        '''
+        Use simulated underlying to determine the price of a European
+        Call / Put option
+        Payoffs are of the form :
+        C = max(S - K, 0)
+        P = max(K - S, 0)
+
+        Parameters
+        ----------
+        k : number of any type (int, float8, float64 etc.)
+            Strike value of option, determined at initiation
+
+        Returns
+        -------
+        [[call,put],[callMotion,putMotion]] : list of pair of lists, first of
+            floats, second of one-dimensional numpy.array's
+            First list is the call and put price, determined by the average
+            of the simulated stock payoffs
+            Second list is the call and put simulated paths payoffs at expiration,
+            NOT discounted
+
+        * the accuracy of pricing is dependent on the number of time steps and
+        simulated paths chosen for the underlying stochastic motion
+
+        Examples
+        --------
+        >>> from simulation import Simple
+        >>> s0 = 1
+            r = 0.015
+            T = 0.5
+            vol = 0.25
+            k = 0.8
+            dt = 0.1
+            paths = 5
+        >>> sim = Simple(s0,r,T,dt,paths)
+        >>> a = sim.Euro(k)
+        >>> print(a[0])
+            print(a[1][0])
+            print(a[1][1])
+            [0.1860066674534242, 0.0034792018881946852]
+            [ 0.11651033  0.27350816  0.          0.27350816  0.27350816]
+            [ 0.          0.          0.01752697  0.          0.        ]
+
+        '''
         out = EuroSim(self.S,k,self.r,self.T)
-        return(a)
+        return(out)
 
     def AsianGeoFix(self,k):
+        '''
+        Use simulated underlying to determine the price of an Asian Geometric
+        Average Call / Put option with a fixed strike price
+        Payoffs are of the form :
+        C = max(AVG_geo - K, 0)
+        P = max(K - AVG_geo, 0)
+
+        Parameters
+        ----------
+        k : number of any type (int, float8, float64 etc.)
+            Strike value of option, determined at initiation
+
+        Returns
+        -------
+        [[call,put],[callMotion,putMotion]] : list of pair of lists, first of
+            floats, second of one-dimensional numpy.array's
+            First list is the call and put price, determined by the average
+            of the simulated stock payoffs
+            Second list is the call and put simulated paths payoffs at expiration,
+            NOT discounted
+
+        * the accuracy of pricing is dependent on the number of time steps and
+        simulated paths chosen for the underlying stochastic motion
+
+        Examples
+        --------
+        >>> from simulation import Simple
+        >>> s0 = 1
+            r = 0.015
+            T = 0.5
+            vol = 0.25
+            k = 0.8
+            dt = 0.1
+            paths = 5
+        >>> sim = Simple(s0,r,T,dt,paths)
+        >>> a = sim.AsianGeoFix(k)
+        >>> print(a[0])
+            print(a[1][0])
+            print(a[1][1])
+            [0.17326664943627884, 0.0]
+            [ 0.1324467   0.20915531  0.08457506  0.26376902  0.18290908]
+            [ 0.  0.  0.  0.  0.]
+
+        '''
         out = AsianGeoFixSim(self.S,k,self.r,self.T)
         return(out)
 
     def AsianArithFix(self,k):
+        '''
+        Use simulated underlying to determine the price of an Asian Arithmetic
+        Average Call / Put option with a fixed strike price
+        Payoffs are of the form :
+        C = max(AVG_arithmetic - K, 0)
+        P = max(K - AVG_arithmetic, 0)
+
+        Parameters
+        ----------
+        k : number of any type (int, float8, float64 etc.)
+            Strike value of option, determined at initiation
+
+        Returns
+        -------
+        [[call,put],[callMotion,putMotion]] : list of pair of lists, first of
+            floats, second of one-dimensional numpy.array's
+            First list is the call and put price, determined by the average
+            of the simulated stock payoffs
+            Second list is the call and put simulated paths payoffs at expiration,
+            NOT discounted
+
+        * the accuracy of pricing is dependent on the number of time steps and
+        simulated paths chosen for the underlying stochastic motion
+
+        Examples
+        --------
+        >>> from simulation import Simple
+        >>> s0 = 1
+            r = 0.015
+            T = 0.5
+            vol = 0.25
+            k = 0.8
+            dt = 0.1
+            paths = 5
+        >>> sim = Simple(s0,r,T,dt,paths)
+        >>> a = sim.AsianArithFix(k)
+        >>> print(a[0])
+            print(a[1][0])
+            print(a[1][1])
+            [0.17493936228974066, 0.0]
+            [ 0.13383244  0.21063117  0.08727624  0.26524762  0.18429423]
+            [ 0.  0.  0.  0.  0.]
+
+        '''
         out = AsianArithFixSim(self.S,k,self.r,self.T)
         return(out)
 
     def AsianGeoFloat(self,m):
+        '''
+        Use simulated underlying to determine the price of an Asian Geometric
+        Average Call / Put option with a floating strike price
+        Payoffs are of the form :
+        C = max(S - m*AVG_geo, 0)
+        P = max(m*AVG_geo - S, 0)
+
+        Parameters
+        ----------
+        m : number of any type (int, float8, float64 etc.)
+            Strike value scaler of option, determined at initiation
+
+        Returns
+        -------
+        [[call,put],[callMotion,putMotion]] : list of pair of lists, first of
+            floats, second of one-dimensional numpy.array's
+            First list is the call and put price, determined by the average
+            of the simulated stock payoffs
+            Second list is the call and put simulated paths payoffs at expiration,
+            NOT discounted
+
+        * the accuracy of pricing is dependent on the number of time steps and
+        simulated paths chosen for the underlying stochastic motion
+
+        Examples
+        --------
+        >>> from simulation import Simple
+        >>> s0 = 1
+            r = 0.015
+            T = 0.5
+            vol = 0.25
+            m = 0.8
+            dt = 0.1
+            paths = 5
+        >>> sim = Simple(s0,r,T,dt,paths)
+        >>> a = sim.AsianGeoFloat(m)
+        >>> print(a[0])
+            print(a[1][0])
+            print(a[1][1])
+            [0.20271863478726854, 0.0]
+            [ 0.17055297  0.26618391  0.07481299  0.22249294  0.2871809 ]
+            [ 0.  0.  0.  0.  0.]
+
+        '''
         out = AsianGeoFloatSim(self.S,m,self.r,self.T)
         return(out)
 
     def AsianArithFloat(self,m):
+        '''
+        Use simulated underlying to determine the price of an Asian Arithmetic
+        Average Call / Put option with a floating strike price
+        Payoffs are of the form :
+        C = max(S - m*AVG_arithmetic, 0)
+        P = max(m*AVG_arithmetic - S, 0)
+
+        Parameters
+        ----------
+        m : number of any type (int, float8, float64 etc.)
+            Strike value scaler of option, determined at initiation
+
+        Returns
+        -------
+        [[call,put],[callMotion,putMotion]] : list of pair of lists, first of
+            floats, second of one-dimensional numpy.array's
+            First list is the call and put price, determined by the average
+            of the simulated stock payoffs
+            Second list is the call and put simulated paths payoffs at expiration,
+            NOT discounted
+
+        * the accuracy of pricing is dependent on the number of time steps and
+        simulated paths chosen for the underlying stochastic motion
+
+        Examples
+        --------
+        >>> from simulation import Simple
+        >>> s0 = 1
+            r = 0.015
+            T = 0.5
+            vol = 0.25
+            m = 0.8
+            dt = 0.1
+            paths = 5
+        >>> sim = Simple(s0,r,T,dt,paths)
+        >>> a = sim.AsianArithFloat(m)
+        >>> print(a[0])
+            print(a[1][0])
+            print(a[1][1])
+            [0.20138046450449909, 0.0]
+            [ 0.16944438  0.26500322  0.07265204  0.22131007  0.28607277]
+            [ 0.  0.  0.  0.  0.]
+
+        '''
         out = AsianArithFloatSim(self.S,m,self.r,self.T)
         return(out)
 
     def Power(self,k,n):
+        '''
+        Use simulated underlying to determine the price of a Power Call / Put
+        option with a fixed strike price
+        Payoffs are of the form :
+        C = max(S**n - K, 0)
+        P = max(K - S**n, 0)
+
+        Parameters
+        ----------
+        k : number of any type (int, float8, float64 etc.)
+            Strike value of option, determined at initiation
+        n : number of any type (int, float8, float64 etc.)
+            Power the underlying is raised to at expiration
+
+
+        Returns
+        -------
+        [[call,put],[callMotion,putMotion]] : list of pair of lists, first of
+            floats, second of one-dimensional numpy.array's
+            First list is the call and put price, determined by the average
+            of the simulated stock payoffs
+            Second list is the call and put simulated paths payoffs at expiration,
+            NOT discounted
+
+        * the accuracy of pricing is dependent on the number of time steps and
+        simulated paths chosen for the underlying stochastic motion
+
+        Examples
+        --------
+        >>> from simulation import Simple
+        >>> s0 = 1
+            r = 0.015
+            T = 0.5
+            vol = 0.25
+            k = 0.8
+            n = 2.5
+            dt = 0.1
+            paths = 5
+        >>> sim = Simple(s0,r,T,dt,paths)
+        >>> a = sim.Power(k,n)
+        >>> print(a[0])
+            print(a[1][0])
+            print(a[1][1])
+            [0.23547457653967713, 0.051295140170868392]
+            [ 0.00416175  0.39402488  0.          0.39402488  0.39402488]
+            [ 0.         0.         0.2584065  0.         0.       ]
+
+        '''
         out = PowerSim(self.S,k,self.r,self.T,n)
         return(out)
 
     def PowerStrike(self,k,n):
+        '''
+        Use simulated underlying to determine the price of a Power Call / Put
+        option with a fixed strike price
+        Payoffs are of the form :
+        C = max(S**n - K**n, 0)
+        P = max(K**n - S**n, 0)
+
+        Parameters
+        ----------
+        k : number of any type (int, float8, float64 etc.)
+            Strike value of option, determined at initiation
+        n : number of any type (int, float8, float64 etc.)
+            Power the underlying and strike are raised to at expiration
+
+        Returns
+        -------
+        [[call,put],[callMotion,putMotion]] : list of pair of lists, first of
+            floats, second of one-dimensional numpy.array's
+            First list is the call and put price, determined by the average
+            of the simulated stock payoffs
+            Second list is the call and put simulated paths payoffs at expiration,
+            NOT discounted
+
+        * the accuracy of pricing is dependent on the number of time steps and
+        simulated paths chosen for the underlying stochastic motion
+
+        Examples
+        --------
+        >>> from simulation import Simple
+        >>> s0 = 1
+            r = 0.015
+            T = 0.5
+            vol = 0.25
+            k = 0.8
+            n = 2.5
+            dt = 0.1
+            paths = 5
+        >>> sim = Simple(s0,r,T,dt,paths)
+        >>> a = sim.PowerStrike(k,n)
+        >>> print(a[0])
+            print(a[1][0])
+            print(a[1][1])
+            [0.41616756263295357, 0.0061218936475492848]
+            [ 0.23172835  0.62159147  0.          0.62159147  0.62159147]
+            [ 0.         0.         0.0308399  0.         0.       ]
+
+        '''
         out = PowerStrikeSim(self.S,k,self.r,self.T,n)
         return(out)
 
     def AvgBarrier(self,Z):
+        '''
+        Use simulated underlying to determine the price of an Average Barrier
+        option, where the payoff is the arithmetic average of the underlying over
+        the time t (t is time when the option hits the barrier), or
+        T (time to expiration) if the barrier is never hit
+        Payoff is of the form :
+        P = AVG_arithmetic_t
+
+        Parameters
+        ----------
+        Z : number of any type (int, float8, float64 etc.)
+            Barrier value of option, determined at initiation
+
+        Returns
+        -------
+        [price,payoffMotion] : list, first is float, second is
+            one-dimensional numpy.array
+            price, is estimated price of the option, determined by the average
+            of the simulated stock payoffs
+            payoffMotion is the simulated paths payoffs at expiration,
+            NOT discounted
+
+        * the accuracy of pricing is dependent on the number of time steps and
+        simulated paths chosen for the underlying stochastic motion
+        ** if the barrier is equal to the initial spot price, the price and
+        payoffMotion will both be equal to the spot price since underlying hits the
+        barrier at initiation
+
+        Examples
+        --------
+        >>> from simulation import Simple
+        >>> s0 = 1
+            r = 0.015
+            T = 0.5
+            vol = 0.25
+            z = 0.8
+            dt = 0.1
+            paths = 5
+        >>> sim = Simple(s0,r,T,dt,paths)
+        >>> a = sim.AvgBarrier(z)
+        >>> print(a[0])
+            print(a[1])
+            0.964284902938
+            [ 0.93383244  1.01063117  0.88727624  1.03856668  0.98429423]
+
+        '''
         out = AvgBarrierSim(self.S,Z,self.r,self.timeMatrix)
         return(out)
 
     def NoTouchSingle(self,Z,payoutScale):
+        '''
+        Use simulated underlying to determine the price of a No Touch Binary
+        option, with a single direction having a barrier. If the barrier is hit
+        prior to expiration, their is no payoff. If it isn't, the payoff has a
+        scale prior to initiation.
+        Payoff is of the form :
+        P = (money down * payoutScale, 0)_Z
+
+        Parameters
+        ----------
+        Z : number of any type (int, float8, float64 etc.)
+            Barrier value of option, determined at initiation
+        payoutScale : number of any type (int, float8, float64 etc.)
+            Scale value of payoff, should be a percentage (e.g. 20% payoff should
+            be 0.2 when input)
+
+        Returns
+        -------
+        [price,payoffMotion] : list, first is float, second is
+            one-dimensional numpy.array
+            price, is estimated return on option per dollar put down,
+            determined by the average of the simulated stock payoffs
+            payoffMotion is the simulated paths payoffs at expiration,
+            NOT discounted
+
+        * the accuracy of pricing is dependent on the number of time steps and
+        simulated paths chosen for the underlying stochastic motion
+        ** if the barrier is equal to the initial spot price, the price and
+        payoffMotion will both be 0 since underlying hits the barrier at initiation
+
+        Examples
+        --------
+        >>> from simulation import NoTouchSingleSim
+        >>> s0 = 1
+            r = 0.015
+            T = 0.5
+            z = 1.1
+            payoutScale = 0.5
+        >>> sim = Simple(s0,r,T,dt,paths)
+        >>> a = sim.NoTouchSingle(z,payoutScale)
+        >>> print(a[0])
+            print(a[1])
+            1.19103366578
+            [ 1.5  1.5  1.5  0.   1.5]
+
+        '''
         out = NoTouchSingleSim(self.S,Z,self.r,self.T,payoutScale)
         return(out)
 
     def NoTouchDouble(self,Z1,Z2,payoutScale):
-        out = NoTouchDoubleSim(self.S,Z1,Z1,self.r,self.T,payoutScale)
+        '''
+        Use simulated underlying to determine the price of a No Touch Binary
+        option, with both directions having a barrier. If either barrier is hit
+        prior to expiration, their is no payoff. If they aren't hit, the payoff
+        has a scale prior to initiation.
+        Payoff is of the form :
+        P = (money down * payoutScale, 0)_Z1,Z2
+
+        Parameters
+        ----------
+        Z1 : number of any type (int, float8, float64 etc.)
+            First barrier value of option, determined at initiation
+        Z2 : number of any type (int, float8, float64 etc.)
+            Second barrier value of option, determined at initiation
+        payoutScale : number of any type (int, float8, float64 etc.)
+            Scale value of payoff, should be a percentage (e.g. 20% payoff should
+            be 0.2 when input)
+
+        Returns
+        -------
+        [price,payoffMotion] : list, first is float, second is
+            one-dimensional numpy.array
+            price, is estimated return on option per dollar put down,
+            determined by the average of the simulated stock payoffs
+            payoffMotion is the simulated paths payoffs at expiration,
+            NOT discounted
+
+        * the accuracy of pricing is dependent on the number of time steps and
+        simulated paths chosen for the underlying stochastic motion
+        ** if either barrier is equal to the initial spot price, the price and
+        payoffMotion will both be 0 since underlying hits the barrier at initiation
+        *** if spot is not between Z1 and Z2, then output error, since two
+        barriers will be redundant
+
+        Examples
+        --------
+        >>> from simulation import NoTouchDoubleSim
+        >>> s0 = 1
+            r = 0.015
+            T = 0.5
+            z1 = 1.1
+            z2 = 0.9
+            payoutScale = 0.5
+        >>> sim = Simple(s0,r,T,dt,paths)
+        >>> a = sim.NoTouchDouble(z1,z2,payoutScale)
+        >>> print(a[0])
+            print(a[1])
+            0.595516832891
+            [ 0.   1.5  0.   0.   1.5]
+        >>> z2 = 1.5
+        >>> sim.NoTouchDouble(S,z1,z2,r,T,payoutScale)
+            Error : s0 outside barriers, use NoTouchSingle instead
+
+        '''
+        out = NoTouchDoubleSim(self.S,Z1,Z2,self.r,self.T,payoutScale)
         return(out)
 
     def CashOrNothing(self,Z,payout):
+        '''
+        Use simulated underlying to determine the price of a Cash-or-Nothing
+        option, with a single direction having a barrier. If the barrier is hit
+        prior to expiration, their is no payoff. If it isn't, the payoff is a
+        value determined prior to initiation.
+        Payoff is of the form :
+        P = (payout, 0)_Z
+
+        Parameters
+        ----------
+        Z : number of any type (int, float8, float64 etc.)
+            Barrier value of option, determined at initiation
+        payout : number of any type (int, float8, float64 etc.)
+            Payout of option, fixed value paid out if the barrier isn't hit by the
+            underlying over the life of the option
+
+        Returns
+        -------
+        [price,payoffMotion] : list, first is float, second is
+            one-dimensional numpy.array
+            price, is estimated price of the option, determined by the average
+            of the simulated stock payoffs
+            payoffMotion is the simulated paths payoffs at expiration,
+            NOT discounted
+
+        * the accuracy of pricing is dependent on the number of time steps and
+        simulated paths chosen for the underlying stochastic motion
+        ** if the barrier is equal to the initial spot price, the price and
+        payoffMotion will both be 0 since underlying hits the barrier at initiation
+
+        Examples
+        --------
+        >>> from simulation import CashOrNothingSim
+        >>> s0 = 1
+            r = 0.015
+            T = 0.5
+            z = 1.1
+            payout = 100
+        >>> sim = Simple(s0,r,T,dt,paths)
+        >>> a = sim.CashOrNothing(z,payout)
+        >>> print(a[0])
+            print(a[1])
+            79.4022443855
+            [100 100 100   0 100]
+
+        '''
         out = CashOrNothingSim(self.S,Z,self.r,self.T,payout)
         return(out)
 
 class Heston:
     '''
+    This is a Heston model simulation class.
+
     Simulate the motion of an underlying stock that follows a standard
     Weiner process for T/dt steps over a specified number of paths,
     with stochastic volatility.
@@ -1149,50 +1661,557 @@ class Heston:
         self.timeMatrix = np.matmul(timeInt,np.matrix(np.ones(paths)))
 
         start = time.time()
-        [self.S, self.volMotion] = HestonSim(s0,r,vol,phi,kappa,xi,dt,intervals,paths)
+        [self.S, self.volMotion] = HestonSim(s0,r,vol,phi,kappa,xi,dt,paths)
         self.simtime = time.time() - start
 
     def Euro(self,k):
+        '''
+        Use simulated underlying to determine the price of a European
+        Call / Put option
+        Payoffs are of the form :
+        C = max(S - K, 0)
+        P = max(K - S, 0)
+
+        Parameters
+        ----------
+        k : number of any type (int, float8, float64 etc.)
+            Strike value of option, determined at initiation
+
+        Returns
+        -------
+        [[call,put],[callMotion,putMotion]] : list of pair of lists, first of
+            floats, second of one-dimensional numpy.array's
+            First list is the call and put price, determined by the average
+            of the simulated stock payoffs
+            Second list is the call and put simulated paths payoffs at expiration,
+            NOT discounted
+
+        * the accuracy of pricing is dependent on the number of time steps and
+        simulated paths chosen for the underlying stochastic motion
+
+        Examples
+        --------
+        >>> from simulation import Heston
+        >>> s0 = 1
+            r = 0.015
+            T = 0.5
+            vol = 0.25
+            k = 0.8
+            dt = 0.1
+            paths = 5
+        >>> sim = Heston(s0,r,T,dt,paths)
+        >>> a = sim.Euro(k)
+        >>> print(a[0])
+            print(a[1][0])
+            print(a[1][1])
+            [0.1860066674534242, 0.0034792018881946852]
+            [ 0.11651033  0.27350816  0.          0.27350816  0.27350816]
+            [ 0.          0.          0.01752697  0.          0.        ]
+
+        '''
         out = EuroSim(self.S,k,self.r,self.T)
-        return(a)
+        return(out)
 
     def AsianGeoFix(self,k):
+        '''
+        Use simulated underlying to determine the price of an Asian Geometric
+        Average Call / Put option with a fixed strike price
+        Payoffs are of the form :
+        C = max(AVG_geo - K, 0)
+        P = max(K - AVG_geo, 0)
+
+        Parameters
+        ----------
+        k : number of any type (int, float8, float64 etc.)
+            Strike value of option, determined at initiation
+
+        Returns
+        -------
+        [[call,put],[callMotion,putMotion]] : list of pair of lists, first of
+            floats, second of one-dimensional numpy.array's
+            First list is the call and put price, determined by the average
+            of the simulated stock payoffs
+            Second list is the call and put simulated paths payoffs at expiration,
+            NOT discounted
+
+        * the accuracy of pricing is dependent on the number of time steps and
+        simulated paths chosen for the underlying stochastic motion
+
+        Examples
+        --------
+        >>> from simulation import Heston
+        >>> s0 = 1
+            r = 0.015
+            T = 0.5
+            vol = 0.25
+            k = 0.8
+            dt = 0.1
+            paths = 5
+        >>> sim = Heston(s0,r,T,dt,paths)
+        >>> a = sim.AsianGeoFix(k)
+        >>> print(a[0])
+            print(a[1][0])
+            print(a[1][1])
+            [0.17326664943627884, 0.0]
+            [ 0.1324467   0.20915531  0.08457506  0.26376902  0.18290908]
+            [ 0.  0.  0.  0.  0.]
+
+        '''
         out = AsianGeoFixSim(self.S,k,self.r,self.T)
         return(out)
 
     def AsianArithFix(self,k):
+        '''
+        Use simulated underlying to determine the price of an Asian Arithmetic
+        Average Call / Put option with a fixed strike price
+        Payoffs are of the form :
+        C = max(AVG_arithmetic - K, 0)
+        P = max(K - AVG_arithmetic, 0)
+
+        Parameters
+        ----------
+        k : number of any type (int, float8, float64 etc.)
+            Strike value of option, determined at initiation
+
+        Returns
+        -------
+        [[call,put],[callMotion,putMotion]] : list of pair of lists, first of
+            floats, second of one-dimensional numpy.array's
+            First list is the call and put price, determined by the average
+            of the simulated stock payoffs
+            Second list is the call and put simulated paths payoffs at expiration,
+            NOT discounted
+
+        * the accuracy of pricing is dependent on the number of time steps and
+        simulated paths chosen for the underlying stochastic motion
+
+        Examples
+        --------
+        >>> from simulation import Heston
+        >>> s0 = 1
+            r = 0.015
+            T = 0.5
+            vol = 0.25
+            k = 0.8
+            dt = 0.1
+            paths = 5
+        >>> sim = Heston(s0,r,T,dt,paths)
+        >>> a = sim.AsianArithFix(k)
+        >>> print(a[0])
+            print(a[1][0])
+            print(a[1][1])
+            [0.17493936228974066, 0.0]
+            [ 0.13383244  0.21063117  0.08727624  0.26524762  0.18429423]
+            [ 0.  0.  0.  0.  0.]
+
+        '''
         out = AsianArithFixSim(self.S,k,self.r,self.T)
         return(out)
 
     def AsianGeoFloat(self,m):
+        '''
+        Use simulated underlying to determine the price of an Asian Geometric
+        Average Call / Put option with a floating strike price
+        Payoffs are of the form :
+        C = max(S - m*AVG_geo, 0)
+        P = max(m*AVG_geo - S, 0)
+
+        Parameters
+        ----------
+        m : number of any type (int, float8, float64 etc.)
+            Strike value scaler of option, determined at initiation
+
+        Returns
+        -------
+        [[call,put],[callMotion,putMotion]] : list of pair of lists, first of
+            floats, second of one-dimensional numpy.array's
+            First list is the call and put price, determined by the average
+            of the simulated stock payoffs
+            Second list is the call and put simulated paths payoffs at expiration,
+            NOT discounted
+
+        * the accuracy of pricing is dependent on the number of time steps and
+        simulated paths chosen for the underlying stochastic motion
+
+        Examples
+        --------
+        >>> from simulation import Heston
+        >>> s0 = 1
+            r = 0.015
+            T = 0.5
+            vol = 0.25
+            m = 0.8
+            dt = 0.1
+            paths = 5
+        >>> sim = Heston(s0,r,T,dt,paths)
+        >>> a = sim.AsianGeoFloat(m)
+        >>> print(a[0])
+            print(a[1][0])
+            print(a[1][1])
+            [0.20271863478726854, 0.0]
+            [ 0.17055297  0.26618391  0.07481299  0.22249294  0.2871809 ]
+            [ 0.  0.  0.  0.  0.]
+
+        '''
         out = AsianGeoFloatSim(self.S,m,self.r,self.T)
         return(out)
 
     def AsianArithFloat(self,m):
+        '''
+        Use simulated underlying to determine the price of an Asian Arithmetic
+        Average Call / Put option with a floating strike price
+        Payoffs are of the form :
+        C = max(S - m*AVG_arithmetic, 0)
+        P = max(m*AVG_arithmetic - S, 0)
+
+        Parameters
+        ----------
+        m : number of any type (int, float8, float64 etc.)
+            Strike value scaler of option, determined at initiation
+
+        Returns
+        -------
+        [[call,put],[callMotion,putMotion]] : list of pair of lists, first of
+            floats, second of one-dimensional numpy.array's
+            First list is the call and put price, determined by the average
+            of the simulated stock payoffs
+            Second list is the call and put simulated paths payoffs at expiration,
+            NOT discounted
+
+        * the accuracy of pricing is dependent on the number of time steps and
+        simulated paths chosen for the underlying stochastic motion
+
+        Examples
+        --------
+        >>> from simulation import Heston
+        >>> s0 = 1
+            r = 0.015
+            T = 0.5
+            vol = 0.25
+            m = 0.8
+            dt = 0.1
+            paths = 5
+        >>> sim = Heston(s0,r,T,dt,paths)
+        >>> a = sim.AsianArithFloat(m)
+        >>> print(a[0])
+            print(a[1][0])
+            print(a[1][1])
+            [0.20138046450449909, 0.0]
+            [ 0.16944438  0.26500322  0.07265204  0.22131007  0.28607277]
+            [ 0.  0.  0.  0.  0.]
+
+        '''
         out = AsianArithFloatSim(self.S,m,self.r,self.T)
         return(out)
 
     def Power(self,k,n):
+        '''
+        Use simulated underlying to determine the price of a Power Call / Put
+        option with a fixed strike price
+        Payoffs are of the form :
+        C = max(S**n - K, 0)
+        P = max(K - S**n, 0)
+
+        Parameters
+        ----------
+        k : number of any type (int, float8, float64 etc.)
+            Strike value of option, determined at initiation
+        n : number of any type (int, float8, float64 etc.)
+            Power the underlying is raised to at expiration
+
+
+        Returns
+        -------
+        [[call,put],[callMotion,putMotion]] : list of pair of lists, first of
+            floats, second of one-dimensional numpy.array's
+            First list is the call and put price, determined by the average
+            of the simulated stock payoffs
+            Second list is the call and put simulated paths payoffs at expiration,
+            NOT discounted
+
+        * the accuracy of pricing is dependent on the number of time steps and
+        simulated paths chosen for the underlying stochastic motion
+
+        Examples
+        --------
+        >>> from simulation import Heston
+        >>> s0 = 1
+            r = 0.015
+            T = 0.5
+            vol = 0.25
+            k = 0.8
+            n = 2.5
+            dt = 0.1
+            paths = 5
+        >>> sim = Heston(s0,r,T,dt,paths)
+        >>> a = sim.Power(k,n)
+        >>> print(a[0])
+            print(a[1][0])
+            print(a[1][1])
+            [0.23547457653967713, 0.051295140170868392]
+            [ 0.00416175  0.39402488  0.          0.39402488  0.39402488]
+            [ 0.         0.         0.2584065  0.         0.       ]
+
+        '''
         out = PowerSim(self.S,k,self.r,self.T,n)
         return(out)
 
     def PowerStrike(self,k,n):
+        '''
+        Use simulated underlying to determine the price of a Power Call / Put
+        option with a fixed strike price
+        Payoffs are of the form :
+        C = max(S**n - K**n, 0)
+        P = max(K**n - S**n, 0)
+
+        Parameters
+        ----------
+        k : number of any type (int, float8, float64 etc.)
+            Strike value of option, determined at initiation
+        n : number of any type (int, float8, float64 etc.)
+            Power the underlying and strike are raised to at expiration
+
+        Returns
+        -------
+        [[call,put],[callMotion,putMotion]] : list of pair of lists, first of
+            floats, second of one-dimensional numpy.array's
+            First list is the call and put price, determined by the average
+            of the simulated stock payoffs
+            Second list is the call and put simulated paths payoffs at expiration,
+            NOT discounted
+
+        * the accuracy of pricing is dependent on the number of time steps and
+        simulated paths chosen for the underlying stochastic motion
+
+        Examples
+        --------
+        >>> from simulation import Heston
+        >>> s0 = 1
+            r = 0.015
+            T = 0.5
+            vol = 0.25
+            k = 0.8
+            n = 2.5
+            dt = 0.1
+            paths = 5
+        >>> sim = Heston(s0,r,T,dt,paths)
+        >>> a = sim.PowerStrike(k,n)
+        >>> print(a[0])
+            print(a[1][0])
+            print(a[1][1])
+            [0.41616756263295357, 0.0061218936475492848]
+            [ 0.23172835  0.62159147  0.          0.62159147  0.62159147]
+            [ 0.         0.         0.0308399  0.         0.       ]
+
+        '''
         out = PowerStrikeSim(self.S,k,self.r,self.T,n)
         return(out)
 
     def AvgBarrier(self,Z):
+        '''
+        Use simulated underlying to determine the price of an Average Barrier
+        option, where the payoff is the arithmetic average of the underlying over
+        the time t (t is time when the option hits the barrier), or
+        T (time to expiration) if the barrier is never hit
+        Payoff is of the form :
+        P = AVG_arithmetic_t
+
+        Parameters
+        ----------
+        Z : number of any type (int, float8, float64 etc.)
+            Barrier value of option, determined at initiation
+
+        Returns
+        -------
+        [price,payoffMotion] : list, first is float, second is
+            one-dimensional numpy.array
+            price, is estimated price of the option, determined by the average
+            of the simulated stock payoffs
+            payoffMotion is the simulated paths payoffs at expiration,
+            NOT discounted
+
+        * the accuracy of pricing is dependent on the number of time steps and
+        simulated paths chosen for the underlying stochastic motion
+        ** if the barrier is equal to the initial spot price, the price and
+        payoffMotion will both be equal to the spot price since underlying hits the
+        barrier at initiation
+
+        Examples
+        --------
+        >>> from simulation import Heston
+        >>> s0 = 1
+            r = 0.015
+            T = 0.5
+            vol = 0.25
+            z = 0.8
+            dt = 0.1
+            paths = 5
+        >>> sim = Heston(s0,r,T,dt,paths)
+        >>> a = sim.AvgBarrier(z)
+        >>> print(a[0])
+            print(a[1])
+            0.964284902938
+            [ 0.93383244  1.01063117  0.88727624  1.03856668  0.98429423]
+
+        '''
         out = AvgBarrierSim(self.S,Z,self.r,self.timeMatrix)
         return(out)
 
     def NoTouchSingle(self,Z,payoutScale):
+        '''
+        Use simulated underlying to determine the price of a No Touch Binary
+        option, with a single direction having a barrier. If the barrier is hit
+        prior to expiration, their is no payoff. If it isn't, the payoff has a
+        scale prior to initiation.
+        Payoff is of the form :
+        P = (money down * payoutScale, 0)_Z
+
+        Parameters
+        ----------
+        Z : number of any type (int, float8, float64 etc.)
+            Barrier value of option, determined at initiation
+        payoutScale : number of any type (int, float8, float64 etc.)
+            Scale value of payoff, should be a percentage (e.g. 20% payoff should
+            be 0.2 when input)
+
+        Returns
+        -------
+        [price,payoffMotion] : list, first is float, second is
+            one-dimensional numpy.array
+            price, is estimated return on option per dollar put down,
+            determined by the average of the simulated stock payoffs
+            payoffMotion is the simulated paths payoffs at expiration,
+            NOT discounted
+
+        * the accuracy of pricing is dependent on the number of time steps and
+        simulated paths chosen for the underlying stochastic motion
+        ** if the barrier is equal to the initial spot price, the price and
+        payoffMotion will both be 0 since underlying hits the barrier at initiation
+
+        Examples
+        --------
+        >>> from simulation import NoTouchSingleSim
+        >>> s0 = 1
+            r = 0.015
+            T = 0.5
+            z = 1.1
+            payoutScale = 0.5
+        >>> sim = Heston(s0,r,T,dt,paths)
+        >>> a = sim.NoTouchSingle(z,payoutScale)
+        >>> print(a[0])
+            print(a[1])
+            1.19103366578
+            [ 1.5  1.5  1.5  0.   1.5]
+
+        '''
         out = NoTouchSingleSim(self.S,Z,self.r,self.T,payoutScale)
         return(out)
 
     def NoTouchDouble(self,Z1,Z2,payoutScale):
-        out = NoTouchDoubleSim(self.S,Z1,Z1,self.r,self.T,payoutScale)
+        '''
+        Use simulated underlying to determine the price of a No Touch Binary
+        option, with both directions having a barrier. If either barrier is hit
+        prior to expiration, their is no payoff. If they aren't hit, the payoff
+        has a scale prior to initiation.
+        Payoff is of the form :
+        P = (money down * payoutScale, 0)_Z1,Z2
+
+        Parameters
+        ----------
+        Z1 : number of any type (int, float8, float64 etc.)
+            First barrier value of option, determined at initiation
+        Z2 : number of any type (int, float8, float64 etc.)
+            Second barrier value of option, determined at initiation
+        payoutScale : number of any type (int, float8, float64 etc.)
+            Scale value of payoff, should be a percentage (e.g. 20% payoff should
+            be 0.2 when input)
+
+        Returns
+        -------
+        [price,payoffMotion] : list, first is float, second is
+            one-dimensional numpy.array
+            price, is estimated return on option per dollar put down,
+            determined by the average of the simulated stock payoffs
+            payoffMotion is the simulated paths payoffs at expiration,
+            NOT discounted
+
+        * the accuracy of pricing is dependent on the number of time steps and
+        simulated paths chosen for the underlying stochastic motion
+        ** if either barrier is equal to the initial spot price, the price and
+        payoffMotion will both be 0 since underlying hits the barrier at initiation
+        *** if spot is not between Z1 and Z2, then output error, since two
+        barriers will be redundant
+
+        Examples
+        --------
+        >>> from simulation import NoTouchDoubleSim
+        >>> s0 = 1
+            r = 0.015
+            T = 0.5
+            z1 = 1.1
+            z2 = 0.9
+            payoutScale = 0.5
+        >>> sim = Heston(s0,r,T,dt,paths)
+        >>> a = sim.NoTouchDouble(z1,z2,payoutScale)
+        >>> print(a[0])
+            print(a[1])
+            0.595516832891
+            [ 0.   1.5  0.   0.   1.5]
+        >>> z2 = 1.5
+        >>> sim.NoTouchDouble(S,z1,z2,r,T,payoutScale)
+            Error : s0 outside barriers, use NoTouchSingle instead
+
+        '''
+        out = NoTouchDoubleSim(self.S,Z1,Z2,self.r,self.T,payoutScale)
         return(out)
 
     def CashOrNothing(self,Z,payout):
+        '''
+        Use simulated underlying to determine the price of a Cash-or-Nothing
+        option, with a single direction having a barrier. If the barrier is hit
+        prior to expiration, their is no payoff. If it isn't, the payoff is a
+        value determined prior to initiation.
+        Payoff is of the form :
+        P = (payout, 0)_Z
+
+        Parameters
+        ----------
+        Z : number of any type (int, float8, float64 etc.)
+            Barrier value of option, determined at initiation
+        payout : number of any type (int, float8, float64 etc.)
+            Payout of option, fixed value paid out if the barrier isn't hit by the
+            underlying over the life of the option
+
+        Returns
+        -------
+        [price,payoffMotion] : list, first is float, second is
+            one-dimensional numpy.array
+            price, is estimated price of the option, determined by the average
+            of the simulated stock payoffs
+            payoffMotion is the simulated paths payoffs at expiration,
+            NOT discounted
+
+        * the accuracy of pricing is dependent on the number of time steps and
+        simulated paths chosen for the underlying stochastic motion
+        ** if the barrier is equal to the initial spot price, the price and
+        payoffMotion will both be 0 since underlying hits the barrier at initiation
+
+        Examples
+        --------
+        >>> from simulation import CashOrNothingSim
+        >>> s0 = 1
+            r = 0.015
+            T = 0.5
+            z = 1.1
+            payout = 100
+        >>> sim = Heston(s0,r,T,dt,paths)
+        >>> a = sim.CashOrNothing(z,payout)
+        >>> print(a[0])
+            print(a[1])
+            79.4022443855
+            [100 100 100   0 100]
+
+        '''
         out = CashOrNothingSim(self.S,Z,self.r,self.T,payout)
         return(out)
 
