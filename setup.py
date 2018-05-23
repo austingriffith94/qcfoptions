@@ -17,7 +17,7 @@ setup(
     # $ pip install qcfoptions
     name = 'qcfoptions',
 
-    version = '0.1.2.2',
+    version = '0.1.3',
     description = 'Option Calculator and Simulator',
 
     # uses readme file to give long description
