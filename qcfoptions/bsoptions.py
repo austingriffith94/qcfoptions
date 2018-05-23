@@ -4,6 +4,7 @@
 import numpy as np
 from scipy.stats import norm
 
+# options
 def Euro(s,k,r,T,vol,q):
     '''
     Calculate the Black Scholes value of a European Call / Put option
@@ -524,3 +525,331 @@ def Lookback(s,M,r,T,vol,q):
             right*norm.cdf(-y)))
     return([call,put])
 
+# greeks
+def EuroDelta(s,k,r,T,vol,q):
+    '''
+    Calculate the Black Scholes delta value of a European Call / Put option,
+    measures sensitivity of option value with respect to change in underlying
+    asset price, calculated from derivative dV/dS
+    Deltas are of the form :
+    C = e**-qT N(d1)
+    P = -e**-qT N(-d1)
+
+    Parameters
+    ----------
+    s : number of any type (int, float8, float64 etc.), numpy array of any type
+        should the user wish to have a list of values output with varying s
+        Spot value of underlying asset at current time, t
+    k : number of any type (int, float8, float64 etc.), numpy array of any type
+        should the user wish to have a list of values output with varying k
+        Strike value of option, determined at initiation
+    r : number of any type (int, float8, float64 etc.), numpy array of any type
+        should the user wish to have a list of values output with varying r
+        Risk free interest rate, implied constant till expiration
+    T : number of any type (int, float8, float64 etc.), numpy array of any type
+        should the user wish to have a list of values output with varying T
+        Time till expiration for option
+    vol : number of any type (int, float8, float64 etc.), numpy array of any type
+        should the user wish to have a list of values output with varying vol
+        Volatility of underlying, implied constant till expiration in Black
+        Scholes model
+    q : number of any type (int, float8, float64 etc.), numpy array of any type
+        should the user wish to have a list of values output with varying q
+        Continuous dividend payout, as a percentage
+
+    All parameters can be individual values.
+    Only one of these parameters can be a numpy.array, otherwise there will be
+    a dimension mismatch.
+
+    Returns
+    -------
+    [call,put] : list of pair of float or numpy.array values
+        European call and put delta values, type depends on input value.
+        If all input values are individual numbers, then output will be float.
+        If one input value is numpy.array, then output will be numpy.array.
+
+    Examples
+    --------
+    >>> from qcfoptions.bsoptions import EuroDelta
+    >>> s = 1
+        k = 1
+        r = 0.015
+        T = 2
+        vol = 0.25
+        q = 0.01
+    >>> EuroDelta(s,k,r,T,vol,q)
+    [0.56972847508580482, 0.41047019822095043]
+    >>> import numpy as np
+    >>> s_array = np.array([0.5,1.0,1.5,2.0])
+    >>> EuroDelta(s_array,k,r,T,vol,q)
+    [array([ 0.03880678,  0.56972848,  0.89373992,  0.96532734]),
+    array([-0.94139189, -0.4104702 , -0.08645875, -0.01487133])]
+
+    '''
+    d1 = ((np.log(s/k) + (r - q + 0.5*vol*vol)*T)) / (vol*np.sqrt(T))
+
+    call = np.exp(-q*T)*norm.cdf(d1)
+    put = -np.exp(-q*T)*norm.cdf(-d1)
+    return([call,put])
+
+def EuroGamma(s,k,r,T,vol,q):
+    '''
+    Calculate the Black Scholes gamma value of a European Call / Put option,
+    measures sensitivity of option delta with respect to change in underlying
+    asset price, calculated from derivative d2C/dS2
+    Gamma is of the form :
+    G = e**(-qT) N'(d1) / S vol sqrt(T)
+
+    Parameters
+    ----------
+    s : number of any type (int, float8, float64 etc.), numpy array of any type
+        should the user wish to have a list of values output with varying s
+        Spot value of underlying asset at current time, t
+    k : number of any type (int, float8, float64 etc.), numpy array of any type
+        should the user wish to have a list of values output with varying k
+        Strike value of option, determined at initiation
+    r : number of any type (int, float8, float64 etc.), numpy array of any type
+        should the user wish to have a list of values output with varying r
+        Risk free interest rate, implied constant till expiration
+    T : number of any type (int, float8, float64 etc.), numpy array of any type
+        should the user wish to have a list of values output with varying T
+        Time till expiration for option
+    vol : number of any type (int, float8, float64 etc.), numpy array of any type
+        should the user wish to have a list of values output with varying vol
+        Volatility of underlying, implied constant till expiration in Black
+        Scholes model
+    q : number of any type (int, float8, float64 etc.), numpy array of any type
+        should the user wish to have a list of values output with varying q
+        Continuous dividend payout, as a percentage
+
+    All parameters can be individual values.
+    Only one of these parameters can be a numpy.array, otherwise there will be
+    a dimension mismatch.
+
+    Returns
+    -------
+    gamma : float or numpy.array value
+        European gamma value, type depends on input value.
+        If all input values are individual numbers, then output will be float.
+        If one input value is numpy.array, then output will be numpy.array.
+
+    Examples
+    --------
+    >>> from qcfoptions.bsoptions import EuroGamma
+    >>> s = 1
+        k = 1
+        r = 0.015
+        T = 2
+        vol = 0.25
+        q = 0.01
+    >>> EuroGamma(s,k,r,T,vol,q)
+    1.08302411826
+    >>> import numpy as np
+    >>> s_array = np.array([0.5,1.0,1.5,2.0])
+    >>> EuroGamma(s_array,k,r,T,vol,q)
+    array([ 0.47384156,  1.08302412,  0.29567765,  0.05301251])
+
+    '''
+    d1 = ((np.log(s/k) + (r - q + 0.5*vol*vol)*T)) / (vol*np.sqrt(T))
+    gamma = np.exp(-q*T)*norm.pdf(d1) / (s*vol*np.sqrt(T))
+    return(gamma)
+
+def EuroVega(s,k,r,T,vol,q):
+    '''
+    Calculate the Black Scholes vega value of a European Call / Put option,
+    measures sensitivity of option value with respect to change in underlying
+    asset volatility, calculated from derivative dV/dσ
+    Vega is of the form :
+    V = S e**(-qT) N'(d1) sqrt(T)
+
+    Parameters
+    ----------
+    s : number of any type (int, float8, float64 etc.), numpy array of any type
+        should the user wish to have a list of values output with varying s
+        Spot value of underlying asset at current time, t
+    k : number of any type (int, float8, float64 etc.), numpy array of any type
+        should the user wish to have a list of values output with varying k
+        Strike value of option, determined at initiation
+    r : number of any type (int, float8, float64 etc.), numpy array of any type
+        should the user wish to have a list of values output with varying r
+        Risk free interest rate, implied constant till expiration
+    T : number of any type (int, float8, float64 etc.), numpy array of any type
+        should the user wish to have a list of values output with varying T
+        Time till expiration for option
+    vol : number of any type (int, float8, float64 etc.), numpy array of any type
+        should the user wish to have a list of values output with varying vol
+        Volatility of underlying, implied constant till expiration in Black
+        Scholes model
+    q : number of any type (int, float8, float64 etc.), numpy array of any type
+        should the user wish to have a list of values output with varying q
+        Continuous dividend payout, as a percentage
+
+    All parameters can be individual values.
+    Only one of these parameters can be a numpy.array, otherwise there will be
+    a dimension mismatch.
+
+    Returns
+    -------
+    vega : float or numpy.array value
+        European vega value, type depends on input value.
+        If all input values are individual numbers, then output will be float.
+        If one input value is numpy.array, then output will be numpy.array.
+
+    Examples
+    --------
+    >>> from qcfoptions.bsoptions import EuroVega
+    >>> s = 1
+        k = 1
+        r = 0.015
+        T = 2
+        vol = 0.25
+        q = 0.01
+    >>> EuroVega(s,k,r,T,vol,q)
+    0.541512059132
+    >>> import numpy as np
+    >>> s_array = np.array([0.5,1.0,1.5,2.0])
+    >>> EuroVega(s_array,k,r,T,vol,q)
+    array([ 0.0592302 ,  0.54151206,  0.33263735,  0.10602502])
+
+    '''
+    d1 = ((np.log(s/k) + (r - q + 0.5*vol*vol)*T)) / (vol*np.sqrt(T))
+    vega = s*np.exp(-q*T)*norm.pdf(d1)*np.sqrt(T)
+    return(vega)
+
+def EuroTheta(s,k,r,T,vol,q):
+    '''
+    Calculate the Black Scholes theta value of a European Call / Put option,
+    measures sensitivity of option value with respect to change in time,
+    calculated from derivative dV/dT
+
+    Parameters
+    ----------
+    s : number of any type (int, float8, float64 etc.), numpy array of any type
+        should the user wish to have a list of values output with varying s
+        Spot value of underlying asset at current time, t
+    k : number of any type (int, float8, float64 etc.), numpy array of any type
+        should the user wish to have a list of values output with varying k
+        Strike value of option, determined at initiation
+    r : number of any type (int, float8, float64 etc.), numpy array of any type
+        should the user wish to have a list of values output with varying r
+        Risk free interest rate, implied constant till expiration
+    T : number of any type (int, float8, float64 etc.), numpy array of any type
+        should the user wish to have a list of values output with varying T
+        Time till expiration for option
+    vol : number of any type (int, float8, float64 etc.), numpy array of any type
+        should the user wish to have a list of values output with varying vol
+        Volatility of underlying, implied constant till expiration in Black
+        Scholes model
+    q : number of any type (int, float8, float64 etc.), numpy array of any type
+        should the user wish to have a list of values output with varying q
+        Continuous dividend payout, as a percentage
+
+    All parameters can be individual values.
+    Only one of these parameters can be a numpy.array, otherwise there will be
+    a dimension mismatch.
+
+    Returns
+    -------
+    [call,put] : list of pair of float or numpy.array values
+        European call and put theta values, type depends on input value.
+        If all input values are individual numbers, then output will be float.
+        If one input value is numpy.array, then output will be numpy.array.
+
+    Examples
+    --------
+    >>> from qcfoptions.bsoptions import EuroTheta
+    >>> s = 1
+        k = 1
+        r = 0.015
+        T = 2
+        vol = 0.25
+        q = 0.01
+    >>> EuroTheta(s,k,r,T,vol,q)
+    [-0.034566382542201617, -0.029811686272041546]
+    >>> import numpy as np
+    >>> s_array = np.array([0.5,1.0,1.5,2.0])
+    >>> EuroTheta(s_array,k,r,T,vol,q)
+    [array([-0.00376219, -0.03456638, -0.01962506, -0.00136734]),
+    array([ 0.0058935 , -0.02981169, -0.01977136, -0.00641463])]
+
+    '''
+    d1 = ((np.log(s/k) + (r - q + 0.5*vol*vol)*T)) / (vol*np.sqrt(T))
+    d2 = d1 - vol*np.sqrt(T)
+
+    deriv = -0.5*np.exp(-q*T)*norm.pdf(d1)*s*vol / np.sqrt(T)
+    strike = r*k*np.exp(-r*T)
+    option = q*s*np.exp(-q*T)
+
+    call = deriv - strike*norm.cdf(d2) + option*norm.cdf(d1)
+    put = deriv + strike*norm.cdf(-d2) - option*norm.cdf(-d1)
+    return([call,put])
+
+def EuroRho(s,k,r,T,vol,q):
+    '''
+    Calculate the Black Scholes rho value of a European Call / Put option,
+    measures sensitivity of option value with respect to change in interest
+    rate over the life of the option, calculated from derivative dV/dr
+
+    Rhos are of the form :
+    C = e**-rT K T N(d2)
+    P = -e**-rT K T N(-d2)
+
+    Parameters
+    ----------
+    s : number of any type (int, float8, float64 etc.), numpy array of any type
+        should the user wish to have a list of values output with varying s
+        Spot value of underlying asset at current time, t
+    k : number of any type (int, float8, float64 etc.), numpy array of any type
+        should the user wish to have a list of values output with varying k
+        Strike value of option, determined at initiation
+    r : number of any type (int, float8, float64 etc.), numpy array of any type
+        should the user wish to have a list of values output with varying r
+        Risk free interest rate, implied constant till expiration
+    T : number of any type (int, float8, float64 etc.), numpy array of any type
+        should the user wish to have a list of values output with varying T
+        Time till expiration for option
+    vol : number of any type (int, float8, float64 etc.), numpy array of any type
+        should the user wish to have a list of values output with varying vol
+        Volatility of underlying, implied constant till expiration in Black
+        Scholes model
+    q : number of any type (int, float8, float64 etc.), numpy array of any type
+        should the user wish to have a list of values output with varying q
+        Continuous dividend payout, as a percentage
+
+    All parameters can be individual values.
+    Only one of these parameters can be a numpy.array, otherwise there will be
+    a dimension mismatch.
+
+    Returns
+    -------
+    [call,put] : list of pair of float or numpy.array values
+        European call and put rho values, type depends on input value.
+        If all input values are individual numbers, then output will be float.
+        If one input value is numpy.array, then output will be numpy.array.
+
+    Examples
+    --------
+    >>> from qcfoptions.bsoptions import EuroRho
+    >>> s = 1
+        k = 1
+        r = 0.015
+        T = 2
+        vol = 0.25
+        q = 0.01
+    >>> EuroRho(s,k,r,T,vol,q)
+    [0.85588847964502479, -1.0850025874519915]
+    >>> import numpy as np
+    >>> s_array = np.array([0.5,1.0,1.5,2.0])
+    >>> EuroRho(s_array,k,r,T,vol,q)
+    [array([ 0.03391108,  0.85588848,  1.63217641,  1.87297685]),
+    array([-1.90697998, -1.08500259, -0.30871465, -0.06791421])]
+
+    '''
+    d1 = ((np.log(s/k) + (r - q + 0.5*vol*vol)*T)) / (vol*np.sqrt(T))
+    d2 = d1 - vol*np.sqrt(T)
+
+    strike = k*T*np.exp(-r*T)
+
+    call = strike*norm.cdf(d2)
+    put = -strike*norm.cdf(-d2)
+    return([call,put])

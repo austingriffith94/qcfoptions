@@ -985,7 +985,7 @@ class Simple:
     motion of the underlying asset.
 
     '''
-    def __init__(self,s0,r,T,vol,dt=0.001,paths=10000):
+    def __init__(self,s0,r,T,vol,dt=0.001,paths=1000):
         '''
         Parameters
         ----------
@@ -1600,7 +1600,7 @@ class Heston:
     motion of the underlying asset.
 
     '''
-    def __init__(self,s0,r,T,vol,phi,kappa,xi,dt=0.001,paths=10000):
+    def __init__(self,s0,r,T,vol,phi,kappa,xi,dt=0.001,paths=1000):
         '''
         Parameters
         ----------
