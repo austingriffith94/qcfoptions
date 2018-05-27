@@ -1,5 +1,5 @@
 # from qcfoptions import barriers, bsoptions
-from qcfoptions import bsoptions
+from qcfoptions import bsoptions, barriers
 import numpy as np
 import pandas as pd
 import time

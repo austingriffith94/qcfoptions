@@ -1,4 +1,4 @@
-import simulation
+from qcfoptions import simulation
 import numpy as np
 
 #%%

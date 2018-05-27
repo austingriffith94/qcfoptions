@@ -60,6 +60,8 @@ def DownOutPutLow(s,k,r,Z,T,vol,q):
     q : number of any type (int, float8, float64 etc.)
         Continuous dividend payout, as a percentage
 
+    Notes
+    -----
     * Z < k must hold true for this function
 
     Returns
@@ -167,6 +169,8 @@ def UpOutCallHigh(s,k,r,Z,T,vol,q):
     q : number of any type (int, float8, float64 etc.)
         Continuous dividend payout, as a percentage
 
+    Notes
+    -----
     * Z > k must hold true for this function
 
     Returns

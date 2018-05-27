@@ -37,7 +37,9 @@ def EuroSim(S,k,r,T):
         Second list is the call and put simulated paths payoffs at expiration,
         NOT discounted
 
-    * the accuracy of pricing is dependent on the number of time steps and
+    Notes
+    -----
+    The accuracy of pricing is dependent on the number of time steps and
     simulated paths chosen for the underlying stochastic motion
 
     Examples
@@ -101,7 +103,9 @@ def AsianGeoFixSim(S,k,r,T):
         Second list is the call and put simulated paths payoffs at expiration,
         NOT discounted
 
-    * the accuracy of pricing is dependent on the number of time steps and
+    Notes
+    -----
+    The accuracy of pricing is dependent on the number of time steps and
     simulated paths chosen for the underlying stochastic motion
 
     Examples
@@ -166,7 +170,9 @@ def AsianGeoFloatSim(S,m,r,T):
         Second list is the call and put simulated paths payoffs at expiration,
         NOT discounted
 
-    * the accuracy of pricing is dependent on the number of time steps and
+    Notes
+    -----
+    The accuracy of pricing is dependent on the number of time steps and
     simulated paths chosen for the underlying stochastic motion
 
     Examples
@@ -231,7 +237,9 @@ def AsianArithFixSim(S,k,r,T):
         Second list is the call and put simulated paths payoffs at expiration,
         NOT discounted
 
-    * the accuracy of pricing is dependent on the number of time steps and
+    Notes
+    -----
+    The accuracy of pricing is dependent on the number of time steps and
     simulated paths chosen for the underlying stochastic motion
 
     Examples
@@ -296,7 +304,9 @@ def AsianArithFloatSim(S,m,r,T):
         Second list is the call and put simulated paths payoffs at expiration,
         NOT discounted
 
-    * the accuracy of pricing is dependent on the number of time steps and
+    Notes
+    -----
+    The accuracy of pricing is dependent on the number of time steps and
     simulated paths chosen for the underlying stochastic motion
 
     Examples
@@ -364,7 +374,9 @@ def PowerSim(S,k,r,T,n):
         Second list is the call and put simulated paths payoffs at expiration,
         NOT discounted
 
-    * the accuracy of pricing is dependent on the number of time steps and
+    Notes
+    -----
+    The accuracy of pricing is dependent on the number of time steps and
     simulated paths chosen for the underlying stochastic motion
 
     Examples
@@ -432,7 +444,9 @@ def PowerStrikeSim(S,k,r,T,n):
         Second list is the call and put simulated paths payoffs at expiration,
         NOT discounted
 
-    * the accuracy of pricing is dependent on the number of time steps and
+    Notes
+    -----
+    The accuracy of pricing is dependent on the number of time steps and
     simulated paths chosen for the underlying stochastic motion
 
     Examples
@@ -501,9 +515,11 @@ def AvgBarrierSim(S,Z,r,timeMatrix):
         payoffMotion is the simulated paths payoffs at expiration,
         NOT discounted
 
-    * the accuracy of pricing is dependent on the number of time steps and
+    Notes
+    -----
+    The accuracy of pricing is dependent on the number of time steps and
     simulated paths chosen for the underlying stochastic motion
-    ** if the barrier is equal to the initial spot price, the price and
+    * if the barrier is equal to the initial spot price, the price and
     payoffMotion will both be equal to the spot price since underlying hits the
     barrier at initiation
 
@@ -584,9 +600,11 @@ def NoTouchSingleSim(S,Z,r,T,payoutScale):
         payoffMotion is the simulated paths payoffs at expiration,
         NOT discounted
 
-    * the accuracy of pricing is dependent on the number of time steps and
+    Notes
+    -----
+    The accuracy of pricing is dependent on the number of time steps and
     simulated paths chosen for the underlying stochastic motion
-    ** if the barrier is equal to the initial spot price, the price and
+    * if the barrier is equal to the initial spot price, the price and
     payoffMotion will both be 0 since underlying hits the barrier at initiation
 
     Examples
@@ -662,11 +680,13 @@ def NoTouchDoubleSim(S,Z1,Z2,r,T,payoutScale):
         payoffMotion is the simulated paths payoffs at expiration,
         NOT discounted
 
-    * the accuracy of pricing is dependent on the number of time steps and
+    Notes
+    -----
+    The accuracy of pricing is dependent on the number of time steps and
     simulated paths chosen for the underlying stochastic motion
-    ** if either barrier is equal to the initial spot price, the price and
+    * if either barrier is equal to the initial spot price, the price and
     payoffMotion will both be 0 since underlying hits the barrier at initiation
-    *** if spot is not between Z1 and Z2, then output error, since two
+    ** if spot is not between Z1 and Z2, then output error, since two
     barriers will be redundant
 
     Examples
@@ -750,9 +770,11 @@ def CashOrNothingSim(S,Z,r,T,payout):
         payoffMotion is the simulated paths payoffs at expiration,
         NOT discounted
 
-    * the accuracy of pricing is dependent on the number of time steps and
+    Notes
+    -----
+    The accuracy of pricing is dependent on the number of time steps and
     simulated paths chosen for the underlying stochastic motion
-    ** if the barrier is equal to the initial spot price, the price and
+    * if the barrier is equal to the initial spot price, the price and
     payoffMotion will both be 0 since underlying hits the barrier at initiation
 
     Examples
@@ -815,6 +837,8 @@ def SimpleSim(s0,r,T,vol,dt,paths):
         Number of stocks simulated, higher number of paths
         leads to greater accuracy in calculated price.
 
+    Notes
+    -----
     * numpy matrices will begin to break once a large enough path is chosen
     ** similarly, if too small of a dt is chosen, the numpy matrices
     will begin to break
@@ -895,6 +919,8 @@ def HestonSim(s0,r,T,vol,phi,kappa,xi,dt,paths):
         Number of stocks simulated, higher number of paths
         leads to greater accuracy in calculated price.
 
+    Notes
+    -----
     * numpy matrices will begin to break once a large enough path is chosen
     ** similarly, if too small of a dt is chosen, the numpy matrices
     will begin to break
@@ -1007,6 +1033,8 @@ class Simple:
             leads to greater accuracy in calculated price.
             Standard is 10000, unless changed by user
 
+        Notes
+        -----
         * numpy matrices will begin to break once a large enough path is chosen
         ** similarly, if too small of a dt is chosen, the numpy matrices
         will begin to break
@@ -1059,7 +1087,9 @@ class Simple:
             Second list is the call and put simulated paths payoffs at expiration,
             NOT discounted
 
-        * the accuracy of pricing is dependent on the number of time steps and
+        Notes
+        -----
+        The accuracy of pricing is dependent on the number of time steps and
         simulated paths chosen for the underlying stochastic motion
 
         Examples
@@ -1107,7 +1137,9 @@ class Simple:
             Second list is the call and put simulated paths payoffs at expiration,
             NOT discounted
 
-        * the accuracy of pricing is dependent on the number of time steps and
+        Notes
+        -----
+        The accuracy of pricing is dependent on the number of time steps and
         simulated paths chosen for the underlying stochastic motion
 
         Examples
@@ -1155,7 +1187,9 @@ class Simple:
             Second list is the call and put simulated paths payoffs at expiration,
             NOT discounted
 
-        * the accuracy of pricing is dependent on the number of time steps and
+        Notes
+        -----
+        The accuracy of pricing is dependent on the number of time steps and
         simulated paths chosen for the underlying stochastic motion
 
         Examples
@@ -1203,7 +1237,9 @@ class Simple:
             Second list is the call and put simulated paths payoffs at expiration,
             NOT discounted
 
-        * the accuracy of pricing is dependent on the number of time steps and
+        Notes
+        -----
+        The accuracy of pricing is dependent on the number of time steps and
         simulated paths chosen for the underlying stochastic motion
 
         Examples
@@ -1251,7 +1287,9 @@ class Simple:
             Second list is the call and put simulated paths payoffs at expiration,
             NOT discounted
 
-        * the accuracy of pricing is dependent on the number of time steps and
+        Notes
+        -----
+        The accuracy of pricing is dependent on the number of time steps and
         simulated paths chosen for the underlying stochastic motion
 
         Examples
@@ -1302,7 +1340,9 @@ class Simple:
             Second list is the call and put simulated paths payoffs at expiration,
             NOT discounted
 
-        * the accuracy of pricing is dependent on the number of time steps and
+        Notes
+        -----
+        The accuracy of pricing is dependent on the number of time steps and
         simulated paths chosen for the underlying stochastic motion
 
         Examples
@@ -1353,7 +1393,9 @@ class Simple:
             Second list is the call and put simulated paths payoffs at expiration,
             NOT discounted
 
-        * the accuracy of pricing is dependent on the number of time steps and
+        Notes
+        -----
+        The accuracy of pricing is dependent on the number of time steps and
         simulated paths chosen for the underlying stochastic motion
 
         Examples
@@ -1403,9 +1445,11 @@ class Simple:
             payoffMotion is the simulated paths payoffs at expiration,
             NOT discounted
 
-        * the accuracy of pricing is dependent on the number of time steps and
+        Notes
+        -----
+        The accuracy of pricing is dependent on the number of time steps and
         simulated paths chosen for the underlying stochastic motion
-        ** if the barrier is equal to the initial spot price, the price and
+        * if the barrier is equal to the initial spot price, the price and
         payoffMotion will both be equal to the spot price since underlying hits the
         barrier at initiation
 
@@ -1456,9 +1500,11 @@ class Simple:
             payoffMotion is the simulated paths payoffs at expiration,
             NOT discounted
 
-        * the accuracy of pricing is dependent on the number of time steps and
+        Notes
+        -----
+        The accuracy of pricing is dependent on the number of time steps and
         simulated paths chosen for the underlying stochastic motion
-        ** if the barrier is equal to the initial spot price, the price and
+        * if the barrier is equal to the initial spot price, the price and
         payoffMotion will both be 0 since underlying hits the barrier at initiation
 
         Examples
@@ -1508,11 +1554,13 @@ class Simple:
             payoffMotion is the simulated paths payoffs at expiration,
             NOT discounted
 
-        * the accuracy of pricing is dependent on the number of time steps and
+        Notes
+        -----
+        The accuracy of pricing is dependent on the number of time steps and
         simulated paths chosen for the underlying stochastic motion
-        ** if either barrier is equal to the initial spot price, the price and
+        * if either barrier is equal to the initial spot price, the price and
         payoffMotion will both be 0 since underlying hits the barrier at initiation
-        *** if spot is not between Z1 and Z2, then output error, since two
+        ** if spot is not between Z1 and Z2, then output error, since two
         barriers will be redundant
 
         Examples
@@ -1564,9 +1612,11 @@ class Simple:
             payoffMotion is the simulated paths payoffs at expiration,
             NOT discounted
 
-        * the accuracy of pricing is dependent on the number of time steps and
+        Notes
+        -----
+        The accuracy of pricing is dependent on the number of time steps and
         simulated paths chosen for the underlying stochastic motion
-        ** if the barrier is equal to the initial spot price, the price and
+        * if the barrier is equal to the initial spot price, the price and
         payoffMotion will both be 0 since underlying hits the barrier at initiation
 
         Examples
@@ -1628,6 +1678,8 @@ class Heston:
             leads to greater accuracy in calculated price.
             Standard is 10000, unless changed by user
 
+        Notes
+        -----
         * numpy matrices will begin to break once a large enough path is chosen
         ** similarly, if too small of a dt is chosen, the numpy matrices
         will begin to break
@@ -1686,7 +1738,9 @@ class Heston:
             Second list is the call and put simulated paths payoffs at expiration,
             NOT discounted
 
-        * the accuracy of pricing is dependent on the number of time steps and
+        Notes
+        -----
+        The accuracy of pricing is dependent on the number of time steps and
         simulated paths chosen for the underlying stochastic motion
 
         Examples
@@ -1734,7 +1788,9 @@ class Heston:
             Second list is the call and put simulated paths payoffs at expiration,
             NOT discounted
 
-        * the accuracy of pricing is dependent on the number of time steps and
+        Notes
+        -----
+        The accuracy of pricing is dependent on the number of time steps and
         simulated paths chosen for the underlying stochastic motion
 
         Examples
@@ -1782,7 +1838,9 @@ class Heston:
             Second list is the call and put simulated paths payoffs at expiration,
             NOT discounted
 
-        * the accuracy of pricing is dependent on the number of time steps and
+        Notes
+        -----
+        The accuracy of pricing is dependent on the number of time steps and
         simulated paths chosen for the underlying stochastic motion
 
         Examples
@@ -1830,7 +1888,9 @@ class Heston:
             Second list is the call and put simulated paths payoffs at expiration,
             NOT discounted
 
-        * the accuracy of pricing is dependent on the number of time steps and
+        Notes
+        -----
+        The accuracy of pricing is dependent on the number of time steps and
         simulated paths chosen for the underlying stochastic motion
 
         Examples
@@ -1878,7 +1938,9 @@ class Heston:
             Second list is the call and put simulated paths payoffs at expiration,
             NOT discounted
 
-        * the accuracy of pricing is dependent on the number of time steps and
+        Notes
+        -----
+        The accuracy of pricing is dependent on the number of time steps and
         simulated paths chosen for the underlying stochastic motion
 
         Examples
@@ -1929,7 +1991,9 @@ class Heston:
             Second list is the call and put simulated paths payoffs at expiration,
             NOT discounted
 
-        * the accuracy of pricing is dependent on the number of time steps and
+        Notes
+        -----
+        The accuracy of pricing is dependent on the number of time steps and
         simulated paths chosen for the underlying stochastic motion
 
         Examples
@@ -1980,7 +2044,9 @@ class Heston:
             Second list is the call and put simulated paths payoffs at expiration,
             NOT discounted
 
-        * the accuracy of pricing is dependent on the number of time steps and
+        Notes
+        -----
+        The accuracy of pricing is dependent on the number of time steps and
         simulated paths chosen for the underlying stochastic motion
 
         Examples
@@ -2030,9 +2096,11 @@ class Heston:
             payoffMotion is the simulated paths payoffs at expiration,
             NOT discounted
 
-        * the accuracy of pricing is dependent on the number of time steps and
+        Notes
+        -----
+        The accuracy of pricing is dependent on the number of time steps and
         simulated paths chosen for the underlying stochastic motion
-        ** if the barrier is equal to the initial spot price, the price and
+        * if the barrier is equal to the initial spot price, the price and
         payoffMotion will both be equal to the spot price since underlying hits the
         barrier at initiation
 
@@ -2083,9 +2151,11 @@ class Heston:
             payoffMotion is the simulated paths payoffs at expiration,
             NOT discounted
 
-        * the accuracy of pricing is dependent on the number of time steps and
+        Notes
+        -----
+        The accuracy of pricing is dependent on the number of time steps and
         simulated paths chosen for the underlying stochastic motion
-        ** if the barrier is equal to the initial spot price, the price and
+        * if the barrier is equal to the initial spot price, the price and
         payoffMotion will both be 0 since underlying hits the barrier at initiation
 
         Examples
@@ -2135,11 +2205,13 @@ class Heston:
             payoffMotion is the simulated paths payoffs at expiration,
             NOT discounted
 
-        * the accuracy of pricing is dependent on the number of time steps and
+        Notes
+        -----
+        The accuracy of pricing is dependent on the number of time steps and
         simulated paths chosen for the underlying stochastic motion
-        ** if either barrier is equal to the initial spot price, the price and
+        * if either barrier is equal to the initial spot price, the price and
         payoffMotion will both be 0 since underlying hits the barrier at initiation
-        *** if spot is not between Z1 and Z2, then output error, since two
+        ** if spot is not between Z1 and Z2, then output error, since two
         barriers will be redundant
 
         Examples
@@ -2191,9 +2263,11 @@ class Heston:
             payoffMotion is the simulated paths payoffs at expiration,
             NOT discounted
 
-        * the accuracy of pricing is dependent on the number of time steps and
+        Notes
+        -----
+        The accuracy of pricing is dependent on the number of time steps and
         simulated paths chosen for the underlying stochastic motion
-        ** if the barrier is equal to the initial spot price, the price and
+        * if the barrier is equal to the initial spot price, the price and
         payoffMotion will both be 0 since underlying hits the barrier at initiation
 
         Examples

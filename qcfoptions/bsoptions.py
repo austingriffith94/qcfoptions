@@ -34,6 +34,8 @@ def Euro(s,k,r,T,vol,q):
         should the user wish to have a list of values output with varying q
         Continuous dividend payout, as a percentage
 
+    Notes
+    -----
     All parameters can be individual values.
     Only one of these parameters can be a numpy.array, otherwise there will be
     a dimension mismatch.
@@ -103,6 +105,8 @@ def AsianGeometric(s,k,r,T,vol,q):
         should the user wish to have a list of values output with varying q
         Continuous dividend payout, as a percentage
 
+    Notes
+    -----
     All parameters can be individual values.
     Only one of these parameters can be a numpy.array, otherwise there will be
     a dimension mismatch.
@@ -175,12 +179,13 @@ def AsianArithmetic(s,k,r,T,vol,q):
         should the user wish to have a list of values output with varying q
         Continuous dividend payout, as a percentage
 
+    Notes
+    -----
     All parameters can be individual values.
     Only one of these parameters can be a numpy.array, otherwise there will be
     a dimension mismatch.
 
-    * r > q, else the natural logarithm will break due to a relationship
-        mismatch
+    * want r > q, else the natural logarithm has a chance of breaking
 
     Returns
     -------
@@ -254,6 +259,8 @@ def Power(s,k,r,T,vol,q,n):
     n : number of any type (int, float8, float64 etc.)
         Power to which the underlying spot is raised at payoff
 
+    Notes
+    -----
     All parameters can be individual values.
     Only one of these parameters can be a numpy.array (not including 'n'),
     otherwise there will be a dimension mismatch.
@@ -328,6 +335,8 @@ def PowerStrike(s,k,r,T,vol,q,n):
     n : number of any type (int, float8, float64 etc.)
         Power to which the underlying spot is raised at payoff
 
+    Notes
+    -----
     All parameters can be individual values.
     Only one of these parameters can be a numpy.array (not including 'n'),
     otherwise there will be a dimension mismatch.
@@ -400,6 +409,8 @@ def Margrabe(s,s2,T,vol,vol2,q,q2,corr):
         Correlation between the motion of the underlying (relationship between
         the Weiner process of asset 1 and 2)
 
+    Notes
+    -----
     All parameters can be individual values.
     At most, only one pair of these parameters can be a numpy.array,
     otherwise there will be a dimension mismatch.
@@ -477,6 +488,8 @@ def Lookback(s,M,r,T,vol,q):
         should the user wish to have a list of values output with varying q
         Continuous dividend payout, as a percentage
 
+    Notes
+    -----
     All parameters can be individual values.
     Only one of these parameters can be a numpy.array, otherwise there will be
     a dimension mismatch.
@@ -557,6 +570,8 @@ def EuroDelta(s,k,r,T,vol,q):
         should the user wish to have a list of values output with varying q
         Continuous dividend payout, as a percentage
 
+    Notes
+    -----
     All parameters can be individual values.
     Only one of these parameters can be a numpy.array, otherwise there will be
     a dimension mismatch.
@@ -622,6 +637,8 @@ def EuroGamma(s,k,r,T,vol,q):
         should the user wish to have a list of values output with varying q
         Continuous dividend payout, as a percentage
 
+    Notes
+    -----
     All parameters can be individual values.
     Only one of these parameters can be a numpy.array, otherwise there will be
     a dimension mismatch.
@@ -684,6 +701,8 @@ def EuroVega(s,k,r,T,vol,q):
         should the user wish to have a list of values output with varying q
         Continuous dividend payout, as a percentage
 
+    Notes
+    -----
     All parameters can be individual values.
     Only one of these parameters can be a numpy.array, otherwise there will be
     a dimension mismatch.
@@ -744,6 +763,8 @@ def EuroTheta(s,k,r,T,vol,q):
         should the user wish to have a list of values output with varying q
         Continuous dividend payout, as a percentage
 
+    Notes
+    -----
     All parameters can be individual values.
     Only one of these parameters can be a numpy.array, otherwise there will be
     a dimension mismatch.
@@ -816,6 +837,8 @@ def EuroRho(s,k,r,T,vol,q):
         should the user wish to have a list of values output with varying q
         Continuous dividend payout, as a percentage
 
+    Notes
+    -----
     All parameters can be individual values.
     Only one of these parameters can be a numpy.array, otherwise there will be
     a dimension mismatch.
