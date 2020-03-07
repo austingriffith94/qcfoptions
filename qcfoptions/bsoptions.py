@@ -1,5 +1,7 @@
-# Austin Griffith
-# Options, Black Scholes
+'''
+Austin Griffith
+bsoptions.py
+'''
 
 import numpy as np
 from scipy.stats import norm
@@ -46,23 +48,6 @@ def Euro(s,k,r,T,vol,q):
         European call and put values, type depends on input value.
         If all input values are individual numbers, then output will be float.
         If one input value is numpy.array, then output will be numpy.array.
-
-    Examples
-    --------
-    >>> from qcfoptions.bsoptions import Euro
-    >>> s = 1
-        k = 1
-        r = 0.015
-        T = 2
-        vol = 0.25
-        q = 0.01
-    >>> Euro(s,k,r,T,vol,q)
-    [0.14178423526329242, 0.13203109550504533]
-    >>> import numpy as np
-    >>> s_array = np.array([0.5,1.0,1.5,2.0])
-    >>> Euro(s_array,k,r,T,vol,q)
-    [array([0.00244785, 0.14178424, 0.52452167, 0.99416626]),
-    array([0.48279404, 0.1320311 , 0.0246692 , 0.00421444])]
 
     '''
     d1 = ((np.log(s/k) + (r - q + 0.5*vol*vol)*T)) / (vol*np.sqrt(T))
@@ -117,23 +102,6 @@ def AsianGeometric(s,k,r,T,vol,q):
         Asian call and put values, type depends on input value.
         If all input values are individual numbers, then output will be float.
         If one input value is numpy.array, then output will be numpy.array.
-
-    Examples
-    --------
-    >>> from qcfoptions.bsoptions import AsianGeometric
-    >>> s = 1
-        k = 1
-        r = 0.015
-        T = 2
-        vol = 0.25
-        q = 0.01
-    >>> AsianGeometric(s,k,r,T,vol,q)
-    [0.0760833709740742, 0.08132574004684912]
-    >>> import numpy as np
-    >>> s_array = np.array([0.5,1.0,1.5,2.0])
-    >>> AsianGeometric(s_array,k,r,T,vol,q)
-    [array([1.10488795e-05, 7.60833710e-02, 4.79636239e-01, 9.59987952e-01]),
-    array([4.87855000e-01, 8.13257400e-02, 2.27702612e-03, 2.71568147e-05])]
 
     '''
     a = 0.5*(r - q - vol*vol/6)
@@ -193,23 +161,6 @@ def AsianArithmetic(s,k,r,T,vol,q):
         Asian call and put values, type depends on input value.
         If all input values are individual numbers, then output will be float.
         If one input value is numpy.array, then output will be numpy.array.
-
-    Examples
-    --------
-    >>> from qcfoptions.bsoptions import AsianArithmetic
-    >>> s = 1
-        k = 1
-        r = 0.01
-        T = 2
-        vol = 0.25
-        q = 0.015
-    >>> AsianArithmetic(s,k,r,T,vol,q)
-    [0.8242269391820242, 0.8193584969058301]
-    >>> import numpy as np
-    >>> s_array = np.array([0.5,1.0,1.5,2.0])
-    >>> AsianArithmetic(s_array,k,r,T,vol,q)
-    [array([0.38280732, 0.82422694, 1.27915927, 1.7410437 ]),
-    array([0.86559587, 0.8193585 , 0.78663384, 0.76086128])]
 
     '''
     m1 = s*(np.exp((r - q)*T) - 1) / ((r - q)*T)
@@ -273,24 +224,6 @@ def Power(s,k,r,T,vol,q,n):
         If one input value, other than 'n', is numpy.array, then output
         will be numpy.array.
 
-    Examples
-    --------
-    >>> from qcfoptions.bsoptions import Power
-    >>> s = 1
-        k = 1
-        r = 0.01
-        T = 2
-        vol = 0.25
-        q = 0.015
-        n = 2.5
-    >>> Power(s,k,r,T,vol,q,n)
-    [0.5888398346686554, 0.2369822536424761]
-    >>> import numpy as np
-    >>> s_array = np.array([0.5,1.0,1.5,2.0])
-    >>> Power(s_array,k,r,T,vol,q,n)
-    [array([0.00881893, 0.58883983, 2.7187886 , 6.51733355]),
-    array([0.74551209, 0.23698225, 0.04539523, 0.00770309])]
-
     '''
     d1 = (np.log(s/np.power(k,1/n)) +
         (r - q + vol*vol*(n - 0.5))*T) / (vol*np.sqrt(T))
@@ -349,24 +282,6 @@ def PowerStrike(s,k,r,T,vol,q,n):
         If one input value, other than 'n', is numpy.array, then output
         will be numpy.array.
 
-    Examples
-    --------
-    >>> from qcfoptions.bsoptions import PowerStrike
-    >>> s = 1
-        k = 1
-        r = 0.01
-        T = 2
-        vol = 0.25
-        q = 0.015
-        n = 2.5
-    >>> PowerStrike(s,k,r,T,vol,q,n)
-    [0.5888398346686554, 0.2369822536424761]
-    >>> import numpy as np
-    >>> s_array = np.array([0.5,1.0,1.5,2.0])
-    >>> PowerStrike(s_array,k,r,T,vol,q,n)
-    [array([0.00881893, 0.58883983, 2.7187886 , 6.51733355]),
-    array([0.74551209, 0.23698225, 0.04539523, 0.00770309])]
-
     '''
     d1 = (np.log(s/np.power(k,1/n)) +
         (r - q + vol*vol*(n - 0.5))*T) / (vol*np.sqrt(T))
@@ -422,25 +337,6 @@ def Margrabe(s,s2,T,vol,vol2,q,q2,corr):
         If all input values are individual numbers, then output will be float.
         If one pair of input values are a numpy.array,
         then output will be numpy.array.
-
-    Examples
-    --------
-    >>> from qcfoptions.bsoptions import Margrabe
-    >>> s1 = 1
-        s2 = 1.2
-        T = 2
-        q1 = 0.1
-        q2 = 0.05
-        vol1 = 0.25
-        vol2 = 0.15
-        corr = 0.4
-    >>> Margrabe(s1,s2,T,vol1,vol2,q1,q2,corr)
-    0.0454498263366398
-    >>> import numpy as np
-    >>> s1_array = np.array([0.5,1.0,1.5,2.0])
-        s2_array = np.array([0.5,1.0,1.5,2.0])
-    >>> Margrabe(s1_array,s2_array,T,vol1,vol2,q1,q2,corr)
-    array([0.04466118, 0.08932237, 0.13398355, 0.17864473])
 
     '''
     volMix = np.sqrt(vol*vol + vol2*vol2 - vol*vol2*corr)
@@ -500,23 +396,6 @@ def Lookback(s,M,r,T,vol,q):
         Lookback call and put values, type depends on input value.
         If all input values are individual numbers, then output will be float.
         If one input value is numpy.array, then output will be numpy.array.
-
-    Examples
-    --------
-    >>> from qcfoptions.bsoptions import Lookback
-    >>> s = 1
-        k = 1
-        r = 0.015
-        T = 2
-        vol = 0.25
-        q = 0.01
-    >>> Lookback(s,M,r,T,vol,q)
-    [0.2509969952730551, 0.30220097900385257]
-    >>> import numpy as np
-    >>> s_array = np.array([0.5,1.0,1.5,2.0])
-    >>> Lookback(s_array,M,r,T,vol,q)
-    [array([0.33036841, 0.250997  , 0.54619226, 0.99797004]),
-    array([0.48550323, 0.30220098, 0.70926038, 1.40333811])]
 
     '''
     B = 2*(r - q) / (vol*vol)
@@ -583,23 +462,6 @@ def EuroDelta(s,k,r,T,vol,q):
         If all input values are individual numbers, then output will be float.
         If one input value is numpy.array, then output will be numpy.array.
 
-    Examples
-    --------
-    >>> from qcfoptions.bsoptions import EuroDelta
-    >>> s = 1
-        k = 1
-        r = 0.015
-        T = 2
-        vol = 0.25
-        q = 0.01
-    >>> EuroDelta(s,k,r,T,vol,q)
-    [0.56972847508580482, 0.41047019822095043]
-    >>> import numpy as np
-    >>> s_array = np.array([0.5,1.0,1.5,2.0])
-    >>> EuroDelta(s_array,k,r,T,vol,q)
-    [array([ 0.03880678,  0.56972848,  0.89373992,  0.96532734]),
-    array([-0.94139189, -0.4104702 , -0.08645875, -0.01487133])]
-
     '''
     d1 = ((np.log(s/k) + (r - q + 0.5*vol*vol)*T)) / (vol*np.sqrt(T))
 
@@ -650,22 +512,6 @@ def EuroGamma(s,k,r,T,vol,q):
         If all input values are individual numbers, then output will be float.
         If one input value is numpy.array, then output will be numpy.array.
 
-    Examples
-    --------
-    >>> from qcfoptions.bsoptions import EuroGamma
-    >>> s = 1
-        k = 1
-        r = 0.015
-        T = 2
-        vol = 0.25
-        q = 0.01
-    >>> EuroGamma(s,k,r,T,vol,q)
-    1.08302411826
-    >>> import numpy as np
-    >>> s_array = np.array([0.5,1.0,1.5,2.0])
-    >>> EuroGamma(s_array,k,r,T,vol,q)
-    array([ 0.47384156,  1.08302412,  0.29567765,  0.05301251])
-
     '''
     d1 = ((np.log(s/k) + (r - q + 0.5*vol*vol)*T)) / (vol*np.sqrt(T))
     gamma = np.exp(-q*T)*norm.pdf(d1) / (s*vol*np.sqrt(T))
@@ -714,22 +560,6 @@ def EuroVega(s,k,r,T,vol,q):
         If all input values are individual numbers, then output will be float.
         If one input value is numpy.array, then output will be numpy.array.
 
-    Examples
-    --------
-    >>> from qcfoptions.bsoptions import EuroVega
-    >>> s = 1
-        k = 1
-        r = 0.015
-        T = 2
-        vol = 0.25
-        q = 0.01
-    >>> EuroVega(s,k,r,T,vol,q)
-    0.541512059132
-    >>> import numpy as np
-    >>> s_array = np.array([0.5,1.0,1.5,2.0])
-    >>> EuroVega(s_array,k,r,T,vol,q)
-    array([ 0.0592302 ,  0.54151206,  0.33263735,  0.10602502])
-
     '''
     d1 = ((np.log(s/k) + (r - q + 0.5*vol*vol)*T)) / (vol*np.sqrt(T))
     vega = s*np.exp(-q*T)*norm.pdf(d1)*np.sqrt(T)
@@ -775,23 +605,6 @@ def EuroTheta(s,k,r,T,vol,q):
         European call and put theta values, type depends on input value.
         If all input values are individual numbers, then output will be float.
         If one input value is numpy.array, then output will be numpy.array.
-
-    Examples
-    --------
-    >>> from qcfoptions.bsoptions import EuroTheta
-    >>> s = 1
-        k = 1
-        r = 0.015
-        T = 2
-        vol = 0.25
-        q = 0.01
-    >>> EuroTheta(s,k,r,T,vol,q)
-    [-0.034566382542201617, -0.029811686272041546]
-    >>> import numpy as np
-    >>> s_array = np.array([0.5,1.0,1.5,2.0])
-    >>> EuroTheta(s_array,k,r,T,vol,q)
-    [array([-0.00376219, -0.03456638, -0.01962506, -0.00136734]),
-    array([ 0.0058935 , -0.02981169, -0.01977136, -0.00641463])]
 
     '''
     d1 = ((np.log(s/k) + (r - q + 0.5*vol*vol)*T)) / (vol*np.sqrt(T))
@@ -849,23 +662,6 @@ def EuroRho(s,k,r,T,vol,q):
         European call and put rho values, type depends on input value.
         If all input values are individual numbers, then output will be float.
         If one input value is numpy.array, then output will be numpy.array.
-
-    Examples
-    --------
-    >>> from qcfoptions.bsoptions import EuroRho
-    >>> s = 1
-        k = 1
-        r = 0.015
-        T = 2
-        vol = 0.25
-        q = 0.01
-    >>> EuroRho(s,k,r,T,vol,q)
-    [0.85588847964502479, -1.0850025874519915]
-    >>> import numpy as np
-    >>> s_array = np.array([0.5,1.0,1.5,2.0])
-    >>> EuroRho(s_array,k,r,T,vol,q)
-    [array([ 0.03391108,  0.85588848,  1.63217641,  1.87297685]),
-    array([-1.90697998, -1.08500259, -0.30871465, -0.06791421])]
 
     '''
     d1 = ((np.log(s/k) + (r - q + 0.5*vol*vol)*T)) / (vol*np.sqrt(T))
