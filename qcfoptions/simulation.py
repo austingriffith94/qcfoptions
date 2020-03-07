@@ -1,5 +1,7 @@
-# Austin Griffith
-# Simulation
+'''
+Austin Griffith
+simulation.py
+'''
 
 import numpy as np
 import scipy.stats as sctats
@@ -41,28 +43,6 @@ def EuroSim(S,k,r,T):
     -----
     The accuracy of pricing is dependent on the number of time steps and
     simulated paths chosen for the underlying stochastic motion
-
-    Examples
-    --------
-    >>> from simulation import EuroSim
-    >>> import numpy as np
-    >>> s0 = 1
-        r = 0.015
-        T = 0.5
-        k = 0.8
-    >>> S = np.array([[ 1.        ,  1.        ,  1.        ,  1.        ,  1.        ],
-                   [ 0.92248705,  1.08050869,  0.92248705,  1.08050869,  0.92248705],
-                   [ 0.85098236,  0.99675528,  0.85098236,  0.99675528,  0.99675528],
-                   [ 0.91949383,  0.91949383,  0.91949383,  1.07700274,  0.91949383],
-                   [ 0.99352108,  0.99352108,  0.84822115,  1.16371082,  0.99352108],
-                   [ 0.91651033,  1.07350816,  0.78247303,  1.07350816,  1.07350816]])
-    >>> a = EuroSim(S,k,r,T)
-    >>> print(a[0])
-        print(a[1][0])
-        print(a[1][1])
-        [0.1860066674534242, 0.0034792018881946852]
-        [ 0.11651033  0.27350816  0.          0.27350816  0.27350816]
-        [ 0.          0.          0.01752697  0.          0.        ]
 
     '''
     callMotion = (S[-1] - k).clip(0)
@@ -107,28 +87,6 @@ def AsianGeoFixSim(S,k,r,T):
     -----
     The accuracy of pricing is dependent on the number of time steps and
     simulated paths chosen for the underlying stochastic motion
-
-    Examples
-    --------
-    >>> from simulation import AsianGeoFixSim
-    >>> import numpy as np
-    >>> s0 = 1
-        r = 0.015
-        T = 0.5
-        k = 0.8
-    >>> S = np.array([[ 1.        ,  1.        ,  1.        ,  1.        ,  1.        ],
-                   [ 0.92248705,  1.08050869,  0.92248705,  1.08050869,  0.92248705],
-                   [ 0.85098236,  0.99675528,  0.85098236,  0.99675528,  0.99675528],
-                   [ 0.91949383,  0.91949383,  0.91949383,  1.07700274,  0.91949383],
-                   [ 0.99352108,  0.99352108,  0.84822115,  1.16371082,  0.99352108],
-                   [ 0.91651033,  1.07350816,  0.78247303,  1.07350816,  1.07350816]])
-    >>> a = AsianGeoFixSim(S,k,r,T)
-    >>> print(a[0])
-        print(a[1][0])
-        print(a[1][1])
-        [0.17326664943627884, 0.0]
-        [ 0.1324467   0.20915531  0.08457506  0.26376902  0.18290908]
-        [ 0.  0.  0.  0.  0.]
 
     '''
     avg = sctats.gmean(S,axis=0)
@@ -175,28 +133,6 @@ def AsianGeoFloatSim(S,m,r,T):
     The accuracy of pricing is dependent on the number of time steps and
     simulated paths chosen for the underlying stochastic motion
 
-    Examples
-    --------
-    >>> from simulation import AsianGeoFloatSim
-    >>> import numpy as np
-    >>> s0 = 1
-        r = 0.015
-        T = 0.5
-        m = 0.8
-    >>> S = np.array([[ 1.        ,  1.        ,  1.        ,  1.        ,  1.        ],
-                   [ 0.92248705,  1.08050869,  0.92248705,  1.08050869,  0.92248705],
-                   [ 0.85098236,  0.99675528,  0.85098236,  0.99675528,  0.99675528],
-                   [ 0.91949383,  0.91949383,  0.91949383,  1.07700274,  0.91949383],
-                   [ 0.99352108,  0.99352108,  0.84822115,  1.16371082,  0.99352108],
-                   [ 0.91651033,  1.07350816,  0.78247303,  1.07350816,  1.07350816]])
-    >>> a = AsianGeoFloatSim(S,k,r,T)
-    >>> print(a[0])
-        print(a[1][0])
-        print(a[1][1])
-        [0.20271863478726854, 0.0]
-        [ 0.17055297  0.26618391  0.07481299  0.22249294  0.2871809 ]
-        [ 0.  0.  0.  0.  0.]
-
     '''
     avg = sctats.gmean(S,axis=0)
     callMotion = (S[-1] - m*avg).clip(0)
@@ -242,28 +178,6 @@ def AsianArithFixSim(S,k,r,T):
     The accuracy of pricing is dependent on the number of time steps and
     simulated paths chosen for the underlying stochastic motion
 
-    Examples
-    --------
-    >>> from simulation import AsianArithFixSim
-    >>> import numpy as np
-    >>> s0 = 1
-        r = 0.015
-        T = 0.5
-        k = 0.8
-    >>> S = np.array([[ 1.        ,  1.        ,  1.        ,  1.        ,  1.        ],
-                   [ 0.92248705,  1.08050869,  0.92248705,  1.08050869,  0.92248705],
-                   [ 0.85098236,  0.99675528,  0.85098236,  0.99675528,  0.99675528],
-                   [ 0.91949383,  0.91949383,  0.91949383,  1.07700274,  0.91949383],
-                   [ 0.99352108,  0.99352108,  0.84822115,  1.16371082,  0.99352108],
-                   [ 0.91651033,  1.07350816,  0.78247303,  1.07350816,  1.07350816]])
-    >>> a = AsianArithFixSim(S,k,r,T)
-    >>> print(a[0])
-        print(a[1][0])
-        print(a[1][1])
-        [0.17493936228974066, 0.0]
-        [ 0.13383244  0.21063117  0.08727624  0.26524762  0.18429423]
-        [ 0.  0.  0.  0.  0.]
-
     '''
     avg = np.average(S,axis=0)
     callMotion = (avg - k).clip(0)
@@ -308,28 +222,6 @@ def AsianArithFloatSim(S,m,r,T):
     -----
     The accuracy of pricing is dependent on the number of time steps and
     simulated paths chosen for the underlying stochastic motion
-
-    Examples
-    --------
-    >>> from simulation import AsianArithFloatSim
-    >>> import numpy as np
-    >>> s0 = 1
-        r = 0.015
-        T = 0.5
-        m = 0.8
-    >>> S = np.array([[ 1.        ,  1.        ,  1.        ,  1.        ,  1.        ],
-                   [ 0.92248705,  1.08050869,  0.92248705,  1.08050869,  0.92248705],
-                   [ 0.85098236,  0.99675528,  0.85098236,  0.99675528,  0.99675528],
-                   [ 0.91949383,  0.91949383,  0.91949383,  1.07700274,  0.91949383],
-                   [ 0.99352108,  0.99352108,  0.84822115,  1.16371082,  0.99352108],
-                   [ 0.91651033,  1.07350816,  0.78247303,  1.07350816,  1.07350816]])
-    >>> a = AsianArithFloatSim(S,k,r,T)
-    >>> print(a[0])
-        print(a[1][0])
-        print(a[1][1])
-        [0.20138046450449909, 0.0]
-        [ 0.16944438  0.26500322  0.07265204  0.22131007  0.28607277]
-        [ 0.  0.  0.  0.  0.]
 
     '''
     avg = np.average(S,axis=0)
@@ -379,29 +271,6 @@ def PowerSim(S,k,r,T,n):
     The accuracy of pricing is dependent on the number of time steps and
     simulated paths chosen for the underlying stochastic motion
 
-    Examples
-    --------
-    >>> from simulation import PowerSim
-    >>> import numpy as np
-    >>> s0 = 1
-        r = 0.015
-        T = 0.5
-        k = 0.8
-        n = 2.5
-    >>> S = np.array([[ 1.        ,  1.        ,  1.        ,  1.        ,  1.        ],
-                   [ 0.92248705,  1.08050869,  0.92248705,  1.08050869,  0.92248705],
-                   [ 0.85098236,  0.99675528,  0.85098236,  0.99675528,  0.99675528],
-                   [ 0.91949383,  0.91949383,  0.91949383,  1.07700274,  0.91949383],
-                   [ 0.99352108,  0.99352108,  0.84822115,  1.16371082,  0.99352108],
-                   [ 0.91651033,  1.07350816,  0.78247303,  1.07350816,  1.07350816]])
-    >>> a = PowerSim(S,k,r,T)
-    >>> print(a[0])
-        print(a[1][0])
-        print(a[1][1])
-        [0.23547457653967713, 0.051295140170868392]
-        [ 0.00416175  0.39402488  0.          0.39402488  0.39402488]
-        [ 0.         0.         0.2584065  0.         0.       ]
-
     '''
     power = np.power(S[-1],n)
     callMotion = (power - k).clip(0)
@@ -448,29 +317,6 @@ def PowerStrikeSim(S,k,r,T,n):
     -----
     The accuracy of pricing is dependent on the number of time steps and
     simulated paths chosen for the underlying stochastic motion
-
-    Examples
-    --------
-    >>> from simulation import PowerStrikeSim
-    >>> import numpy as np
-    >>> s0 = 1
-        r = 0.015
-        T = 0.5
-        k = 0.8
-        n = 2.5
-    >>> S = np.array([[ 1.        ,  1.        ,  1.        ,  1.        ,  1.        ],
-                   [ 0.92248705,  1.08050869,  0.92248705,  1.08050869,  0.92248705],
-                   [ 0.85098236,  0.99675528,  0.85098236,  0.99675528,  0.99675528],
-                   [ 0.91949383,  0.91949383,  0.91949383,  1.07700274,  0.91949383],
-                   [ 0.99352108,  0.99352108,  0.84822115,  1.16371082,  0.99352108],
-                   [ 0.91651033,  1.07350816,  0.78247303,  1.07350816,  1.07350816]])
-    >>> a = PowerStrikeSim(S,k,r,T)
-    >>> print(a[0])
-        print(a[1][0])
-        print(a[1][1])
-        [0.41616756263295357, 0.0061218936475492848]
-        [ 0.23172835  0.62159147  0.          0.62159147  0.62159147]
-        [ 0.         0.         0.0308399  0.         0.       ]
 
     '''
     powerS = np.power(S[-1],n)
@@ -522,32 +368,6 @@ def AvgBarrierSim(S,Z,r,timeMatrix):
     * if the barrier is equal to the initial spot price, the price and
     payoffMotion will both be equal to the spot price since underlying hits the
     barrier at initiation
-
-    Examples
-    --------
-    >>> from simulation import AvgBarrierSim
-    >>> import numpy as np
-    >>> s0 = 1
-        r = 0.015
-        T = 0.5
-        z = 1.1
-    >>> S = np.array([[ 1.        ,  1.        ,  1.        ,  1.        ,  1.        ],
-                   [ 0.92248705,  1.08050869,  0.92248705,  1.08050869,  0.92248705],
-                   [ 0.85098236,  0.99675528,  0.85098236,  0.99675528,  0.99675528],
-                   [ 0.91949383,  0.91949383,  0.91949383,  1.07700274,  0.91949383],
-                   [ 0.99352108,  0.99352108,  0.84822115,  1.16371082,  0.99352108],
-                   [ 0.91651033,  1.07350816,  0.78247303,  1.07350816,  1.07350816]])
-    >>> timeMatrix = timeMatrix = np.matrix([[ 0. ,  0. ,  0. ,  0. ,  0. ],
-                                            [ 0.1,  0.1,  0.1,  0.1,  0.1],
-                                            [ 0.2,  0.2,  0.2,  0.2,  0.2],
-                                            [ 0.3,  0.3,  0.3,  0.3,  0.3],
-                                            [ 0.4,  0.4,  0.4,  0.4,  0.4],
-                                            [ 0.5,  0.5,  0.5,  0.5,  0.5]])
-    >>> a = AvgBarrierSim(S,z,r,timeMatrix)
-    >>> print(a[0])
-        print(a[1])
-        0.964284902938
-        [ 0.93383244  1.01063117  0.88727624  1.03856668  0.98429423]
 
     '''
     s0 = S[0][0]
@@ -606,27 +426,6 @@ def NoTouchSingleSim(S,Z,r,T,payoutScale):
     simulated paths chosen for the underlying stochastic motion
     * if the barrier is equal to the initial spot price, the price and
     payoffMotion will both be 0 since underlying hits the barrier at initiation
-
-    Examples
-    --------
-    >>> from simulation import NoTouchSingleSim
-    >>> import numpy as np
-    >>> s0 = 1
-        r = 0.015
-        T = 0.5
-        z = 1.1
-        payoutScale = 0.5
-    >>> S = np.array([[ 1.        ,  1.        ,  1.        ,  1.        ,  1.        ],
-                   [ 0.92248705,  1.08050869,  0.92248705,  1.08050869,  0.92248705],
-                   [ 0.85098236,  0.99675528,  0.85098236,  0.99675528,  0.99675528],
-                   [ 0.91949383,  0.91949383,  0.91949383,  1.07700274,  0.91949383],
-                   [ 0.99352108,  0.99352108,  0.84822115,  1.16371082,  0.99352108],
-                   [ 0.91651033,  1.07350816,  0.78247303,  1.07350816,  1.07350816]])
-    >>> a = NoTouchSingleSim(S,z,r,T,payoutScale)
-    >>> print(a[0])
-        print(a[1])
-        1.19103366578
-        [ 1.5  1.5  1.5  0.   1.5]
 
     '''
     s0 = S[0][0]
@@ -688,31 +487,6 @@ def NoTouchDoubleSim(S,Z1,Z2,r,T,payoutScale):
     payoffMotion will both be 0 since underlying hits the barrier at initiation
     ** if spot is not between Z1 and Z2, then output error, since two
     barriers will be redundant
-
-    Examples
-    --------
-    >>> from simulation import NoTouchDoubleSim
-    >>> import numpy as np
-    >>> s0 = 1
-        r = 0.015
-        T = 0.5
-        z1 = 1.1
-        z2 = 0.9
-        payoutScale = 0.5
-    >>> S = np.array([[ 1.        ,  1.        ,  1.        ,  1.        ,  1.        ],
-                   [ 0.92248705,  1.08050869,  0.92248705,  1.08050869,  0.92248705],
-                   [ 0.85098236,  0.99675528,  0.85098236,  0.99675528,  0.99675528],
-                   [ 0.91949383,  0.91949383,  0.91949383,  1.07700274,  0.91949383],
-                   [ 0.99352108,  0.99352108,  0.84822115,  1.16371082,  0.99352108],
-                   [ 0.91651033,  1.07350816,  0.78247303,  1.07350816,  1.07350816]])
-    >>> a = NoTouchDoubleSim(S,z1,z2,r,T,payoutScale)
-    >>> print(a[0])
-        print(a[1])
-        0.595516832891
-        [ 0.   1.5  0.   0.   1.5]
-    >>> z2 = 1.5
-    >>> NoTouchDoubleSim(S,z1,z2,r,T,payoutScale)
-        Error : s0 outside barriers, use NoTouchSingle instead
 
     '''
     s0 = S[0][0]
@@ -777,27 +551,6 @@ def CashOrNothingSim(S,Z,r,T,payout):
     * if the barrier is equal to the initial spot price, the price and
     payoffMotion will both be 0 since underlying hits the barrier at initiation
 
-    Examples
-    --------
-    >>> from simulation import CashOrNothingSim
-    >>> import numpy as np
-    >>> s0 = 1
-        r = 0.015
-        T = 0.5
-        z = 1.1
-        payout = 100
-    >>> S = np.array([[ 1.        ,  1.        ,  1.        ,  1.        ,  1.        ],
-                   [ 0.92248705,  1.08050869,  0.92248705,  1.08050869,  0.92248705],
-                   [ 0.85098236,  0.99675528,  0.85098236,  0.99675528,  0.99675528],
-                   [ 0.91949383,  0.91949383,  0.91949383,  1.07700274,  0.91949383],
-                   [ 0.99352108,  0.99352108,  0.84822115,  1.16371082,  0.99352108],
-                   [ 0.91651033,  1.07350816,  0.78247303,  1.07350816,  1.07350816]])
-    >>> a = CashOrNothingSim(S,z,r,T,payout)
-    >>> print(a[0])
-        print(a[1])
-        79.4022443855
-        [100 100 100   0 100]
-
     '''
     s0 = S[0][0]
     if s0 < Z: # below
@@ -854,30 +607,6 @@ def SimpleSim(s0,r,T,vol,dt,paths):
         [s_11 s_12 ... s_1paths]
         ...
         [s_(T/dt)1 s_(T/dt)2 ... s_(T/dt)paths]]
-
-    Examples
-    --------
-    >>> from qcfoptions.simulation import SimpleSim
-    >>> s0 = 1
-        r = 0.015
-        T = 2
-        vol = 0.25
-        dt = 0.001
-        paths = 1000
-    >>> SimpleSim(s0,r,T,vol,dt,paths)
-    array([[ 1.        ,  1.        ,  1.        , ...,  1.        ,
-         1.        ,  1.        ],
-       [ 1.00792065,  1.00792065,  1.00792065, ...,  1.00792065,
-         0.99210935,  1.00792065],
-       [ 1.01590403,  0.9999675 ,  1.01590403, ...,  1.01590403,
-         0.9999675 ,  1.01590403],
-       ...,
-       [ 0.83965012,  0.96805391,  0.86662648, ...,  1.34928073,
-         0.67291959,  0.36321019],
-       [ 0.83302474,  0.97572153,  0.85978823, ...,  1.3599679 ,
-         0.66760982,  0.36034423],
-       [ 0.83962283,  0.98344987,  0.86659831, ...,  1.34923687,
-         0.66234195,  0.36319839]])
 
     '''
     intervals = int(T/dt)
@@ -938,46 +667,6 @@ def HestonSim(s0,r,T,vol,phi,kappa,xi,dt,paths):
         [s_11 s_12 ... s_1paths]
         ...
         [s_(T/dt)1 s_(T/dt)2 ... s_(T/dt)paths]]
-
-    Examples
-    --------
-    >>> from qcfoptions.simulation import HestonSim
-    >>> s0 = 1
-        r = 0.015
-        T = 2
-        vol = 0.25
-        vol = 0.25
-        phi = -0.4
-        kappa = 8
-        dt = 0.001
-        paths = 1000
-    >>> HestonSim(s0,r,T,vol,dt,paths)
-    [array([[ 1.        ,  1.        ,  1.        , ...,  1.        ,
-          1.        ,  1.        ],
-        [ 0.99220026,  0.99220026,  0.99220026, ...,  1.00768681,
-          0.99188224,  0.99201948],
-        [ 0.98455083,  0.98455083,  1.00019494, ...,  0.9998787 ,
-          1.00018749,  0.98419354],
-        ...,
-        [ 0.57934074,  0.78773209,  0.77628209, ...,  0.67412693,
-          0.94029086,  0.85260689],
-        [ 0.58289171,  0.79231336,  0.78272252, ...,  0.67913971,
-          0.93453208,  0.85863832],
-        [ 0.57946344,  0.79675135,  0.77618405, ...,  0.68403361,
-          0.92858262,  0.85250678]]),
- array([[ 0.0625    ,  0.0625    ,  0.0625    , ...,  0.0625    ,
-          0.0625    ,  0.0625    ],
-        [ 0.06107081,  0.06107081,  0.06107081, ...,  0.05885721,
-          0.06614279,  0.06392919],
-        [ 0.05966948,  0.05966948,  0.06468314, ...,  0.06027327,
-          0.06986109,  0.06247232],
-        ...,
-        [ 0.03445569,  0.03621109,  0.07259113, ...,  0.05637955,
-          0.03862534,  0.04846038],
-        [ 0.03738478,  0.03364863,  0.06858453, ...,  0.0550711 ,
-          0.0376928 ,  0.04983118],
-        [ 0.03476835,  0.03120657,  0.070033  , ...,  0.05171108,
-          0.0407202 ,  0.05120868]])]
 
     '''
     intervals = int(T/dt)
@@ -1092,25 +781,6 @@ class Simple:
         The accuracy of pricing is dependent on the number of time steps and
         simulated paths chosen for the underlying stochastic motion
 
-        Examples
-        --------
-        >>> from simulation import Simple
-        >>> s0 = 1
-            r = 0.015
-            T = 0.5
-            vol = 0.25
-            k = 0.8
-            dt = 0.1
-            paths = 5
-        >>> sim = Simple(s0,r,T,dt,paths)
-        >>> a = sim.Euro(k)
-        >>> print(a[0])
-            print(a[1][0])
-            print(a[1][1])
-            [0.1860066674534242, 0.0034792018881946852]
-            [ 0.11651033  0.27350816  0.          0.27350816  0.27350816]
-            [ 0.          0.          0.01752697  0.          0.        ]
-
         '''
         out = EuroSim(self.S,k,self.r,self.T)
         return(out)
@@ -1141,25 +811,6 @@ class Simple:
         -----
         The accuracy of pricing is dependent on the number of time steps and
         simulated paths chosen for the underlying stochastic motion
-
-        Examples
-        --------
-        >>> from simulation import Simple
-        >>> s0 = 1
-            r = 0.015
-            T = 0.5
-            vol = 0.25
-            k = 0.8
-            dt = 0.1
-            paths = 5
-        >>> sim = Simple(s0,r,T,dt,paths)
-        >>> a = sim.AsianGeoFix(k)
-        >>> print(a[0])
-            print(a[1][0])
-            print(a[1][1])
-            [0.17326664943627884, 0.0]
-            [ 0.1324467   0.20915531  0.08457506  0.26376902  0.18290908]
-            [ 0.  0.  0.  0.  0.]
 
         '''
         out = AsianGeoFixSim(self.S,k,self.r,self.T)
@@ -1192,25 +843,6 @@ class Simple:
         The accuracy of pricing is dependent on the number of time steps and
         simulated paths chosen for the underlying stochastic motion
 
-        Examples
-        --------
-        >>> from simulation import Simple
-        >>> s0 = 1
-            r = 0.015
-            T = 0.5
-            vol = 0.25
-            k = 0.8
-            dt = 0.1
-            paths = 5
-        >>> sim = Simple(s0,r,T,dt,paths)
-        >>> a = sim.AsianArithFix(k)
-        >>> print(a[0])
-            print(a[1][0])
-            print(a[1][1])
-            [0.17493936228974066, 0.0]
-            [ 0.13383244  0.21063117  0.08727624  0.26524762  0.18429423]
-            [ 0.  0.  0.  0.  0.]
-
         '''
         out = AsianArithFixSim(self.S,k,self.r,self.T)
         return(out)
@@ -1242,25 +874,6 @@ class Simple:
         The accuracy of pricing is dependent on the number of time steps and
         simulated paths chosen for the underlying stochastic motion
 
-        Examples
-        --------
-        >>> from simulation import Simple
-        >>> s0 = 1
-            r = 0.015
-            T = 0.5
-            vol = 0.25
-            m = 0.8
-            dt = 0.1
-            paths = 5
-        >>> sim = Simple(s0,r,T,dt,paths)
-        >>> a = sim.AsianGeoFloat(m)
-        >>> print(a[0])
-            print(a[1][0])
-            print(a[1][1])
-            [0.20271863478726854, 0.0]
-            [ 0.17055297  0.26618391  0.07481299  0.22249294  0.2871809 ]
-            [ 0.  0.  0.  0.  0.]
-
         '''
         out = AsianGeoFloatSim(self.S,m,self.r,self.T)
         return(out)
@@ -1291,25 +904,6 @@ class Simple:
         -----
         The accuracy of pricing is dependent on the number of time steps and
         simulated paths chosen for the underlying stochastic motion
-
-        Examples
-        --------
-        >>> from simulation import Simple
-        >>> s0 = 1
-            r = 0.015
-            T = 0.5
-            vol = 0.25
-            m = 0.8
-            dt = 0.1
-            paths = 5
-        >>> sim = Simple(s0,r,T,dt,paths)
-        >>> a = sim.AsianArithFloat(m)
-        >>> print(a[0])
-            print(a[1][0])
-            print(a[1][1])
-            [0.20138046450449909, 0.0]
-            [ 0.16944438  0.26500322  0.07265204  0.22131007  0.28607277]
-            [ 0.  0.  0.  0.  0.]
 
         '''
         out = AsianArithFloatSim(self.S,m,self.r,self.T)
@@ -1345,26 +939,6 @@ class Simple:
         The accuracy of pricing is dependent on the number of time steps and
         simulated paths chosen for the underlying stochastic motion
 
-        Examples
-        --------
-        >>> from simulation import Simple
-        >>> s0 = 1
-            r = 0.015
-            T = 0.5
-            vol = 0.25
-            k = 0.8
-            n = 2.5
-            dt = 0.1
-            paths = 5
-        >>> sim = Simple(s0,r,T,dt,paths)
-        >>> a = sim.Power(k,n)
-        >>> print(a[0])
-            print(a[1][0])
-            print(a[1][1])
-            [0.23547457653967713, 0.051295140170868392]
-            [ 0.00416175  0.39402488  0.          0.39402488  0.39402488]
-            [ 0.         0.         0.2584065  0.         0.       ]
-
         '''
         out = PowerSim(self.S,k,self.r,self.T,n)
         return(out)
@@ -1397,26 +971,6 @@ class Simple:
         -----
         The accuracy of pricing is dependent on the number of time steps and
         simulated paths chosen for the underlying stochastic motion
-
-        Examples
-        --------
-        >>> from simulation import Simple
-        >>> s0 = 1
-            r = 0.015
-            T = 0.5
-            vol = 0.25
-            k = 0.8
-            n = 2.5
-            dt = 0.1
-            paths = 5
-        >>> sim = Simple(s0,r,T,dt,paths)
-        >>> a = sim.PowerStrike(k,n)
-        >>> print(a[0])
-            print(a[1][0])
-            print(a[1][1])
-            [0.41616756263295357, 0.0061218936475492848]
-            [ 0.23172835  0.62159147  0.          0.62159147  0.62159147]
-            [ 0.         0.         0.0308399  0.         0.       ]
 
         '''
         out = PowerStrikeSim(self.S,k,self.r,self.T,n)
@@ -1452,23 +1006,6 @@ class Simple:
         * if the barrier is equal to the initial spot price, the price and
         payoffMotion will both be equal to the spot price since underlying hits the
         barrier at initiation
-
-        Examples
-        --------
-        >>> from simulation import Simple
-        >>> s0 = 1
-            r = 0.015
-            T = 0.5
-            vol = 0.25
-            z = 0.8
-            dt = 0.1
-            paths = 5
-        >>> sim = Simple(s0,r,T,dt,paths)
-        >>> a = sim.AvgBarrier(z)
-        >>> print(a[0])
-            print(a[1])
-            0.964284902938
-            [ 0.93383244  1.01063117  0.88727624  1.03856668  0.98429423]
 
         '''
         out = AvgBarrierSim(self.S,Z,self.r,self.timeMatrix)
@@ -1506,21 +1043,6 @@ class Simple:
         simulated paths chosen for the underlying stochastic motion
         * if the barrier is equal to the initial spot price, the price and
         payoffMotion will both be 0 since underlying hits the barrier at initiation
-
-        Examples
-        --------
-        >>> from simulation import NoTouchSingleSim
-        >>> s0 = 1
-            r = 0.015
-            T = 0.5
-            z = 1.1
-            payoutScale = 0.5
-        >>> sim = Simple(s0,r,T,dt,paths)
-        >>> a = sim.NoTouchSingle(z,payoutScale)
-        >>> print(a[0])
-            print(a[1])
-            1.19103366578
-            [ 1.5  1.5  1.5  0.   1.5]
 
         '''
         out = NoTouchSingleSim(self.S,Z,self.r,self.T,payoutScale)
@@ -1563,25 +1085,6 @@ class Simple:
         ** if spot is not between Z1 and Z2, then output error, since two
         barriers will be redundant
 
-        Examples
-        --------
-        >>> from simulation import NoTouchDoubleSim
-        >>> s0 = 1
-            r = 0.015
-            T = 0.5
-            z1 = 1.1
-            z2 = 0.9
-            payoutScale = 0.5
-        >>> sim = Simple(s0,r,T,dt,paths)
-        >>> a = sim.NoTouchDouble(z1,z2,payoutScale)
-        >>> print(a[0])
-            print(a[1])
-            0.595516832891
-            [ 0.   1.5  0.   0.   1.5]
-        >>> z2 = 1.5
-        >>> sim.NoTouchDouble(S,z1,z2,r,T,payoutScale)
-            Error : s0 outside barriers, use NoTouchSingle instead
-
         '''
         out = NoTouchDoubleSim(self.S,Z1,Z2,self.r,self.T,payoutScale)
         return(out)
@@ -1618,21 +1121,6 @@ class Simple:
         simulated paths chosen for the underlying stochastic motion
         * if the barrier is equal to the initial spot price, the price and
         payoffMotion will both be 0 since underlying hits the barrier at initiation
-
-        Examples
-        --------
-        >>> from simulation import CashOrNothingSim
-        >>> s0 = 1
-            r = 0.015
-            T = 0.5
-            z = 1.1
-            payout = 100
-        >>> sim = Simple(s0,r,T,dt,paths)
-        >>> a = sim.CashOrNothing(z,payout)
-        >>> print(a[0])
-            print(a[1])
-            79.4022443855
-            [100 100 100   0 100]
 
         '''
         out = CashOrNothingSim(self.S,Z,self.r,self.T,payout)
@@ -1743,25 +1231,6 @@ class Heston:
         The accuracy of pricing is dependent on the number of time steps and
         simulated paths chosen for the underlying stochastic motion
 
-        Examples
-        --------
-        >>> from simulation import Heston
-        >>> s0 = 1
-            r = 0.015
-            T = 0.5
-            vol = 0.25
-            k = 0.8
-            dt = 0.1
-            paths = 5
-        >>> sim = Heston(s0,r,T,dt,paths)
-        >>> a = sim.Euro(k)
-        >>> print(a[0])
-            print(a[1][0])
-            print(a[1][1])
-            [0.1860066674534242, 0.0034792018881946852]
-            [ 0.11651033  0.27350816  0.          0.27350816  0.27350816]
-            [ 0.          0.          0.01752697  0.          0.        ]
-
         '''
         out = EuroSim(self.S,k,self.r,self.T)
         return(out)
@@ -1792,25 +1261,6 @@ class Heston:
         -----
         The accuracy of pricing is dependent on the number of time steps and
         simulated paths chosen for the underlying stochastic motion
-
-        Examples
-        --------
-        >>> from simulation import Heston
-        >>> s0 = 1
-            r = 0.015
-            T = 0.5
-            vol = 0.25
-            k = 0.8
-            dt = 0.1
-            paths = 5
-        >>> sim = Heston(s0,r,T,dt,paths)
-        >>> a = sim.AsianGeoFix(k)
-        >>> print(a[0])
-            print(a[1][0])
-            print(a[1][1])
-            [0.17326664943627884, 0.0]
-            [ 0.1324467   0.20915531  0.08457506  0.26376902  0.18290908]
-            [ 0.  0.  0.  0.  0.]
 
         '''
         out = AsianGeoFixSim(self.S,k,self.r,self.T)
@@ -1843,25 +1293,6 @@ class Heston:
         The accuracy of pricing is dependent on the number of time steps and
         simulated paths chosen for the underlying stochastic motion
 
-        Examples
-        --------
-        >>> from simulation import Heston
-        >>> s0 = 1
-            r = 0.015
-            T = 0.5
-            vol = 0.25
-            k = 0.8
-            dt = 0.1
-            paths = 5
-        >>> sim = Heston(s0,r,T,dt,paths)
-        >>> a = sim.AsianArithFix(k)
-        >>> print(a[0])
-            print(a[1][0])
-            print(a[1][1])
-            [0.17493936228974066, 0.0]
-            [ 0.13383244  0.21063117  0.08727624  0.26524762  0.18429423]
-            [ 0.  0.  0.  0.  0.]
-
         '''
         out = AsianArithFixSim(self.S,k,self.r,self.T)
         return(out)
@@ -1893,25 +1324,6 @@ class Heston:
         The accuracy of pricing is dependent on the number of time steps and
         simulated paths chosen for the underlying stochastic motion
 
-        Examples
-        --------
-        >>> from simulation import Heston
-        >>> s0 = 1
-            r = 0.015
-            T = 0.5
-            vol = 0.25
-            m = 0.8
-            dt = 0.1
-            paths = 5
-        >>> sim = Heston(s0,r,T,dt,paths)
-        >>> a = sim.AsianGeoFloat(m)
-        >>> print(a[0])
-            print(a[1][0])
-            print(a[1][1])
-            [0.20271863478726854, 0.0]
-            [ 0.17055297  0.26618391  0.07481299  0.22249294  0.2871809 ]
-            [ 0.  0.  0.  0.  0.]
-
         '''
         out = AsianGeoFloatSim(self.S,m,self.r,self.T)
         return(out)
@@ -1942,25 +1354,6 @@ class Heston:
         -----
         The accuracy of pricing is dependent on the number of time steps and
         simulated paths chosen for the underlying stochastic motion
-
-        Examples
-        --------
-        >>> from simulation import Heston
-        >>> s0 = 1
-            r = 0.015
-            T = 0.5
-            vol = 0.25
-            m = 0.8
-            dt = 0.1
-            paths = 5
-        >>> sim = Heston(s0,r,T,dt,paths)
-        >>> a = sim.AsianArithFloat(m)
-        >>> print(a[0])
-            print(a[1][0])
-            print(a[1][1])
-            [0.20138046450449909, 0.0]
-            [ 0.16944438  0.26500322  0.07265204  0.22131007  0.28607277]
-            [ 0.  0.  0.  0.  0.]
 
         '''
         out = AsianArithFloatSim(self.S,m,self.r,self.T)
@@ -1996,26 +1389,6 @@ class Heston:
         The accuracy of pricing is dependent on the number of time steps and
         simulated paths chosen for the underlying stochastic motion
 
-        Examples
-        --------
-        >>> from simulation import Heston
-        >>> s0 = 1
-            r = 0.015
-            T = 0.5
-            vol = 0.25
-            k = 0.8
-            n = 2.5
-            dt = 0.1
-            paths = 5
-        >>> sim = Heston(s0,r,T,dt,paths)
-        >>> a = sim.Power(k,n)
-        >>> print(a[0])
-            print(a[1][0])
-            print(a[1][1])
-            [0.23547457653967713, 0.051295140170868392]
-            [ 0.00416175  0.39402488  0.          0.39402488  0.39402488]
-            [ 0.         0.         0.2584065  0.         0.       ]
-
         '''
         out = PowerSim(self.S,k,self.r,self.T,n)
         return(out)
@@ -2048,26 +1421,6 @@ class Heston:
         -----
         The accuracy of pricing is dependent on the number of time steps and
         simulated paths chosen for the underlying stochastic motion
-
-        Examples
-        --------
-        >>> from simulation import Heston
-        >>> s0 = 1
-            r = 0.015
-            T = 0.5
-            vol = 0.25
-            k = 0.8
-            n = 2.5
-            dt = 0.1
-            paths = 5
-        >>> sim = Heston(s0,r,T,dt,paths)
-        >>> a = sim.PowerStrike(k,n)
-        >>> print(a[0])
-            print(a[1][0])
-            print(a[1][1])
-            [0.41616756263295357, 0.0061218936475492848]
-            [ 0.23172835  0.62159147  0.          0.62159147  0.62159147]
-            [ 0.         0.         0.0308399  0.         0.       ]
 
         '''
         out = PowerStrikeSim(self.S,k,self.r,self.T,n)
@@ -2103,23 +1456,6 @@ class Heston:
         * if the barrier is equal to the initial spot price, the price and
         payoffMotion will both be equal to the spot price since underlying hits the
         barrier at initiation
-
-        Examples
-        --------
-        >>> from simulation import Heston
-        >>> s0 = 1
-            r = 0.015
-            T = 0.5
-            vol = 0.25
-            z = 0.8
-            dt = 0.1
-            paths = 5
-        >>> sim = Heston(s0,r,T,dt,paths)
-        >>> a = sim.AvgBarrier(z)
-        >>> print(a[0])
-            print(a[1])
-            0.964284902938
-            [ 0.93383244  1.01063117  0.88727624  1.03856668  0.98429423]
 
         '''
         out = AvgBarrierSim(self.S,Z,self.r,self.timeMatrix)
@@ -2157,21 +1493,6 @@ class Heston:
         simulated paths chosen for the underlying stochastic motion
         * if the barrier is equal to the initial spot price, the price and
         payoffMotion will both be 0 since underlying hits the barrier at initiation
-
-        Examples
-        --------
-        >>> from simulation import NoTouchSingleSim
-        >>> s0 = 1
-            r = 0.015
-            T = 0.5
-            z = 1.1
-            payoutScale = 0.5
-        >>> sim = Heston(s0,r,T,dt,paths)
-        >>> a = sim.NoTouchSingle(z,payoutScale)
-        >>> print(a[0])
-            print(a[1])
-            1.19103366578
-            [ 1.5  1.5  1.5  0.   1.5]
 
         '''
         out = NoTouchSingleSim(self.S,Z,self.r,self.T,payoutScale)
@@ -2214,25 +1535,6 @@ class Heston:
         ** if spot is not between Z1 and Z2, then output error, since two
         barriers will be redundant
 
-        Examples
-        --------
-        >>> from simulation import NoTouchDoubleSim
-        >>> s0 = 1
-            r = 0.015
-            T = 0.5
-            z1 = 1.1
-            z2 = 0.9
-            payoutScale = 0.5
-        >>> sim = Heston(s0,r,T,dt,paths)
-        >>> a = sim.NoTouchDouble(z1,z2,payoutScale)
-        >>> print(a[0])
-            print(a[1])
-            0.595516832891
-            [ 0.   1.5  0.   0.   1.5]
-        >>> z2 = 1.5
-        >>> sim.NoTouchDouble(S,z1,z2,r,T,payoutScale)
-            Error : s0 outside barriers, use NoTouchSingle instead
-
         '''
         out = NoTouchDoubleSim(self.S,Z1,Z2,self.r,self.T,payoutScale)
         return(out)
@@ -2269,21 +1571,6 @@ class Heston:
         simulated paths chosen for the underlying stochastic motion
         * if the barrier is equal to the initial spot price, the price and
         payoffMotion will both be 0 since underlying hits the barrier at initiation
-
-        Examples
-        --------
-        >>> from simulation import CashOrNothingSim
-        >>> s0 = 1
-            r = 0.015
-            T = 0.5
-            z = 1.1
-            payout = 100
-        >>> sim = Heston(s0,r,T,dt,paths)
-        >>> a = sim.CashOrNothing(z,payout)
-        >>> print(a[0])
-            print(a[1])
-            79.4022443855
-            [100 100 100   0 100]
 
         '''
         out = CashOrNothingSim(self.S,Z,self.r,self.T,payout)
