@@ -1,3 +1,3 @@
 # Austin Griffith
 
-from qcfoptions import barriers, bsoptions, simulation
+from qcfoptions import bsoptions, simulation
