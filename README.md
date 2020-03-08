@@ -10,10 +10,10 @@ An option calculator born from the need to calculate the prices of various optio
 * Simulations of underlying asset using stochastic processes
 * Pricing of options utilizing the simulated motion of the underlying
 
-I hope this helps those looking to avoid rewriting a general Black Scholes calculator each time they need to, those looking for a general code/framework to create their own option calculator, or those hoping to play around with a simple option pricing simulation. Each function and class has a complete walkthrough on what it does, should the user be interested. For example, if you want to know how to work the European option function, simply type :
+This was made initially to help avoid rewriting a Black Scholes calculators each time it was necessary. I'm hoping it can also provide an outlet for those looking for a general code/framework to help in the creation and experimentation of their own option simulations. Each function and class has a complete explanation on what it does, should the user be interested. For example, if you want to know how to work the European option function, simply type :
 
     >>> from qcfoptions import bsoptions
-    >>> help(bsoptions.Euro)
+    >>> help(bsoptions.EuroOptions)
 
 into the command console, and it should return a relatively complete description of the function.
 

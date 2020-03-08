@@ -1,5 +1,8 @@
-# Austin Griffith
-# Setup File
+'''
+Austin Griffith
+setup.py
+
+'''
 
 from setuptools import setup, find_packages
 from codecs import open
@@ -17,7 +20,7 @@ setup(
     # $ pip install qcfoptions
     name = 'qcfoptions',
 
-    version = '0.1.3',
+    version = '0.2.0',
     description = 'Option Calculator and Simulator',
 
     # uses readme file to give long description

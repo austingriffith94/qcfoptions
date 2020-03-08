@@ -4,7 +4,6 @@ README.md
 setup.cfg
 setup.py
 qcfoptions/__init__.py
-qcfoptions/barriers.py
 qcfoptions/bsoptions.py
 qcfoptions/simulation.py
 qcfoptions.egg-info/PKG-INFO

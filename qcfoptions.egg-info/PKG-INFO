@@ -1,33 +1,33 @@
 Metadata-Version: 2.1
 Name: qcfoptions
-Version: 0.1.3
+Version: 0.2.0
 Summary: Option Calculator and Simulator
 Home-page: https://github.com/austingriffith94/qcfoptions
 Author: Austin Griffith
 Author-email: austgriffia@gmail.com
 License: MIT
-Description: # qcfoptions
-        Option Calculator and Simulator
-        
-        Git Repository : [https://github.com/austingriffith94/qcfoptions](https://github.com/austingriffith94/qcfoptions)
-        
-        An option calculator born from the need to calculate the prices of various options in the QCF program at Georgia Tech. This package provides:
-        
-        * Black Scholes pricing of traditional, barrier and exotic options
-        * Greeks of European style options
-        * Simulations of underlying asset using stochastic processes
-        * Pricing of options utilizing the simulated motion of the underlying
-        
-        I hope this helps those looking to avoid rewriting a general Black Scholes calculator each time they need to, those looking for a general code/framework to create their own option calculator, or those hoping to play around with a simple option pricing simulation. Each function and class has a complete walkthrough on what it does, should the user be interested. For example, if you want to know how to work the European option function, simply type :
-        
-            >>> from qcfoptions import bsoptions
-            >>> help(bsoptions.Euro)
-        
-        into the command console, and it should return a relatively complete description of the function.
-        
-        You can install this package from PyPI by using the command :
-        
-            pip install qcfoptions
+Description: # qcfoptions
+        Option Calculator and Simulator
+        
+        Git Repository : [https://github.com/austingriffith94/qcfoptions](https://github.com/austingriffith94/qcfoptions)
+        
+        An option calculator born from the need to calculate the prices of various options in the QCF program at Georgia Tech. This package provides:
+        
+        * Black Scholes pricing of traditional, barrier and exotic options
+        * Greeks of European style options
+        * Simulations of underlying asset using stochastic processes
+        * Pricing of options utilizing the simulated motion of the underlying
+        
+        This was made initially to help avoid rewriting a Black Scholes calculators each time it was necessary. I'm hoping it can also provide an outlet for those looking for a general code/framework to help in the creation and experimentation of their own option simulations. Each function and class has a complete explanation on what it does, should the user be interested. For example, if you want to know how to work the European option function, simply type :
+        
+            >>> from qcfoptions import bsoptions
+            >>> help(bsoptions.EuroOptions)
+        
+        into the command console, and it should return a relatively complete description of the function.
+        
+        You can install this package from PyPI by using the command :
+        
+            pip install qcfoptions
         
 Platform: UNKNOWN
 Classifier: Development Status :: 3 - Alpha
