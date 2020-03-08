@@ -29,9 +29,8 @@ class MonteCarlo:
     vol : number of any type (int, float8, float64 etc.)
         Volatility of underlying, implied constant till
         expiration in simple model
-    dt : number of any type (int, float8, float64 etc.)
-        Time interval used in simulation, used for number
-        of stepsstock has, and motion of Weiner process
+    intervals : number of any type (int, float8, float64 etc.)
+        The number of time intervals used in simulation
     paths : number of type 'int'
         Number of stocks simulated, higher number of paths
         leads to greater accuracy in calculated price.
@@ -65,19 +64,19 @@ class MonteCarlo:
         
     '''
     
-    def __init__(self, spot, riskfree, tau, vol, intervals, paths,
+    def __init__(self, spot, riskfree, tau, vol, intervals, paths : int,
                  model='simple', phi=None, kappa=None, xi=None):
         self.s0 = spot
         self.r = riskfree
-        self.t = tau
+        self.T = tau
         self.vol = vol
         self.phi = phi
         self.kappa = kappa
         self.xi = xi
         
-        self.iv = intervals
         self.paths = paths
-        self.dt = self.paths / self.intervals
+        self.iv = intervals
+        self.dt = self.T / self.iv
         self.timeMatrix = self._timeSeries()
 
         self.model = model
@@ -117,7 +116,7 @@ class MonteCarlo:
     
         S = np.random.random([self.iv + 1, self.paths])
         S = -1 + 2*(S > 0.5)
-        S = self.S*np.sqrt(self.dt)*self.vol + (self.r - 0.5*self.vol*self.vol)*self.dt
+        S = S*np.sqrt(self.dt)*self.vol + (self.r - 0.5*self.vol*self.vol)*self.dt
         S[0] = np.ones(self.paths)*np.log(self.s0)
         S = np.exp(np.matrix.cumsum(S, axis=0))
         return(S)
@@ -598,7 +597,7 @@ class MonteCarlo:
     
         call = np.exp(-r*T)*np.average(callMotion)
         put = np.exp(-r*T)*np.average(putMotion)
-        return([[call,put],[callMotion,putMotion]])
+        return([[call, put], [callMotion, putMotion]])
     
     @staticmethod
     def _asianGeoFix(S, k, r, T):
@@ -644,7 +643,7 @@ class MonteCarlo:
     
         call = np.exp(-r*T)*np.average(callMotion)
         put = np.exp(-r*T)*np.average(putMotion)
-        return([[call,put],[callMotion,putMotion]])
+        return([[call, put], [callMotion, putMotion]])
     
     @staticmethod
     def _asianGeoFloat(S, m, r, T):
@@ -684,13 +683,13 @@ class MonteCarlo:
         simulated paths chosen for the underlying stochastic motion
     
         '''
-        avg = sctats.gmean(S,axis=0)
+        avg = sctats.gmean(S, axis=0)
         callMotion = (S[-1] - m*avg).clip(0)
         putMotion = (m*avg - S[-1]).clip(0)
     
         call = np.exp(-r*T)*np.average(callMotion)
         put = np.exp(-r*T)*np.average(putMotion)
-        return([[call,put],[callMotion,putMotion]])
+        return([[call, put], [callMotion, putMotion]])
     
     @staticmethod
     def _asianArithFix(S, k, r, T):
@@ -730,13 +729,13 @@ class MonteCarlo:
         simulated paths chosen for the underlying stochastic motion
     
         '''
-        avg = np.average(S,axis=0)
+        avg = np.average(S, axis=0)
         callMotion = (avg - k).clip(0)
         putMotion = (k - avg).clip(0)
     
         call = np.exp(-r*T)*np.average(callMotion)
         put = np.exp(-r*T)*np.average(putMotion)
-        return([[call,put],[callMotion,putMotion]])
+        return([[call, put], [callMotion, putMotion]])
     
     @staticmethod
     def _asianArithFloat(S, m, r, T):
@@ -783,7 +782,7 @@ class MonteCarlo:
         # class
         call = np.exp(-r*T)*np.average(callMotion)
         put = np.exp(-r*T)*np.average(putMotion)
-        return([[call,put],[callMotion,putMotion]])
+        return([[call, put], [callMotion, putMotion]])
     
     @staticmethod
     def _power(S, k, r, T, n):
@@ -825,13 +824,13 @@ class MonteCarlo:
         simulated paths chosen for the underlying stochastic motion
     
         '''
-        power = np.power(S[-1],n)
+        power = np.power(S[-1], n)
         callMotion = (power - k).clip(0)
         putMotion = (k - power).clip(0)
     
         call = np.exp(-r*T)*np.average(callMotion)
         put = np.exp(-r*T)*np.average(putMotion)
-        return([[call,put],[callMotion,putMotion]])
+        return([[call, put], [callMotion, putMotion]])
     
     @staticmethod
     def _powerStrike(S, k, r, T, n):
@@ -879,7 +878,7 @@ class MonteCarlo:
     
         call = np.exp(-r*T)*np.average(callMotion)
         put = np.exp(-r*T)*np.average(putMotion)
-        return([[call,put],[callMotion,putMotion]])
+        return([[call, put], [callMotion, putMotion]])
     
     @staticmethod
     def _avgBarrier(S, Z, r, timeMatrix):
@@ -933,12 +932,12 @@ class MonteCarlo:
         else: # on barrier
             price = s0
             payoffMotion = S[0]
-            return([price,payoffMotion])
+            return([price, payoffMotion])
     
         paymentTime = np.array(np.max(np.multiply(timeMatrix,hitBarrier),axis=0))
         payoffMotion = np.sum(np.multiply(hitBarrier,S),axis=0) / np.sum(hitBarrier,axis=0)
         price = np.average(np.exp(-r*paymentTime)*payoffMotion)
-        return([price,payoffMotion])
+        return([price, payoffMotion])
     
     @staticmethod
     def _noTouchSingle(S, Z, r, T, payoutScale):
@@ -992,11 +991,11 @@ class MonteCarlo:
         else: # on barrier
             price = 0.0
             payoffMotion = S[0]*0.0
-            return([price,payoffMotion])
+            return([price, payoffMotion])
     
         payoffMotion = (1+payoutScale)*hitBarrier[-1]
         price = np.average(np.exp(-r*T)*payoffMotion)
-        return([price,payoffMotion])
+        return([price, payoffMotion])
     
     @staticmethod
     def _noTouchDouble(S, Z1, Z2, r, T, payoutScale):
@@ -1056,7 +1055,7 @@ class MonteCarlo:
         elif s0 == Z1 or s0 == Z2:
             price = 0.0
             payoffMotion = S[0]*0.0
-            return([price,payoffMotion])
+            return([price, payoffMotion])
         else:
             print('Error : s0 outside barriers, use NoTouchSingle instead')
             return
@@ -1064,7 +1063,7 @@ class MonteCarlo:
         hitBarrier = np.multiply(hitBarrier1,hitBarrier2)
         payoffMotion = (1+payoutScale)*hitBarrier[-1]
         price = np.average(np.exp(-r*T)*payoffMotion)
-        return([price,payoffMotion])
+        return([price, payoffMotion])
     
     @staticmethod
     def _cashOrNothing(S, Z, r, T, payout):
@@ -1118,9 +1117,9 @@ class MonteCarlo:
         else: # on barrier
             price = 0.0
             payoffMotion = S[0]*0.0
-            return([price,payoffMotion])
+            return([price, payoffMotion])
     
         payoffMotion = hitBarrier[-1]*payout
         price = np.average(np.exp(-r*T)*payoffMotion)
-        return([price,payoffMotion])
+        return([price, payoffMotion])
     

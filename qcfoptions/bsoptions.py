@@ -209,10 +209,6 @@ class EuroOptions:
     
     
     
-    
-    
-    
-    
 class ExoticOptions:
     
     @staticmethod
@@ -582,7 +578,6 @@ class ExoticOptions:
                 right*norm.cdf(-y)))
         return([call,put])
     
-
 
 
 class BarrierOptions:
@@ -1014,7 +1009,6 @@ class BarrierOptions:
         else:
             price = 0.0
         return(max(price, 0.0))
-
 
 
 
